@@ -1,0 +1,95 @@
+{
+  "task_id": "v3_8_rebound_window_target_state",
+  "version": "3.8.0",
+  "objective": "在V3.7行业广度基础上，把反弹窗口拆成10日技术反抽、20日修复波段和60日趋势反转三类目标，检验目标状态分型是否改善A股有效反弹窗口识别。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v3_8_target_state_policy.json",
+    "configs/rebound_window_v3_7_industry_breadth_policy.json",
+    "configs/rebound_window_online_state_machine_policy_v2_20.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "data_catalog/cache/industry_index/history/second",
+    "scripts/run_industry_rebound_window_v3_8_target_state.py",
+    "scripts/run_industry_rebound_window_v3_7_industry_breadth.py",
+    "scripts/run_industry_rebound_window_v3_4_realtime_model.py",
+    "scripts/run_industry_rebound_window_online_state_machine_v2_20.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "future_target_state_used_as_feature",
+    "future_breadth_used_as_feature",
+    "future_amount_used_as_feature",
+    "current_snapshot_backfilled_to_history",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution",
+    "post_hoc_best_profile_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v3_8_target_state/report.md",
+    "outputs/industry_rebound_window_v3_8_target_state/top_candidates.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/run_summary.json",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/v38_target_state_feature_panel.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/target_label_audit.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/breadth_feature_audit.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/target_state_rule_summary.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/target_state_rule_events.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/walk_forward_predictions.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/profile_walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/walk_forward_model_summary.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/profile_realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/profile_realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/combined_selected_signals.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/annual_signal_distribution.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v3_8_target_state/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v3_8_target_state",
+      "description": "运行 V3.8 多目标状态分型反弹窗口研究。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v3_8_target_state.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V3.8 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v3_8_target_state",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V3.8 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v3_8_target_state --required-debug-files v38_target_state_feature_panel.csv data_availability_audit.csv target_label_audit.csv breadth_feature_audit.csv target_state_rule_summary.csv target_state_rule_events.csv walk_forward_predictions.csv profile_walk_forward_year_summary.csv walk_forward_year_summary.csv walk_forward_model_summary.csv profile_realtime_simulation_trades.csv profile_realtime_simulation_summary.csv combined_selected_signals.csv realtime_simulation_trades.csv realtime_simulation_summary.csv annual_signal_distribution.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V3.8 只能评估目标状态分型是否改善反弹窗口研究证据；不能把分型观察直接升级为交易信号。",
+  "research_boundary": "只研究申万行业、行业指数、行业广度和目标状态分型；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益、未来行业广度或同日收盘执行作为特征。"
+}

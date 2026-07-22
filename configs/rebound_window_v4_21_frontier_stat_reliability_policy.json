@@ -1,0 +1,16 @@
+{
+  "version": "4.21.0",
+  "policy_id": "rebound_window_v4_21_frontier_stat_reliability",
+  "policy_name_zh": "V4.21 边界统计可靠性审计",
+  "status": "research_only",
+  "objective": "固定V4.20边界规则，使用bootstrap和Wilson区间审计收益、胜率、坏窗口是否稳定跨过有效门槛。",
+  "output_dir": "outputs/industry_rebound_window_v4_21_frontier_stat_reliability",
+  "source_frontier_path": "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_gap_summary.csv",
+  "source_trades_path": "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+  "bootstrap_iterations": 5000,
+  "random_seed": 20260617,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计V4.20边界规则的统计可靠性，不新增参数，不重新筛选事件，不做个股筛选，不加入ETF，不生成交易指令。"
+}

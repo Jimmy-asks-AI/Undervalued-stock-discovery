@@ -1,0 +1,40 @@
+{
+  "task_id": "v0_7_quality_value_comparison",
+  "version": "0.7.0",
+  "objective": "Filter current obvious-value candidates into undervalued-and-quality candidates and compare them with the previous obvious-value test.",
+  "owner_agent": "factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "scripts/run_quality_value_comparison.py",
+    "outputs/current_a_share_value_snapshot/current_value_candidates_enriched.csv",
+    "outputs/current_a_share_value_snapshot/top_obvious_value_candidates.csv"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "forward_return_60d",
+    "forward_return_120d",
+    "forward_return_252d"
+  ],
+  "required_output_paths": [
+    "outputs/current_a_share_quality_value_snapshot/top_quality_value_candidates.csv",
+    "outputs/current_a_share_quality_value_snapshot/quality_vs_previous_obvious_comparison.csv",
+    "outputs/current_a_share_quality_value_snapshot/quality_candidates_outside_previous_top30.csv",
+    "outputs/current_a_share_quality_value_snapshot/quality_value_financial_proxy_candidates.csv",
+    "outputs/current_a_share_quality_value_snapshot/quality_value_nonfinancial_candidates.csv",
+    "outputs/current_a_share_quality_value_snapshot/quality_value_summary.json",
+    "outputs/current_a_share_quality_value_snapshot/quality_value_comparison_report.md"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_quality_value_comparison",
+      "description": "Run quality-value filter and compare against the previous obvious-value output.",
+      "command": "python .\\scripts\\run_quality_value_comparison.py --top 30",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "Quality-value status is stricter than obvious-value status but remains research-only current snapshot output.",
+  "research_boundary": "Financial-sector quality is marked proxy-only until bank, broker, and insurer specific risk metrics are connected."
+}

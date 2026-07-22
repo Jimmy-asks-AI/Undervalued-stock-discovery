@@ -1,0 +1,71 @@
+{
+  "version": "3.5.0",
+  "policy_id": "rebound_window_v3_5_independent_risk",
+  "policy_name_zh": "V3.5 独立风险偏好代理反弹窗口研究",
+  "status": "research_only",
+  "objective": "在V3.4宽基价格代理基础上，加入两融、SHIBOR、LPR和国债收益率等更独立的风险偏好/资金价格代理，检验是否能改善A股反弹窗口识别。",
+  "output_dir": "outputs/industry_rebound_window_v3_5_independent_risk",
+  "v3_4_policy_path": "configs/rebound_window_v3_4_realtime_model_policy.json",
+  "external_risk_cache_dir": "data_catalog/cache/external_risk/v3_5",
+  "refresh_external_risk": false,
+  "rule_candidates": [
+    {
+      "signal_id": "margin_repair_after_pressure",
+      "signal_name_zh": "压力后两融修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": -0.01},
+        {"field": "margin_balance_20d_chg", "op": ">", "value": 0.00},
+        {"field": "margin_buy_5d_vs_20d", "op": ">=", "value": 1.00}
+      ]
+    },
+    {
+      "signal_id": "funding_easing_pressure_repair",
+      "signal_name_zh": "压力区资金价格缓和",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "stress_release_5d", "op": ">=", "value": 0.00},
+        {"field": "shibor_1w_20d_change", "op": "<=", "value": 0.00},
+        {"field": "china_10y_20d_change", "op": "<=", "value": 0.05}
+      ]
+    },
+    {
+      "signal_id": "margin_and_wide_sync_repair",
+      "signal_name_zh": "两融与宽基同步修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.50},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.70},
+        {"field": "wide_positive_5d_ratio", "op": ">=", "value": 0.50},
+        {"field": "wide_avg_return_5d", "op": ">", "value": 0.00},
+        {"field": "margin_balance_20d_chg", "op": ">", "value": -0.01},
+        {"field": "margin_buy_5d_vs_20d", "op": ">=", "value": 1.05}
+      ]
+    },
+    {
+      "signal_id": "rate_down_smallcap_repair",
+      "signal_name_zh": "利率下行与小盘修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.50},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.70},
+        {"field": "china_10y_20d_change", "op": "<=", "value": 0.00},
+        {"field": "sh000852_return_5d", "op": ">", "value": 0.00},
+        {"field": "smallcap_vs_large_20d", "op": ">", "value": -0.02}
+      ]
+    }
+  ],
+  "model_extra_features": [
+    "margin_balance_5d_chg",
+    "margin_balance_20d_chg",
+    "margin_buy_5d_vs_20d",
+    "margin_risk_appetite_score",
+    "shibor_1w_20d_change",
+    "shibor_3m_20d_change",
+    "china_10y_20d_change",
+    "china_term_spread_20d_change",
+    "funding_easing_score",
+    "lpr1y_60d_change"
+  ],
+  "research_boundary": "只研究申万行业、行业指数、宽基指数和公开资金/利率风险偏好代理；不做个股筛选，不加入ETF，不生成买卖指令，不使用未来收益或未来资金数据作为触发特征，不根据结果动态扩展规则。"
+}

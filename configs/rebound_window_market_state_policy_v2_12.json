@@ -1,0 +1,109 @@
+{
+  "version": "2.12.0",
+  "policy_id": "market_state_rebound_window_v2_12",
+  "policy_name_zh": "V2.12市场状态反弹窗口审计",
+  "status": "research_only",
+  "objective": "基于V2.11误报漏报诊断，把反弹窗口识别从低估超跌行业选择中拆出来，单独测试市场宽度、回撤、压力分和低估超跌触发数量构成的日期层规则。",
+  "output_dir": "outputs/industry_rebound_window_market_state_v2_12",
+  "input_versions": [
+    "V2.11反弹窗口识别审计"
+  ],
+  "horizons": [
+    60,
+    120,
+    252
+  ],
+  "pressure_baseline_min": 0.65,
+  "random_seed": 2120,
+  "top_candidate_rows": 30,
+  "rules": [
+    {
+      "rule_id": "stress55_breadth75",
+      "rule_name_zh": "压力分>=0.55且60日下跌广度>=75%",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75}
+      ]
+    },
+    {
+      "rule_id": "breadth75_drawdown20",
+      "rule_name_zh": "60日下跌广度>=75%且252日市场回撤<=-20%",
+      "conditions": [
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_drawdown_252d", "op": "<=", "value": -0.20}
+      ]
+    },
+    {
+      "rule_id": "capitulation_lowvol",
+      "rule_name_zh": "普跌回撤但波动压力未极端",
+      "conditions": [
+        {"field": "market_drawdown_252d", "op": "<=", "value": -0.20},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.80},
+        {"field": "volatility_pressure", "op": "<=", "value": 0.70}
+      ]
+    },
+    {
+      "rule_id": "nontrap5_breadth75",
+      "rule_name_zh": "非陷阱低估超跌行业>=5且60日下跌广度>=75%",
+      "conditions": [
+        {"field": "low_value_oversold_non_trap_count", "op": ">=", "value": 5},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75}
+      ]
+    },
+    {
+      "rule_id": "low_value8_breadth75",
+      "rule_name_zh": "低估超跌行业>=8且60日下跌广度>=75%",
+      "conditions": [
+        {"field": "low_value_oversold_count", "op": ">=", "value": 8},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75}
+      ]
+    },
+    {
+      "rule_id": "nontrap3_breadth75_drawdown15",
+      "rule_name_zh": "非陷阱>=3且普跌回撤",
+      "conditions": [
+        {"field": "low_value_oversold_non_trap_count", "op": ">=", "value": 3},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_drawdown_252d", "op": "<=", "value": -0.15}
+      ]
+    },
+    {
+      "rule_id": "return60_breadth75_vol70",
+      "rule_name_zh": "收益压力高、普跌、波动未极端",
+      "conditions": [
+        {"field": "return_pressure", "op": ">=", "value": 0.60},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "volatility_pressure", "op": "<=", "value": 0.70}
+      ]
+    },
+    {
+      "rule_id": "current_nontrap_count10",
+      "rule_name_zh": "V2.11旧非陷阱触发数>=10对照",
+      "conditions": [
+        {"field": "low_value_oversold_non_trap_count", "op": ">=", "value": 10}
+      ]
+    }
+  ],
+  "primary_strong_rebound_thresholds": {
+    "60": 0.05,
+    "120": 0.08,
+    "252": 0.12
+  },
+  "bad_window_thresholds": {
+    "60": -0.05,
+    "120": -0.08,
+    "252": -0.12
+  },
+  "promotion_thresholds": {
+    "min_samples": 30,
+    "min_nonoverlap_samples": 8,
+    "min_uplift_vs_all_dates": 0.015,
+    "min_uplift_vs_pressure_dates": 0.005,
+    "min_win_rate": 0.55,
+    "min_strong_rebound_recall": 0.20,
+    "max_bad_window_rate": 0.25,
+    "max_random_pvalue": 0.10
+  },
+  "promotion_rule": "V2.12若出现候选，只能说明日期层市场状态规则有反弹窗口识别候选证据；仍需样本外、非重叠、后续独立数据和行业选择层验证后才能进入下一阶段。",
+  "research_boundary": "只研究申万行业和行业指数的日期层反弹窗口；不做个股筛选，不加入ETF，不生成买卖指令，不把未来收益作为特征，不根据结果动态扩展规则。"
+}

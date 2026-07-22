@@ -1,0 +1,5 @@
+﻿recorded_at,tracker_id,signal_date,planned_entry_date,planned_exit_date,decision_state,production_ready,decision,carrier_code,carrier_name,actual_entry_date,actual_exit_date,entry_price,exit_price,round_trip_cost_bps,gross_return,net_return,reference_entry_price,max_reference_entry_price,entry_price_drift_pct,price_drift_override,unplanned_override,notes
+2026-06-18T21:32:10,v4_71_forward_2026-06-18,2026-06-18,2026-06-23,2026-07-21,watchlist_only_research_signal,False,planned,588000,科创50ETF华夏,,,,,10.00,,,,,,,False,2026-06-18信号入场前预登记
+2026-06-18T21:32:10,v4_71_forward_2026-06-18,2026-06-18,2026-06-23,2026-07-21,watchlist_only_research_signal,False,planned,510300,沪深300ETF华泰柏瑞,,,,,10.00,,,,,,,False,2026-06-18信号入场前预登记
+2026-06-18T21:32:10,v4_71_forward_2026-06-18,2026-06-18,2026-06-23,2026-07-21,watchlist_only_research_signal,False,planned,159915,创业板ETF易方达,,,,,10.00,,,,,,,False,2026-06-18信号入场前预登记
+2026-06-18T21:32:10,v4_71_forward_2026-06-18,2026-06-18,2026-06-23,2026-07-21,watchlist_only_research_signal,False,planned,510310,沪深300ETF易方达,,,,,10.00,,,,,,,False,2026-06-18信号入场前预登记

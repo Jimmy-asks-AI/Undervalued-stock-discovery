@@ -1,0 +1,151 @@
+{
+  "task_id": "v4_71_rebound_window_robustness_live_audit",
+  "version": "4.71.0",
+  "objective": "对 V4.70 已通过规则做实盘前稳健性复核：参数扰动、冷却期敏感性、分年分状态拆解、最新样本前推和可交易载体人工复核候选，不改变 V4.70 入场/退出规则。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "failed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_71_robustness_live_audit_policy.json",
+    "configs/rebound_window_v4_70_delayed_entry_vol_stop_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop/debug/delayed_entry_vol_stop_source_panel.csv",
+    "scripts/run_industry_rebound_window_v4_71_robustness_live_audit.py",
+    "scripts/run_v4_71_live_refresh.py",
+    "scripts/append_v4_71_forward_sample.py",
+    "scripts/build_v4_71_live_guardrail_playbook.py",
+    "scripts/build_v4_72_rebound_leader_quarantine_overlay.py",
+    "scripts/build_v4_72_rebound_leader_random_baseline_audit.py",
+    "scripts/build_v4_72_rebound_leader_bootstrap_audit.py",
+    "scripts/build_v4_72_rebound_leader_state_guardrail.py",
+    "scripts/build_v4_72_pre_entry_operator_checklist.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection",
+    "carrier_as_recommendation"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/report.md",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/run_summary.json",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/source_panel.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/base_v4_70_trades.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/parameter_perturbation.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/parameter_failure_diagnosis.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/cooldown_sensitivity.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/annual_breakdown.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/market_state_breakdown.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/latest_signal_status.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/tradable_carrier_mapping.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/carrier_execution_replay.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/manual_carrier_review_sheet.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/pre_entry_manual_review.md",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/carrier_mapping_audit.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/robustness_checks.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/live_decision_packet.json",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/forward_sample_tracker.json",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/forward_sample_checklist.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/forward_sample_ledger_audit.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/pre_entry_gate.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/production_readiness_debt.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/live_refresh_manifest.json",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/live_refresh_warnings.csv",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_71_robustness_live_audit/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_71_robustness_live_audit",
+      "description": "运行 V4.71 稳健性和实盘辅助审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_71_robustness_live_audit.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "run_v4_71_live_refresh_cached",
+      "description": "使用缓存数据运行 V4.71 实盘前刷新链路。",
+      "command": "python .\\scripts\\run_v4_71_live_refresh.py --trade-date 2026-06-18 --skip-history-refresh",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.71 输出目录保持精简结构且 debug 审计文件齐全。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_71_robustness_live_audit --required-debug-files source_panel.csv base_v4_70_trades.csv parameter_perturbation.csv parameter_failure_diagnosis.csv cooldown_sensitivity.csv annual_breakdown.csv market_state_breakdown.csv latest_signal_status.csv tradable_carrier_mapping.csv carrier_execution_replay.csv manual_carrier_review_sheet.csv pre_entry_manual_review.md carrier_mapping_audit.csv robustness_checks.csv data_availability_audit.csv leakage_audit.csv live_decision_packet.json forward_sample_tracker.json forward_sample_checklist.csv forward_sample_ledger_audit.csv pre_entry_gate.csv production_readiness_debt.csv live_refresh_manifest.json live_refresh_warnings.csv optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_forward_settlement_schedule",
+      "description": "确认 V4.72 前推结算输出包含结算日程，未到退出日不填未来收益。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_forward_return_settlement --required-debug-files settled_forward_rows.csv settlement_audit.csv settlement_schedule.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_71_live_guardrail_playbook",
+      "description": "确认 V4.71 稳健性失败项已转成盘前禁用/观察护栏。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_71_live_guardrail_playbook --required-debug-files live_guardrail_playbook.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_entry_action_checklist",
+      "description": "确认 V4.72 入场就绪输出包含盘前动作清单，避免人工复核被误读为入场许可。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_entry_readiness --required-debug-files entry_readiness.csv pre_entry_action_checklist.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_pre_entry_operator_checklist",
+      "description": "确认 V4.72 盘前操作总清单合并刷新、禁用参数、跳过、只观察和人工复核动作。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_pre_entry_operator_checklist --required-debug-files operator_checklist.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_quarantine_overlay",
+      "description": "确认 V4.72 强行业风险隔离输出包含全行业隔离排序，替补池不被误读为交易许可。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_rebound_leader_quarantine_overlay --required-debug-files full_ranked_quarantine_overlay.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_random_baseline_audit",
+      "description": "确认 V4.72 强行业选择已输出相对随机基准的命中缺口审计。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_rebound_leader_random_baseline_audit --required-debug-files random_baseline_audit.csv year_random_breakdown.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_bootstrap_audit",
+      "description": "确认 V4.72 强行业选择已输出事件级 bootstrap 稳定性审计。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_rebound_leader_bootstrap_audit --required-debug-files bootstrap_audit.csv bootstrap_samples.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_v4_72_state_guardrail",
+      "description": "确认 V4.72 强行业选择已输出可观察市场状态护栏审计。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\audit\\v4_72_rebound_leader_state_guardrail --required-debug-files state_guardrail.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "确认任务 brief 治理结构通过。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_forward_sample_ledger",
+      "description": "确认前推样本账本可审计，空账本不创建假记录。",
+      "command": "python .\\scripts\\append_v4_71_forward_sample.py --audit",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.71 不是新增 alpha 版本；若参数扰动、冷却期、最新数据或真实执行回放任一关键项失败，则只能标记为实盘前研究审计未通过，不能进入生产候选。",
+  "research_boundary": "核心研究对象仍是申万行业和行业指数；可交易载体只作为人工复核候选，不构成 ETF 推荐、买卖建议或下单指令。"
+}

@@ -1,0 +1,52 @@
+[project]
+name = "a-share-undervalued-asset-research"
+version = "0.1.0"
+description = "Offline-verifiable A-share industry and ETF research workflow"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "akshare==1.18.60",
+  "backtrader==1.9.78.123",
+  "numpy==2.4.4",
+  "openpyxl==3.1.5",
+  "pandas==3.0.2",
+  "pdfplumber==0.11.9",
+  "requests==2.33.1",
+  "tabulate==0.10.0",
+  "tzdata==2026.1; sys_platform == 'win32'",
+  "urllib3==2.6.3",
+  "xlrd==2.0.2",
+]
+
+[dependency-groups]
+test = [
+  "pytest==9.0.3",
+]
+verify = [
+  "pip==25.3",
+  "playwright==1.60.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "scripts"]
+addopts = "-ra -p no:cacheprovider -m 'not live'"
+markers = [
+  "live: explicit live-network smoke test excluded from the default offline suite",
+]
+
+[tool.reproducibility]
+locked-python = "3.14.3"
+lock-tool = "uv 0.11.29"
+current-mainline-scope = "single ETF-assisted runner, sixteen-input refresh chain with PIT methodology before V5.11/V5.12/V5.20 and final V5.10 target audit, self-check regression, offline behavior tests, and report builders"
+historical-optional-dependencies = []
+external-data-vendor-optional-sdks = [
+  "tushare",
+  "jqdatasdk",
+  "WindPy",
+  "EmQuantAPI",
+  "iFinDPy",
+]
+credential-policy = "Vendor credentials and private account state are never stored in the repository or lock file."

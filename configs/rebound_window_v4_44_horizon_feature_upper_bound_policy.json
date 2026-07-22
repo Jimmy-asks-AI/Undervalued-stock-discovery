@@ -1,0 +1,29 @@
+{
+  "version": "4.44.0",
+  "policy_id": "rebound_window_v4_44_full_sample_horizon_feature_upper_bound",
+  "policy_name_zh": "V4.44 多持有期特征上限审计",
+  "status": "research_only",
+  "objective": "审计 5/10/15/20 日不同持有期下，现有事前单特征阈值是否存在更好的理论分离上限。",
+  "output_dir": "outputs/industry_rebound_window_v4_44_horizon_feature_upper_bound",
+  "source_panel_path": "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity/debug/horizon_oracle_source_panel.csv",
+  "feature_panel_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/walk_forward_predictions.csv",
+  "horizon_grid": [5, 10, 15, 20],
+  "min_consecutive_signal_days": 1,
+  "min_events": 30,
+  "quantiles": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+  "feature_columns": [
+    "model_probability",
+    "probability_margin",
+    "failure_flag_count",
+    "market_stress_score",
+    "negative_breadth_60d",
+    "market_return_5d",
+    "market_return_10d",
+    "market_return_20d",
+    "industry_positive_20d_ratio",
+    "industry_above_ma20_ratio",
+    "panic_exhaustion_score",
+    "breadth_recovery_score"
+  ],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版使用全样本结果选择持有期和单特征阈值，是理论上限审计，不是可交易规则，不做个股筛选，不加入ETF，不生成交易指令。"
+}

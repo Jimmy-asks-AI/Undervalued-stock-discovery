@@ -1,0 +1,35 @@
+{
+  "task_id": "v0_1_sample_scorer_smoke",
+  "version": "0.1.0",
+  "objective": "Verify that the sample Fundamental Value scorer can rank a small asset panel and preserve research-only boundaries.",
+  "owner_agent": "chief_value_orchestrator",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "data_catalog/input_asset_panel_example.csv",
+    "strategy_lab/fundamental_value_os/agents.py",
+    "scripts/run_fundamental_value_smoke.py"
+  ],
+  "forbidden_input_patterns": [
+    "forward_return_60d",
+    "forward_return_120d",
+    "forward_return_252d",
+    "buy_signal",
+    "order",
+    "validated_alpha"
+  ],
+  "required_output_paths": [
+    "outputs/test/fundamental_value_smoke_v0_2_example/agent_results.json",
+    "outputs/test/fundamental_value_smoke_v0_2_example/candidate_ranking.csv",
+    "outputs/test/fundamental_value_smoke_v0_2_example/candidate_report.md"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_example_panel",
+      "description": "Run the scorer on the schema-compliant example panel.",
+      "command": "python .\\scripts\\run_fundamental_value_smoke.py --input .\\data_catalog\\input_asset_panel_example.csv --output .\\outputs\\test\\fundamental_value_smoke_v0_2_example",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "Smoke success proves wiring only. It does not prove alpha or investability.",
+  "research_boundary": "All sample rows are research_only unless replaced by PIT-verified vendor data and validated labels."
+}

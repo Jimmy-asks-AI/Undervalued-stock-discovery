@@ -1,0 +1,48 @@
+{
+  "version": "4.25.0",
+  "policy_id": "rebound_window_v4_25_bad_window_risk_condition",
+  "policy_name_zh": "V4.25 坏窗口事前风险条件审计",
+  "status": "research_only",
+  "objective": "固定V4.24主状态，审计一个简单事前风险条件能否降低坏窗口，而不训练模型或继续调退出规则。",
+  "output_dir": "outputs/industry_rebound_window_v4_25_bad_window_risk_condition",
+  "source_trades_path": "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/realtime_simulation_trades.csv",
+  "primary_filter_id": "breadth_floor_35",
+  "risk_filters": [
+    {
+      "filter_id": "breadth_floor_35",
+      "filter_name_zh": "上涨广度不低于35%",
+      "conditions": {
+        "industry_positive_20d_ratio": [">=", 0.35]
+      }
+    },
+    {
+      "filter_id": "no_euphoria_95",
+      "filter_name_zh": "趋势不过热",
+      "conditions": {
+        "industry_above_ma20_ratio": ["<=", 0.95]
+      }
+    },
+    {
+      "filter_id": "breadth_floor_no_euphoria",
+      "filter_name_zh": "上涨广度不低且趋势不过热",
+      "conditions": {
+        "industry_positive_20d_ratio": [">=", 0.35],
+        "industry_above_ma20_ratio": ["<=", 0.95]
+      }
+    },
+    {
+      "filter_id": "relief_band_0_30",
+      "filter_name_zh": "新低缓解不过度",
+      "conditions": {
+        "industry_new_low_60d_relief_5d": [">=", 0.0],
+        "industry_new_low_60d_relief_5d_max": ["<=", 0.30]
+      }
+    }
+  ],
+  "min_realtime_events": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计V4.24主状态内的事前风险条件，不训练模型，不新增退出参数，不做个股筛选，不加入ETF，不生成交易指令。"
+}

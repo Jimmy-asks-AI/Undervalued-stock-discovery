@@ -1,0 +1,55 @@
+{
+  "version": "4.10.0",
+  "policy_id": "rebound_window_v4_10_northbound_overlay",
+  "policy_name_zh": "V4.10 北向资金风险偏好覆盖层",
+  "status": "research_only",
+  "objective": "在V4.8风险质量过滤事件上加入北向资金流作为独立风险偏好代理，检验外资净流入是否能提升反弹窗口收益厚度并降低坏窗口。",
+  "output_dir": "outputs/industry_rebound_window_v4_10_northbound_overlay",
+  "source_output_dir": "outputs/industry_rebound_window_v4_8_risk_quality_filter",
+  "cache_dir": "data_catalog/cache/external_risk/v4_10",
+  "primary_filter_id": "northbound_20d_positive",
+  "filters": [
+    {
+      "filter_id": "northbound_valid",
+      "filter_name_zh": "北向资金数据可用",
+      "conditions": [{"field": "northbound_net_buy", "op": "notna"}]
+    },
+    {
+      "filter_id": "northbound_5d_positive",
+      "filter_name_zh": "北向5日净流入为正",
+      "conditions": [{"field": "northbound_net_buy_5d", "op": ">=", "value": 0.0}]
+    },
+    {
+      "filter_id": "northbound_20d_positive",
+      "filter_name_zh": "北向20日净流入为正",
+      "conditions": [{"field": "northbound_net_buy_20d", "op": ">=", "value": 0.0}]
+    },
+    {
+      "filter_id": "northbound_60d_positive",
+      "filter_name_zh": "北向60日净流入为正",
+      "conditions": [{"field": "northbound_net_buy_60d", "op": ">=", "value": 0.0}]
+    },
+    {
+      "filter_id": "northbound_flow_repair_positive",
+      "filter_name_zh": "北向短期流入修复为正",
+      "conditions": [{"field": "northbound_flow_repair_5d", "op": ">=", "value": 0.0}]
+    }
+  ],
+  "promotion_thresholds": {
+    "min_nonoverlap_events": 30,
+    "min_event_mean_return": 0.02,
+    "min_event_win_rate": 0.60,
+    "max_event_bad_window_rate": 0.20,
+    "min_active_years": 4,
+    "max_single_year_concentration": 0.35
+  },
+  "conditional_thresholds": {
+    "min_nonoverlap_events": 8,
+    "min_event_mean_return": 0.0,
+    "min_event_win_rate": 0.50,
+    "max_event_bad_window_rate": 0.35,
+    "min_active_years": 3,
+    "max_single_year_concentration": 0.50
+  },
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；北向资金只作为外部风险偏好观察层，不做个股筛选，不加入ETF，不生成交易指令。"
+}

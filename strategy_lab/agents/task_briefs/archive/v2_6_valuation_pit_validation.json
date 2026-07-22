@@ -1,0 +1,86 @@
+{
+  "task_id": "v2_6_valuation_pit_validation",
+  "version": "2.6.0",
+  "objective": "使用 V2.5 收集的公开申万二级行业历史 PE、PB、股息率，按保守 available_date 规则构建 PIT 候选估值因子，并用 RankIC、分组收益、事件回测、非重叠、样本外、bootstrap 和逐日相对净值验证估值+压力+质量组合是否具备行业选择 alpha。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "data_catalog/industry_index_panel_schema.csv",
+    "data_catalog/industry_index_source_inventory.csv",
+    "data_catalog/cache/industry_index/history/second",
+    "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+    "factor_library/industry_index_factor_registry.csv",
+    "outputs/industry_index_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_index_research_validation/debug/all_ranked_industries.csv",
+    "scripts/run_industry_valuation_pit_validation_v2_6.py",
+    "scripts/run_industry_pressure_quality_v2_3.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_factor_registry.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "current_dividend_backfilled_to_history",
+    "same_day_valuation_without_lag",
+    "pit_valuation_claim_without_source_audit",
+    "future_return_used_as_feature"
+  ],
+  "required_output_paths": [
+    "outputs/industry_valuation_pit_validation_v2_6/report.md",
+    "outputs/industry_valuation_pit_validation_v2_6/top_candidates.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/run_summary.json",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/valuation_pit_signal_panel.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/event_backtest.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/nonoverlap_backtest.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/walk_forward_oos.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/bootstrap_confidence.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/daily_portfolio_nav.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/portfolio_nav_metrics.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/parameter_sensitivity.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/signal_rejection_log.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/rankic_report.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/group_return_report.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/period_validation_report.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/yearly_validation_report.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/valuation_universe_breaks.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/valuation_pit_source_audit.csv",
+    "outputs/industry_valuation_pit_validation_v2_6/debug/current_signal_snapshot.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_6_valuation_pit_validation",
+      "description": "运行 V2.6 行业历史估值 PIT 候选因子验证。",
+      "command": "python .\\scripts\\run_industry_valuation_pit_validation_v2_6.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.6 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_valuation_pit_validation_v2_6 --required-debug-files valuation_pit_signal_panel.csv event_backtest.csv nonoverlap_backtest.csv walk_forward_oos.csv bootstrap_confidence.csv daily_portfolio_nav.csv portfolio_nav_metrics.csv parameter_sensitivity.csv signal_rejection_log.csv rankic_report.csv group_return_report.csv period_validation_report.csv yearly_validation_report.csv valuation_universe_breaks.csv valuation_pit_source_audit.csv current_signal_snapshot.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_factor_registry",
+      "description": "审计 V2.6 历史估值 PIT 因子是否已登记并和 schema 对齐。",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_index_factor_registry.csv --schema .\\data_catalog\\industry_index_panel_schema.csv --output .\\outputs\\audit\\industry_index_factor_registry_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.6 的历史估值数据仍是公开源 PIT 候选数据。只有同时通过源口径审计、release lag 审计、RankIC、样本外、非重叠、bootstrap、逐日相对净值和样本强度门槛后，才允许进入候选复核；当前结果不允许标记为 validated_alpha。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把未来收益字段作为特征，不把当前估值快照回填到历史。"
+}

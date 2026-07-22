@@ -1,0 +1,17 @@
+{
+  "version": "4.26.0",
+  "policy_id": "rebound_window_v4_26_robustness_audit",
+  "policy_name_zh": "V4.26 固定规则稳健性审计",
+  "status": "research_only",
+  "objective": "固定V4.25最高分规则，审计其收益和坏窗口是否被少数年份抬高或拖累。",
+  "output_dir": "outputs/industry_rebound_window_v4_26_robustness_audit",
+  "source_trades_path": "outputs/industry_rebound_window_v4_25_bad_window_risk_condition/debug/realtime_simulation_trades.csv",
+  "source_summary_path": "outputs/industry_rebound_window_v4_25_bad_window_risk_condition/debug/realtime_simulation_summary.csv",
+  "min_realtime_events": 30,
+  "min_leave_one_year_events": 8,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "max_single_year_bad_window_rate": 0.5,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版固定V4.25规则，只做剔除年份和样本切分稳健性审计，不新增过滤条件，不做个股筛选，不加入ETF，不生成交易指令。"
+}

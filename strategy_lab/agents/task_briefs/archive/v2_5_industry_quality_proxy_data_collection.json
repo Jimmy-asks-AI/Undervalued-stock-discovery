@@ -1,0 +1,76 @@
+{
+  "task_id": "v2_5_industry_quality_proxy_data_collection",
+  "version": "2.5.0",
+  "objective": "建立 V2.5 行业质量代理，并实际尝试三条历史行业估值数据路线：授权数据源、个股级 PIT 重建、公开网站历史行业估值。优先使用已收集的公开申万指数分析日报表历史估值作为 V2.5 主数据源，但在完成口径审计和历史验证前保持 research_only。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "data_catalog/industry_index_panel_schema.csv",
+    "data_catalog/industry_index_source_inventory.csv",
+    "data_catalog/cache/industry_index/history/second",
+    "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+    "factor_library/industry_index_factor_registry.csv",
+    "outputs/industry_fundamental_pressure_v2_4/debug/current_fundamental_pressure_panel.csv",
+    "scripts/run_industry_quality_proxy_v2_5.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_factor_registry.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "current_dividend_backfilled_to_history",
+    "pit_valuation_claim_without_source_audit",
+    "unlicensed_vendor_data_export",
+    "future_return_used_as_feature"
+  ],
+  "required_output_paths": [
+    "outputs/industry_quality_proxy_v2_5/report.md",
+    "outputs/industry_quality_proxy_v2_5/top_candidates.csv",
+    "outputs/industry_quality_proxy_v2_5/run_summary.json",
+    "outputs/industry_quality_proxy_v2_5/debug/industry_quality_proxy_panel.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/quality_proxy_components.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/valuation_data_route_audit.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/vendor_connector_audit.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/stock_reconstruction_route_audit.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/public_source_collection_audit.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/pit_valuation_coverage.csv",
+    "outputs/industry_quality_proxy_v2_5/debug/data_collection_log.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_5_industry_quality_proxy",
+      "description": "运行 V2.5 行业质量代理和三条历史估值数据路线审计。",
+      "command": "python .\\scripts\\run_industry_quality_proxy_v2_5.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.5 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_quality_proxy_v2_5 --required-debug-files industry_quality_proxy_panel.csv quality_proxy_components.csv valuation_data_route_audit.csv vendor_connector_audit.csv stock_reconstruction_route_audit.csv public_source_collection_audit.csv pit_valuation_coverage.csv data_collection_log.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_factor_registry",
+      "description": "审计 V2.5 质量代理和历史估值覆盖因子是否已登记并和 schema 对齐。",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_index_factor_registry.csv --schema .\\data_catalog\\industry_index_panel_schema.csv --output .\\outputs\\audit\\industry_index_factor_registry_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.5 可以把公开申万历史估值作为下一步 PIT 估值回测候选数据源，但当前质量代理仍是 current observation。没有完成口径审计、release lag 审计、样本外和非重叠历史验证前，不允许标记为 validated_alpha。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把任何未来收益字段作为特征，不使用无授权数据导出。"
+}

@@ -1,0 +1,14 @@
+{
+  "version": "4.58.0",
+  "policy_id": "rebound_window_v4_58_filter_branch_review",
+  "policy_name_zh": "V4.58 过滤分支终止审计",
+  "output_dir": "outputs/industry_rebound_window_v4_58_filter_branch_review",
+  "primary_source_output": "outputs/industry_rebound_window_v4_57_walk_forward_family_select",
+  "review_outputs": [
+    "outputs/industry_rebound_window_v4_50_wide_pool_fixed_stop",
+    "outputs/industry_rebound_window_v4_55_walk_forward_entry_filter",
+    "outputs/industry_rebound_window_v4_56_walk_forward_rule_vote",
+    "outputs/industry_rebound_window_v4_57_walk_forward_family_select"
+  ],
+  "research_boundary": "本版本只审计过滤分支是否值得继续；主评价口径固定沿用 V4.57，不生成交易指令。"
+}

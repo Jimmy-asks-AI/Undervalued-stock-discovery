@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v5_17_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.17",
+  "objective": "V5.17 压力恢复阶段样本扩展审计",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v5_17_rebound_phase_sample_expansion_audit.py",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/run_summary.json",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/run_summary.json",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/top_candidates.csv",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_17_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.17",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.17",
+  "source_paths": [
+    "scripts/build_v5_17_rebound_phase_sample_expansion_audit.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v5_17_rebound_phase_sample_expansion_audit.py",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/run_summary.json",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/top_candidates.csv",
+    "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "post_hoc_historical_inventory",
+  "version_class": "research_audit_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/rebound_phase_sample_expansion_audit_v5_17",
+    "run_summary_path": "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/run_summary.json",
+    "run_summary_version": "5.17.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md",
+      "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/run_summary.json",
+      "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/top_candidates.csv",
+      "outputs/audit/rebound_phase_sample_expansion_audit_v5_17/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "c812bca8badd379cefc2d5f541936e3043bcf732ebd207e68b0d4f5d866fed31",
+    "run_summary_sha256": "1bf0add5653b17cb3d601534165d02d515b40b807a2f6e9b1d98f0af3afd195f"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only_no_rebound_phase_expansion_alpha",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.17 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

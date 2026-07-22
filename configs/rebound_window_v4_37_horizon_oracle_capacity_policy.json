@@ -1,0 +1,14 @@
+{
+  "version": "4.37.0",
+  "policy_id": "rebound_window_v4_37_horizon_oracle_capacity",
+  "policy_name_zh": "V4.37 多持有期理论容量审计",
+  "status": "research_only",
+  "objective": "使用未来收益排序审计不同持有期下基础事件池的理论容量，判断收益厚度不足是否来自5日持有期过短。",
+  "output_dir": "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity",
+  "source_trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/horizon_grid_realtime_trades.csv",
+  "benchmark_index_path": "data_catalog/cache/market_index/wide/sh000300.csv",
+  "primary_top_n": 30,
+  "min_consecutive_signal_days": 1,
+  "horizon_grid": [5, 10, 15, 20],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版使用未来收益排序做多持有期理论容量审计，不是可交易规则，不做个股筛选，不加入ETF，不生成交易指令。"
+}

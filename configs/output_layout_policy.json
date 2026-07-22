@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0",
+  "compact_research_output": {
+    "required_top_level_files": [
+      "report.md",
+      "top_candidates.csv",
+      "run_summary.json"
+    ],
+    "required_top_level_dirs": [
+      "debug"
+    ],
+    "allowed_top_level_files": [
+      "report.md",
+      "top_candidates.csv",
+      "run_summary.json"
+    ],
+    "allowed_top_level_dirs": [
+      "debug"
+    ],
+    "forbidden_legacy_names": [
+      "snapshot_summary.json",
+      "agent_results.json"
+    ]
+  }
+}

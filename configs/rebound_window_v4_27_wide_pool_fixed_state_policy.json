@@ -1,0 +1,42 @@
+{
+  "version": "4.27.0",
+  "policy_id": "rebound_window_v4_27_wide_pool_fixed_state",
+  "policy_name_zh": "V4.27 宽池固定状态规则回放",
+  "status": "research_only",
+  "objective": "把V4.25发现的事前广度底线回放到V4.7宽事件池，检验样本扩张后是否还能满足有效反弹窗口评价。",
+  "output_dir": "outputs/industry_rebound_window_v4_27_wide_pool_fixed_state",
+  "source_trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv",
+  "primary_rule_id": "breadth_floor_wide_pool",
+  "rules": [
+    {
+      "rule_id": "breadth_floor_wide_pool",
+      "rule_name_zh": "宽池上涨广度不低于35%",
+      "conditions": {
+        "industry_positive_20d_ratio": [">=", 0.35]
+      }
+    },
+    {
+      "rule_id": "v4_25_full_state_wide_pool",
+      "rule_name_zh": "宽池V4.25完整状态",
+      "conditions": {
+        "market_return_5d": [">=", 0.0],
+        "industry_above_ma20_ratio": [">=", 0.25],
+        "industry_positive_20d_ratio": [">=", 0.35]
+      }
+    },
+    {
+      "rule_id": "trend_repair_wide_pool",
+      "rule_name_zh": "宽池短期止跌且趋势修复",
+      "conditions": {
+        "market_return_5d": [">=", 0.0],
+        "industry_above_ma20_ratio": [">=", 0.25]
+      }
+    }
+  ],
+  "min_realtime_events": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版固定V4.25事前状态思想并回放到V4.7宽事件池，不新增数据，不训练模型，不做个股筛选，不加入ETF，不生成交易指令。"
+}

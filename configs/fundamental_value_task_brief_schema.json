@@ -1,0 +1,54 @@
+{
+  "schema_name": "fundamental_value_task_brief",
+  "version": "0.4.0",
+  "required_top_level_keys": [
+    "task_id",
+    "version",
+    "objective",
+    "owner_agent",
+    "task_status",
+    "allowed_input_paths",
+    "forbidden_input_patterns",
+    "required_output_paths",
+    "acceptance_checks",
+    "decision_boundary",
+    "research_boundary"
+  ],
+  "allowed_task_status": [
+    "planned",
+    "ready",
+    "running",
+    "passed",
+    "failed",
+    "blocked",
+    "deprecated"
+  ],
+  "known_agents": [
+    "chief_value_orchestrator",
+    "fundamental_data_steward",
+    "valuation_factor_researcher",
+    "industry_relative_value_agent",
+    "financial_sector_value_auditor",
+    "profitability_growth_analyst",
+    "shareholder_return_analyst",
+    "accounting_quality_auditor",
+    "value_trap_risk_agent",
+    "factor_validation_auditor",
+    "research_report_synthesizer",
+    "reproducibility_engineer",
+    "falsification_reviewer",
+    "industry_data_steward",
+    "industry_fundamental_value_agent",
+    "industry_oversold_reversion_agent",
+    "industry_cycle_quality_agent",
+    "industry_value_trap_agent",
+    "industry_factor_validation_auditor",
+    "industry_report_synthesizer"
+  ],
+  "acceptance_check_required_keys": [
+    "id",
+    "description",
+    "command",
+    "expected_status"
+  ]
+}

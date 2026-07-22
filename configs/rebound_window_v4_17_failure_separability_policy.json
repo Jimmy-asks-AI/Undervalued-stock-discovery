@@ -1,0 +1,27 @@
+{
+  "version": "4.17.0",
+  "policy_id": "rebound_window_v4_17_failure_separability",
+  "policy_name_zh": "V4.17 失败样本可识别性审计",
+  "status": "research_only",
+  "objective": "固定V4.16成本后主规则，审计坏窗口是否能被信号日前的一维市场状态特征清晰识别。",
+  "output_dir": "outputs/industry_rebound_window_v4_17_failure_separability",
+  "source_trades_path": "outputs/industry_rebound_window_v4_16_cost_robustness/debug/realtime_simulation_trades.csv",
+  "feature_panel_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/v47_short_horizon_feature_panel.csv",
+  "feature_columns": [
+    "market_return_5d",
+    "market_return_20d",
+    "market_return_60d",
+    "market_return_120d",
+    "market_drawdown_252d",
+    "market_stress_score",
+    "industry_positive_20d_ratio",
+    "industry_above_ma20_ratio",
+    "industry_above_ma60_ratio",
+    "industry_new_low_60d_relief_5d",
+    "breadth_recovery_score",
+    "panic_exhaustion_score",
+    "market_amount_5d_vs_20d",
+    "market_volatility_20d_vs_60d"
+  ],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计坏窗口是否可由事前特征解释，不新增过滤规则，不做个股筛选，不加入ETF，不生成交易指令。"
+}

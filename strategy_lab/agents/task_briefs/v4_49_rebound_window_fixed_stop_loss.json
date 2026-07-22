@@ -1,0 +1,64 @@
+{
+  "task_id": "v4_49_rebound_window_fixed_stop_loss",
+  "version": "4.49.0",
+  "objective": "固定 V4.48 中表现最好的 2% 机械止损，不再扫描参数，复核退出层改善能否通过 V3.1 有效窗口评价。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_49_fixed_stop_loss_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_46_walk_forward_independence/debug/realtime_simulation_trades.csv",
+    "scripts/run_industry_rebound_window_v4_49_fixed_stop_loss.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/report.md",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/run_summary.json",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/fixed_stop_source_trades.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_49_fixed_stop_loss/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_49_fixed_stop_loss",
+      "description": "运行 V4.49 固定2%机械止损复核。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_49_fixed_stop_loss.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.49 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_49_fixed_stop_loss",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.49 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_49_fixed_stop_loss --required-debug-files fixed_stop_source_trades.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若固定2%止损后仍不能通过独立行情簇、成本后收益和相对收益门槛，则退出层改良不能单独解决反弹窗口识别问题。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

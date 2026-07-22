@@ -1,0 +1,68 @@
+{
+  "task_id": "v4_58_rebound_window_filter_branch_review",
+  "version": "4.58.0",
+  "objective": "汇总 V4.50、V4.55、V4.56、V4.57 的过滤分支证据，固定 V4.57 为主评价口径，判断是否停止在同一事件池上继续增加过滤复杂度。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_58_filter_branch_review_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_50_wide_pool_fixed_stop",
+    "outputs/industry_rebound_window_v4_55_walk_forward_entry_filter",
+    "outputs/industry_rebound_window_v4_56_walk_forward_rule_vote",
+    "outputs/industry_rebound_window_v4_57_walk_forward_family_select",
+    "scripts/run_industry_rebound_window_v4_58_filter_branch_review.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/report.md",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/run_summary.json",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/filter_branch_comparison.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_58_filter_branch_review/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_58_filter_branch_review",
+      "description": "运行 V4.58 过滤分支终止审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_58_filter_branch_review.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用 V3.2 统一评价体系判断 V4.58 主口径是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_58_filter_branch_review",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.58 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_58_filter_branch_review --required-debug-files filter_branch_comparison.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若 V4.58 主口径仍未通过 V3.2，且分支对照显示过滤和投票没有稳定增量，则停止过滤分支，下一步改找新数据或新事件定义。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入 ETF，不生成交易指令。"
+}

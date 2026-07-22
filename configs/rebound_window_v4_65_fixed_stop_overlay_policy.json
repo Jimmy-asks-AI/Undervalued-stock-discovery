@@ -1,0 +1,16 @@
+{
+  "version": "4.65.0",
+  "policy_id": "rebound_window_v4_65_fixed_stop_overlay",
+  "policy_name_zh": "V4.65 固定2%止损覆盖层复核",
+  "source_trades": "outputs/industry_rebound_window_v4_64_strong_liquidity_repair/debug/realtime_simulation_trades.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_65_fixed_stop_overlay",
+  "fixed_stop_loss": 0.02,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "final_verdict": "research_only；固定2%止损消除了尾部坏窗口，但收益厚度不足且独立簇仍未达标。",
+  "main_diagnosis": "V4.65 在 V4.64 事件上叠加既有 2% 固定止损，检验退出层能否修复尾部风险而不牺牲收益厚度。",
+  "leakage_evidence": "固定使用 2% 止损；该阈值来自既有固定止损分支复核，不使用 V4.64 未来收益重新扫描参数。",
+  "optimization_note": "ponytail: 只复核一个固定止损阈值，不做止损网格扫描；目标是验证退出层能否解决 V4.64 的尾部硬伤。",
+  "research_boundary": "本版本只做固定止损覆盖层复核；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

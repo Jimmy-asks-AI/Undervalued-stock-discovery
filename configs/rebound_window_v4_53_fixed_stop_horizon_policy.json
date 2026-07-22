@@ -1,0 +1,13 @@
+{
+  "version": "4.53.0",
+  "policy_id": "rebound_window_v4_53_full_sample_fixed_stop_horizon",
+  "policy_name_zh": "V4.53 固定2%止损多持有期审计",
+  "source_panel": "outputs/industry_rebound_window_v4_44_horizon_feature_upper_bound/debug/horizon_feature_source_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_53_fixed_stop_horizon",
+  "holding_days_grid": [5, 10, 15, 20],
+  "round_trip_cost_bps": 10,
+  "stop_loss": 0.02,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "research_boundary": "本版只做全样本多持有期固定止损审计；不生成交易指令。"
+}

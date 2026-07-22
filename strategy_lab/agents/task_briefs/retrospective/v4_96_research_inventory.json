@@ -1,0 +1,95 @@
+{
+  "task_id": "retrospective_v4_96_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V4.96",
+  "objective": "V4.96 反弹窗口扩展容量审计",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v4_96_rebound_window_expansion_capacity_audit.py",
+    "configs/rebound_window_v4_70_delayed_entry_vol_stop_policy.json",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/run_summary.json",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/run_summary.json",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/top_candidates.csv",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v4_96_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V4.96",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V4.96",
+  "source_paths": [
+    "scripts/build_v4_96_rebound_window_expansion_capacity_audit.py"
+  ],
+  "config_paths": [
+    "configs/rebound_window_v4_70_delayed_entry_vol_stop_policy.json"
+  ],
+  "config_status": "present",
+  "evidence_paths": [
+    "scripts/build_v4_96_rebound_window_expansion_capacity_audit.py",
+    "configs/rebound_window_v4_70_delayed_entry_vol_stop_policy.json",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/run_summary.json",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/top_candidates.csv",
+    "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "post_hoc_historical_inventory",
+  "version_class": "research_strategy_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/rebound_window_expansion_capacity_audit_v4_96",
+    "run_summary_path": "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/run_summary.json",
+    "run_summary_version": "4.96.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md",
+      "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/run_summary.json",
+      "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/top_candidates.csv",
+      "outputs/audit/rebound_window_expansion_capacity_audit_v4_96/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "78a0fc93427cd772817b68c0830694d748d32849dcffa75df9baa1484b747626",
+    "run_summary_sha256": "aa2273c9cf55799883092f92297e9cd483af2c5efce206cc25df1ab3b26b279a"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V4.96 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

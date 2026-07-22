@@ -1,0 +1,70 @@
+{
+  "task_id": "v4_15_rebound_window_dynamic_exit",
+  "version": "4.15.0",
+  "objective": "固定V4.13主规则事件，测试最长30日持有下的简单止盈/止损退出能否同时保留收益厚度并控制坏窗口。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_15_dynamic_exit_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_13_pair_feature_ceiling/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/v47_short_horizon_feature_panel.csv",
+    "scripts/run_industry_rebound_window_v4_15_dynamic_exit.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/report.md",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/run_summary.json",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/dynamic_exit_panel.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/dynamic_exit_trades.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/dynamic_exit_summary.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/same_close_bias_audit.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_15_dynamic_exit",
+      "description": "运行 V4.15 固定事件动态退出审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_15_dynamic_exit.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.15 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_15_dynamic_exit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.15 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_15_dynamic_exit --required-debug-files dynamic_exit_panel.csv dynamic_exit_trades.csv dynamic_exit_summary.csv same_close_bias_audit.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.15 只审计固定事件的退出规则，不重新筛选事件；同日收盘触发后同日收盘退出只作为偏差审计，不作为主结果。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

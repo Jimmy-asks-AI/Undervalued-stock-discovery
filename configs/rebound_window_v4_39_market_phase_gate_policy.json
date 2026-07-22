@@ -1,0 +1,21 @@
+{
+  "version": "4.39.0",
+  "policy_id": "rebound_window_v4_39_market_phase_gate",
+  "policy_name_zh": "V4.39 市场阶段门控审计",
+  "status": "research_only",
+  "objective": "在 V4.38 置信度与失败旗标规则上加入事前市场阶段条件，检验排除短期市场过热或等待顺风确认是否改善收益厚度。",
+  "output_dir": "outputs/industry_rebound_window_v4_39_market_phase_gate",
+  "source_panel_path": "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity/debug/horizon_oracle_source_panel.csv",
+  "feature_panel_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/walk_forward_predictions.csv",
+  "holding_days": 5,
+  "min_consecutive_signal_days": 1,
+  "primary_rule_id": "prob60_fail2_market5_le8",
+  "rules": [
+    {"rule_id": "prob60_fail2", "name_zh": "V4.38基准规则", "min_model_probability": 0.60, "max_failure_flag_count": 2},
+    {"rule_id": "prob60_fail2_market5_le8", "name_zh": "基准规则且信号日前5日市场涨幅不超过8%", "min_model_probability": 0.60, "max_failure_flag_count": 2, "max_market_return_5d": 0.08},
+    {"rule_id": "prob60_fail2_market5_ge0", "name_zh": "基准规则且信号日前5日市场已转正", "min_model_probability": 0.60, "max_failure_flag_count": 2, "min_market_return_5d": 0.0},
+    {"rule_id": "prob60_fail2_market5_lt0", "name_zh": "基准规则且信号日前5日市场仍为负", "min_model_probability": 0.60, "max_failure_flag_count": 2, "max_market_return_5d": 0.0},
+    {"rule_id": "prob70_fail2", "name_zh": "高置信小样本观察", "min_model_probability": 0.70, "max_failure_flag_count": 2}
+  ],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版不使用未来收益排序，不做个股筛选，不加入ETF，不生成交易指令。"
+}

@@ -1,0 +1,46 @@
+{
+  "task_id": "v0_5_current_a_share_value_snapshot",
+  "version": "0.5.0",
+  "objective": "Run a current A-share research-only value snapshot using Eastmoney spot, earnings, and dividend data adapted into the V0.2 asset panel schema.",
+  "owner_agent": "chief_value_orchestrator",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "scripts/run_current_a_share_value_snapshot.py",
+    "data_catalog/input_asset_panel_schema.csv",
+    "factor_library/fundamental_value_factor_registry.csv",
+    "strategy_lab/fundamental_value_os/agents.py"
+  ],
+  "forbidden_input_patterns": [
+    "pit_verified",
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "forward_return_60d",
+    "forward_return_120d",
+    "forward_return_252d"
+  ],
+  "required_output_paths": [
+    "outputs/current_a_share_value_snapshot/asset_panel_current_research_only.csv",
+    "outputs/current_a_share_value_snapshot/current_value_candidates_enriched.csv",
+    "outputs/current_a_share_value_snapshot/top_obvious_value_candidates.csv",
+    "outputs/current_a_share_value_snapshot/snapshot_profile.json",
+    "outputs/current_a_share_value_snapshot/current_snapshot_report.md"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_current_snapshot",
+      "description": "Run the current A-share value snapshot adapter and scorer.",
+      "command": "python .\\scripts\\run_current_a_share_value_snapshot.py --report-date 20260331 --trade-date 2026-06-12 --top 30",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "validate_current_panel_schema",
+      "description": "Validate the current snapshot asset panel in latest mode.",
+      "command": "python .\\scripts\\validate_asset_panel_schema.py --input .\\outputs\\current_a_share_value_snapshot\\asset_panel_current_research_only.csv --mode latest --output .\\outputs\\current_a_share_value_snapshot\\schema_validation",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "The result is a current-snapshot research watchlist only. It cannot be used as historical factor evidence or investment advice.",
+  "research_boundary": "This task intentionally uses research_only data and proxy fields for several unavailable fundamentals."
+}

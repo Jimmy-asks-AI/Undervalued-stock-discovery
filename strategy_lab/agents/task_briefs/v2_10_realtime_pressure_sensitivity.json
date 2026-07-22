@@ -1,0 +1,85 @@
+{
+  "task_id": "v2_10_realtime_pressure_sensitivity",
+  "version": "2.10.0",
+  "objective": "在V2.9实时仿真基础上，固定检验显式市场压力门槛、动量陷阱阈值和抄底分权重扰动是否能稳定改善低估超跌反弹的相对收益；本版本只做参数敏感性和失败归因，不做事后优化。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/realtime_signal_policy_v2_9.json",
+    "configs/realtime_pressure_sensitivity_policy_v2_10.json",
+    "data_catalog/cache/industry_index/history/second",
+    "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+    "outputs/industry_index_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_index_research_validation/debug/all_ranked_industries.csv",
+    "scripts/run_industry_realtime_simulation_v2_9.py",
+    "scripts/run_industry_realtime_pressure_sensitivity_v2_10.py",
+    "scripts/run_industry_valuation_pit_validation_v2_6.py",
+    "scripts/run_industry_pressure_quality_v2_3.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "current_dividend_backfilled_to_history",
+    "same_day_valuation_without_lag",
+    "pit_valuation_claim_without_source_audit",
+    "future_return_used_as_feature",
+    "full_sample_time_percentile",
+    "same_day_close_execution",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion"
+  ],
+  "required_output_paths": [
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/report.md",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/top_candidates.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/run_summary.json",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/realtime_signal_panel.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_grid.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_decision_log.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_trade_ledger.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_event_returns.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_daily_nav.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_nav_metrics.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/parameter_summary.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/pressure_gate_effect.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/momentum_trap_effect.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/weight_sensitivity.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/cash_sensitivity.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/timestamp_audit.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/leakage_audit.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/asof_replay_consistency.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/source_audit.csv",
+    "outputs/industry_realtime_pressure_sensitivity_v2_10/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_10_realtime_pressure_sensitivity",
+      "description": "运行 V2.10 压力门控实时仿真与参数敏感性。",
+      "command": "python .\\scripts\\run_industry_realtime_pressure_sensitivity_v2_10.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.10 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_realtime_pressure_sensitivity_v2_10 --required-debug-files realtime_signal_panel.csv parameter_grid.csv parameter_decision_log.csv parameter_trade_ledger.csv parameter_event_returns.csv parameter_daily_nav.csv parameter_nav_metrics.csv parameter_summary.csv pressure_gate_effect.csv momentum_trap_effect.csv weight_sensitivity.csv cash_sensitivity.csv timestamp_audit.csv leakage_audit.csv asof_replay_consistency.csv source_audit.csv frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.10 是压力门控和参数敏感性验证，不是新 alpha 挖掘。只有相对收益、样本外、非重叠、逐日相对净值和参数邻域稳定性同时通过，才允许进入下一阶段；当前结果不能标记为 validated_alpha。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把未来收益作为特征，不使用全样本时间分位，不把当前估值快照回填历史，不根据结果动态扩展参数网格。公开申万历史估值继续作为 PIT 候选源，源口径和真实发布时间仍需审计。"
+}

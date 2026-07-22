@@ -1,0 +1,13 @@
+{
+  "version": "4.16.0",
+  "policy_id": "rebound_window_v4_16_cost_robustness",
+  "policy_name_zh": "V4.16 成本与剔除年份稳健性审计",
+  "status": "research_only",
+  "objective": "固定V4.15主规则，加入交易成本和逐年剔除审计，检验近似候选是否具备稳健收益厚度。",
+  "output_dir": "outputs/industry_rebound_window_v4_16_cost_robustness",
+  "source_trades_path": "outputs/industry_rebound_window_v4_15_dynamic_exit/debug/realtime_simulation_trades.csv",
+  "roundtrip_cost_grid": [0.0, 0.001, 0.002, 0.004],
+  "primary_roundtrip_cost": 0.001,
+  "bad_window_threshold": -0.03,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计V4.15主规则的成本和剔除年份稳健性，不重新筛选事件，不做个股筛选，不加入ETF，不生成交易指令。"
+}

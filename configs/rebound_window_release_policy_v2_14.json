@@ -1,0 +1,155 @@
+{
+  "version": "2.14.0",
+  "policy_id": "rebound_window_release_v2_14",
+  "policy_name_zh": "V2.14压力释放与广度修复审计",
+  "status": "research_only",
+  "objective": "在V2.13证伪静态压力规则后，测试压力从高位回落、下跌广度修复、低估超跌触发收缩等动态释放条件，判断它们是否更接近真实反弹窗口。",
+  "output_dir": "outputs/industry_rebound_window_release_v2_14",
+  "input_versions": [
+    "V2.11反弹窗口识别审计",
+    "V2.12市场状态反弹窗口审计",
+    "V2.13反弹窗口稳定性审计"
+  ],
+  "horizons": [
+    60,
+    120,
+    252
+  ],
+  "pressure_baseline_min": 0.65,
+  "rolling_window_years": 3,
+  "rolling_step_years": 1,
+  "random_seed": 2140,
+  "top_candidate_rows": 30,
+  "time_splits": [
+    {
+      "split_id": "early_2015_2018",
+      "split_name_zh": "早期样本 2015-2018",
+      "start": "2015-01-01",
+      "end": "2018-12-31",
+      "role": "stability_check"
+    },
+    {
+      "split_id": "middle_2019_2022",
+      "split_name_zh": "中段样本 2019-2022",
+      "start": "2019-01-01",
+      "end": "2022-12-31",
+      "role": "stability_check"
+    },
+    {
+      "split_id": "recent_2023_2026",
+      "split_name_zh": "近年样本 2023-2026",
+      "start": "2023-01-01",
+      "end": "2026-12-31",
+      "role": "recent_check"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "release_stress55_breadth_drop5",
+      "rule_name_zh": "压力>=0.55且压力回落、下跌广度修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "market_stress_score_chg1", "op": "<=", "value": -0.05},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": -0.05}
+      ]
+    },
+    {
+      "rule_id": "release_prev65_drop5",
+      "rule_name_zh": "前期压力>=0.65后压力回落",
+      "conditions": [
+        {"field": "market_stress_score_prev1", "op": ">=", "value": 0.65},
+        {"field": "market_stress_score_chg1", "op": "<=", "value": -0.05},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": 0.0}
+      ]
+    },
+    {
+      "rule_id": "breadth_repair_highstress",
+      "rule_name_zh": "高压力后下跌广度明显修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d_prev1", "op": ">=", "value": 0.75},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": -0.10}
+      ]
+    },
+    {
+      "rule_id": "drawdown_repair",
+      "rule_name_zh": "回撤区间压力不再恶化且广度修复",
+      "conditions": [
+        {"field": "market_drawdown_252d", "op": "<=", "value": -0.15},
+        {"field": "market_stress_score_chg1", "op": "<=", "value": 0.0},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": -0.05}
+      ]
+    },
+    {
+      "rule_id": "oversold_release",
+      "rule_name_zh": "非陷阱低估超跌收缩且广度修复",
+      "conditions": [
+        {"field": "low_value_oversold_non_trap_count_prev1", "op": ">=", "value": 5},
+        {"field": "low_value_oversold_non_trap_count_chg1", "op": "<=", "value": 0.0},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": -0.05}
+      ]
+    },
+    {
+      "rule_id": "capitulation_release",
+      "rule_name_zh": "深回撤普跌后广度修复且波动未极端",
+      "conditions": [
+        {"field": "market_drawdown_252d", "op": "<=", "value": -0.20},
+        {"field": "negative_breadth_60d_prev1", "op": ">=", "value": 0.75},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": -0.05},
+        {"field": "volatility_pressure", "op": "<=", "value": 0.75}
+      ]
+    },
+    {
+      "rule_id": "stress_down_breadth_high",
+      "rule_name_zh": "高压力未继续恶化且仍处普跌",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "market_stress_score_chg1", "op": "<=", "value": 0.0},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.70}
+      ]
+    },
+    {
+      "rule_id": "breadth_drop_any_pressure",
+      "rule_name_zh": "下跌广度从高位大幅回落",
+      "conditions": [
+        {"field": "negative_breadth_60d_prev1", "op": ">=", "value": 0.75},
+        {"field": "negative_breadth_60d_chg1", "op": "<=", "value": -0.15}
+      ]
+    }
+  ],
+  "derived_feature_fields": [
+    "market_stress_score_chg1",
+    "market_stress_score_prev1",
+    "negative_breadth_60d_chg1",
+    "negative_breadth_60d_prev1",
+    "low_value_oversold_non_trap_count_chg1",
+    "low_value_oversold_non_trap_count_prev1"
+  ],
+  "primary_strong_rebound_thresholds": {
+    "60": 0.05,
+    "120": 0.08,
+    "252": 0.12
+  },
+  "bad_window_thresholds": {
+    "60": -0.05,
+    "120": -0.08,
+    "252": -0.12
+  },
+  "promotion_thresholds": {
+    "min_full_samples": 30,
+    "min_full_nonoverlap_samples": 8,
+    "min_recent_samples": 8,
+    "min_recent_nonoverlap_samples": 3,
+    "min_full_uplift_vs_pressure_dates": 0.005,
+    "min_recent_uplift_vs_pressure_dates": 0.0,
+    "min_full_win_rate": 0.55,
+    "min_recent_win_rate": 0.50,
+    "min_split_positive_uplift_rate": 0.67,
+    "min_rolling_positive_uplift_rate": 0.60,
+    "max_bad_window_rate": 0.25,
+    "max_recent_bad_window_rate": 0.30,
+    "max_random_pvalue": 0.10
+  },
+  "promotion_rule": "V2.14只有在动态压力释放规则同时通过全样本、近年样本、时间切分和滚动窗口审计时，才能保留为下一阶段研究候选；仍不能生成交易指令。",
+  "research_boundary": "只研究申万行业和行业指数的日期层反弹窗口动态修复条件；不做个股筛选，不加入ETF，不生成买卖指令，不把未来收益作为特征，不根据结果动态扩展规则。"
+}

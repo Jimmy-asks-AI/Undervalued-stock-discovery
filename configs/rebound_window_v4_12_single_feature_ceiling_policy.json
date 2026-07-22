@@ -1,0 +1,25 @@
+{
+  "version": "4.12.0",
+  "policy_id": "rebound_window_v4_12_single_feature_ceiling",
+  "policy_name_zh": "V4.12 单特征过滤上限审计",
+  "status": "research_only",
+  "objective": "在V4.7短持有事件池上枚举预定单特征分位阈值，检验是否存在简单单特征过滤能同时满足样本数、收益厚度、胜率、坏窗口和年度稳定门槛。",
+  "output_dir": "outputs/industry_rebound_window_v4_12_single_feature_ceiling",
+  "source_trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv",
+  "northbound_cache": "data_catalog/cache/external_risk/v4_10/northbound_flow.csv",
+  "features": [
+    "model_probability",
+    "probability_margin",
+    "failure_flag_count",
+    "market_return_5d",
+    "industry_positive_20d_ratio",
+    "industry_above_ma20_ratio",
+    "industry_new_low_60d_relief_5d",
+    "northbound_net_buy",
+    "northbound_5d",
+    "northbound_20d",
+    "northbound_60d"
+  ],
+  "quantiles": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计单特征过滤上限，不做个股筛选，不加入ETF，不生成交易指令。"
+}

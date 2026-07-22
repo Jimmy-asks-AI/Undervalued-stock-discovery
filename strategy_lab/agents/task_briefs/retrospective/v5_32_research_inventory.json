@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v5_32_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.32",
+  "objective": "V5.32 资金流前推持有观察状态",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v5_32_fund_flow_holding_observation.py",
+    "outputs/audit/fund_flow_holding_observation_v5_32/run_summary.json",
+    "outputs/audit/fund_flow_holding_observation_v5_32/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/fund_flow_holding_observation_v5_32/report.md",
+    "outputs/audit/fund_flow_holding_observation_v5_32/run_summary.json",
+    "outputs/audit/fund_flow_holding_observation_v5_32/top_candidates.csv",
+    "outputs/audit/fund_flow_holding_observation_v5_32/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_32_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.32",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.32",
+  "source_paths": [
+    "scripts/build_v5_32_fund_flow_holding_observation.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v5_32_fund_flow_holding_observation.py",
+    "outputs/audit/fund_flow_holding_observation_v5_32/report.md",
+    "outputs/audit/fund_flow_holding_observation_v5_32/run_summary.json",
+    "outputs/audit/fund_flow_holding_observation_v5_32/top_candidates.csv",
+    "outputs/audit/fund_flow_holding_observation_v5_32/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "not_an_experiment",
+  "version_class": "data_governance_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/fund_flow_holding_observation_v5_32",
+    "run_summary_path": "outputs/audit/fund_flow_holding_observation_v5_32/run_summary.json",
+    "run_summary_version": "5.32.1",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/fund_flow_holding_observation_v5_32/report.md",
+      "outputs/audit/fund_flow_holding_observation_v5_32/run_summary.json",
+      "outputs/audit/fund_flow_holding_observation_v5_32/top_candidates.csv",
+      "outputs/audit/fund_flow_holding_observation_v5_32/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "acb2e1de9d60bbdfcd12c4c097ee07ed7da0f27ed258e3c8f51b82932fda210d",
+    "run_summary_sha256": "1fa5589e3880d8150e7dda9840e0732f249a95cd3c95040b06126084685d44d8"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "forward_fund_flow_evidence_chain_not_current_operating_mainline",
+  "research_result_status": "research_only_no_active_holding_observation",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.32 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

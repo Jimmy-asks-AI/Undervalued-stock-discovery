@@ -1,0 +1,154 @@
+{
+  "version": "3.8.0",
+  "policy_id": "rebound_window_v3_8_target_state",
+  "policy_name_zh": "V3.8 多目标状态分型反弹窗口研究",
+  "status": "research_only",
+  "objective": "在V3.7行业广度特征基础上，把单一20日反弹标签拆成10日技术反抽、20日修复波段和60日趋势反转三类目标，检验分型目标是否改善A股反弹窗口识别。",
+  "output_dir": "outputs/industry_rebound_window_v3_8_target_state",
+  "source_policy_path": "configs/rebound_window_online_state_machine_policy_v2_20.json",
+  "v3_7_policy_path": "configs/rebound_window_v3_7_industry_breadth_policy.json",
+  "industry_history_dir": "data_catalog/cache/industry_index/history/second",
+  "feature_start_date": "2015-01-01",
+  "oos_start": "2021-01-01",
+  "bad_window_threshold": -0.03,
+  "baseline_pressure_conditions": [
+    {"field": "market_stress_score", "op": ">=", "value": 0.55},
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.75}
+  ],
+  "target_profiles": [
+    {
+      "profile_id": "technical_bounce_10d",
+      "profile_name_zh": "10日技术反抽",
+      "priority": 1,
+      "target_horizon": 10,
+      "target_return_threshold": 0.02,
+      "target_max_drawdown_floor": -0.03,
+      "bad_window_threshold": -0.025,
+      "description": "急跌后短周期反抽，重点要求路径不继续深跌。"
+    },
+    {
+      "profile_id": "repair_swing_20d",
+      "profile_name_zh": "20日修复波段",
+      "priority": 2,
+      "target_horizon": 20,
+      "target_return_threshold": 0.03,
+      "target_max_drawdown_floor": -0.04,
+      "bad_window_threshold": -0.03,
+      "description": "沿用V3.7核心20日修复目标。"
+    },
+    {
+      "profile_id": "trend_reversal_60d",
+      "profile_name_zh": "60日趋势反转",
+      "priority": 3,
+      "target_horizon": 60,
+      "target_return_threshold": 0.06,
+      "target_max_drawdown_floor": -0.07,
+      "bad_window_threshold": -0.05,
+      "description": "中期趋势反转，允许更长持有期和更宽路径波动。"
+    }
+  ],
+  "profile_selection": {
+    "method": "highest_probability_margin_then_priority",
+    "description": "若同一日期多个目标分型同时触发，选择模型概率超过阈值幅度最高的分型；并列时按预声明priority排序。"
+  },
+  "rule_candidates": [
+    {
+      "signal_id": "industry_breadth_exhaustion_repair",
+      "signal_name_zh": "行业广度耗竭后修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "industry_new_low_120d_ratio", "op": ">=", "value": 0.20},
+        {"field": "industry_positive_5d_ratio", "op": ">=", "value": 0.55},
+        {"field": "industry_reclaim_ma20_5d", "op": ">=", "value": 0.05}
+      ]
+    },
+    {
+      "signal_id": "industry_panic_low_relief",
+      "signal_name_zh": "行业创新低压力缓解",
+      "conditions": [
+        {"field": "panic_exhaustion_score", "op": ">=", "value": 0.60},
+        {"field": "market_return_5d", "op": ">", "value": 0.00},
+        {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20},
+        {"field": "industry_new_low_60d_relief_5d", "op": ">=", "value": 0.05}
+      ]
+    },
+    {
+      "signal_id": "broad_reclaim_after_pressure",
+      "signal_name_zh": "压力后行业均线收复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.50},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.70},
+        {"field": "industry_above_ma20_ratio", "op": ">=", "value": 0.35},
+        {"field": "industry_reclaim_ma20_10d", "op": ">=", "value": 0.10},
+        {"field": "market_return_10d", "op": ">", "value": 0.00}
+      ]
+    },
+    {
+      "signal_id": "survivable_breadth_rebound",
+      "signal_name_zh": "可承受路径的广度反弹",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.50},
+        {"field": "industry_positive_10d_ratio", "op": ">=", "value": 0.55},
+        {"field": "breadth_recovery_score", "op": ">=", "value": 0.55},
+        {"field": "market_volatility_20d_vs_60d", "op": "<=", "value": 1.20},
+        {"field": "industry_deep_drawdown_252d_ratio", "op": "<=", "value": 0.55}
+      ]
+    }
+  ],
+  "model": {
+    "model_id": "target_state_logistic_scorecard_v3_8",
+    "train_min_rows": 900,
+    "purge_days": 65,
+    "test_start_year": 2021,
+    "test_end_year": 2026,
+    "probability_quantile": 0.85,
+    "minimum_probability_threshold": 0.50,
+    "learning_rate": 0.08,
+    "max_iter": 1200,
+    "l2": 0.35,
+    "positive_weight": 2.0,
+    "features": [
+      "market_stress_score",
+      "negative_breadth_60d",
+      "market_drawdown_252d",
+      "market_return_5d",
+      "market_return_10d",
+      "market_return_20d",
+      "breadth_repair_5d",
+      "stress_release_5d",
+      "market_volatility_20d_vs_60d",
+      "market_amount_5d_vs_20d",
+      "market_amount_20d_vs_120d",
+      "liquidity_repair_5d",
+      "industry_positive_5d_ratio",
+      "industry_positive_10d_ratio",
+      "industry_positive_20d_ratio",
+      "industry_positive_turn_5d",
+      "industry_above_ma20_ratio",
+      "industry_above_ma60_ratio",
+      "industry_reclaim_ma20_5d",
+      "industry_reclaim_ma20_10d",
+      "industry_new_low_60d_ratio",
+      "industry_new_low_120d_ratio",
+      "industry_new_low_60d_relief_5d",
+      "industry_deep_drawdown_252d_ratio",
+      "industry_drawdown_median_252d",
+      "industry_return_20d_dispersion",
+      "panic_exhaustion_score",
+      "breadth_recovery_score"
+    ]
+  },
+  "promotion_thresholds": {
+    "min_signal_dates": 30,
+    "min_nonoverlap_events": 8,
+    "min_active_years": 3,
+    "max_single_year_concentration": 0.45,
+    "min_mean_edge_vs_pressure": 0.01,
+    "min_event_mean_return": 0.02,
+    "min_event_win_rate": 0.60,
+    "max_event_bad_window_rate": 0.25,
+    "min_oos_target_capture_rate": 0.10
+  },
+  "research_boundary": "只研究申万行业和行业指数的市场层广度与目标状态分型，不做个股筛选，不加入ETF，不生成交易指令，不使用未来收益、未来行业广度或同日收盘执行。"
+}

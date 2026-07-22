@@ -1,0 +1,16 @@
+{
+  "version": "4.19.0",
+  "policy_id": "rebound_window_v4_19_wide_pool_dynamic_exit",
+  "policy_name_zh": "V4.19 宽事件池动态退出泛化审计",
+  "status": "research_only",
+  "objective": "把V4.15的固定动态退出网格应用到V4.7宽事件池，检验近似候选是否能在更宽样本上泛化。",
+  "output_dir": "outputs/industry_rebound_window_v4_19_wide_pool_dynamic_exit",
+  "source_trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv",
+  "market_panel_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/v47_short_horizon_feature_panel.csv",
+  "max_holding_days": 30,
+  "profit_take_grid": [null, 0.02, 0.03, 0.05],
+  "stop_loss_grid": [null, -0.03, -0.05],
+  "execution_lag_days": 1,
+  "bad_window_threshold": -0.03,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只把V4.15退出网格应用到V4.7宽事件池，不新增参数，不做个股筛选，不加入ETF，不生成交易指令。"
+}

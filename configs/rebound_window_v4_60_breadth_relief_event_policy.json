@@ -1,0 +1,17 @@
+{
+  "version": "4.60.0",
+  "policy_id": "rebound_window_v4_60_breadth_relief_event",
+  "policy_name_zh": "V4.60 广度压力缓解事件",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_60_breadth_relief_event",
+  "holding_days": 20,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.70},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20},
+    {"field": "industry_new_low_60d_relief_5d", "op": ">=", "value": 0.05}
+  ],
+  "research_boundary": "本版本只做广度压力缓解事件研究；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

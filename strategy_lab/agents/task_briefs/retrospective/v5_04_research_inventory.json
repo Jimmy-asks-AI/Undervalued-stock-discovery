@@ -1,0 +1,99 @@
+{
+  "task_id": "retrospective_v5_04_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.04",
+  "objective": "V5.04 小样本证据冻结",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v5_04_rebound_leader_evidence_freeze.py",
+    "logs/research_experiment_ledger.jsonl",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/run_summary.json",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/run_summary.json",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/top_candidates.csv",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_04_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.04",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.04",
+  "source_paths": [
+    "scripts/build_v5_04_rebound_leader_evidence_freeze.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v5_04_rebound_leader_evidence_freeze.py",
+    "logs/research_experiment_ledger.jsonl",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/run_summary.json",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/top_candidates.csv",
+    "outputs/audit/rebound_leader_evidence_freeze_v5_04/debug"
+  ],
+  "registration": {
+    "kind": "preregistered_forward_only",
+    "status": "valid",
+    "paths": [
+      "logs/research_experiment_ledger.jsonl"
+    ],
+    "experiment_ids": [
+      "v5_04_quality_score_ge2_forward_only_2026-07-12",
+      "v5_04_quality_score_ge3_forward_only_2026-07-12"
+    ],
+    "post_hoc": false,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "The ledger governs only new forward samples from V5.04 onward; it does not preregister or validate historical findings."
+  },
+  "post_hoc": false,
+  "post_hoc_status": "preregistered_forward_only",
+  "version_class": "forward_experiment_governance",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/rebound_leader_evidence_freeze_v5_04",
+    "run_summary_path": "outputs/audit/rebound_leader_evidence_freeze_v5_04/run_summary.json",
+    "run_summary_version": "5.04.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md",
+      "outputs/audit/rebound_leader_evidence_freeze_v5_04/run_summary.json",
+      "outputs/audit/rebound_leader_evidence_freeze_v5_04/top_candidates.csv",
+      "outputs/audit/rebound_leader_evidence_freeze_v5_04/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "628277e9bc688b98f8a2ddfc05039e3ee13b57cda0cdd71ce4109106e877d921",
+    "run_summary_sha256": "5ef6e2a552e20fa4c998070a74a47fb7dc37e0b3fb3481805142c4b170bb4026"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only_frozen_forward_observation",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.04 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

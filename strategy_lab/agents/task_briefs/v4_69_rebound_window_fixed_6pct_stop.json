@@ -1,0 +1,66 @@
+{
+  "task_id": "v4_69_rebound_window_fixed_6pct_stop",
+  "version": "4.69.0",
+  "objective": "在 V4.68 事件集上叠加固定 6% 止损，检验简单退出层能否修复路径风险和尾部亏损硬伤。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_69_fixed_6pct_stop_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/realtime_simulation_trades.csv",
+    "scripts/run_industry_rebound_window_v4_65_fixed_stop_overlay.py",
+    "scripts/run_industry_rebound_window_v4_48_stop_loss_exit.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/report.md",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/run_summary.json",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/fixed_stop_source_trades.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_69_fixed_6pct_stop/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_69_fixed_6pct_stop",
+      "description": "运行 V4.69 固定 6% 止损复核。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_65_fixed_stop_overlay.py --config .\\configs\\rebound_window_v4_69_fixed_6pct_stop_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用 V3.4 统一评价体系判断 V4.69 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_69_fixed_6pct_stop",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.69 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_69_fixed_6pct_stop --required-debug-files fixed_stop_source_trades.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若固定 6% 止损修复尾部但牺牲胜率、收益或簇层表现，则继续保持 research_only，不能认定为有效反弹窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入 ETF，不生成交易指令。"
+}

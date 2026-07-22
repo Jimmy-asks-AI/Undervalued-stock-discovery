@@ -1,0 +1,83 @@
+{
+  "task_id": "v3_6_rebound_window_microstructure",
+  "version": "3.6.0",
+  "objective": "审计A股市场微观情绪数据源是否具备长历史、PIT边界和实时仿真条件，判断是否可以进入反弹窗口模型迭代。",
+  "owner_agent": "industry_data_steward",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v3_6_microstructure_policy.json",
+    "configs/rebound_window_v3_5_independent_risk_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v3_5_independent_risk/run_summary.json",
+    "data_catalog/cache/microstructure/v3_6",
+    "scripts/run_industry_rebound_window_v3_6_microstructure.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "future_microstructure_used_as_feature",
+    "current_snapshot_backfilled_to_history",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v3_6_microstructure/report.md",
+    "outputs/industry_rebound_window_v3_6_microstructure/top_candidates.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/run_summary.json",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/recent_fund_flow_panel.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/microstructure_source_audit.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/microstructure_rule_summary.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/microstructure_rule_events.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/target_label_audit.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/walk_forward_model_summary.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v3_6_microstructure/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v3_6_microstructure",
+      "description": "运行 V3.6 市场微观情绪数据源可得性审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v3_6_microstructure.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V3.6 是否具备有效反弹窗口证据。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v3_6_microstructure",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V3.6 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v3_6_microstructure --required-debug-files recent_fund_flow_panel.csv microstructure_source_audit.csv microstructure_rule_summary.csv microstructure_rule_events.csv data_availability_audit.csv target_label_audit.csv walk_forward_year_summary.csv walk_forward_model_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V3.6 只能判断当前公开接口中的微观情绪数据是否足够支持长期验证；不能用短样本或单日数据证明有效反弹窗口。",
+  "research_boundary": "只研究申万行业、行业指数和市场层微观情绪代理；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把当前或近期数据回填成历史特征。"
+}

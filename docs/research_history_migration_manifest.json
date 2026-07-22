@@ -1,0 +1,572 @@
+{
+    "schema_version":  1,
+    "record_type":  "retrospective_readme_migration",
+    "recorded_on":  "2026-07-18",
+    "historical_timestamp_claimed":  false,
+    "source":  {
+                   "path":  "README.md",
+                   "source_commit":  "36cc42926a72d488116417e48e6107b544754d93",
+                   "worktree_sha256":  "5296b654204d285f23a5f70242b4d1d7ff97a006d54c9d24260ca381c4e0d207",
+                   "line_count":  366,
+                   "byte_hash_basis":  "raw file bytes",
+                   "segment_hash_basis":  "UTF-8 bytes, LF line endings, terminal LF included"
+               },
+    "coverage":  {
+                     "source_first_line":  1,
+                     "source_last_line":  366,
+                     "complete":  true,
+                     "contiguous":  true,
+                     "gap_count":  0,
+                     "overlap_count":  0,
+                     "segment_count":  6
+                 },
+    "normalization":  {
+                          "total_count":  62,
+                          "scope":  "Markdown links whose destination is under ignored outputs/",
+                          "ignored_rule":  ".gitignore:2:outputs/",
+                          "transformation":  "[outputs/...](absolute ignored output path) -\u003e inline code containing outputs/...",
+                          "content_loss":  false,
+                          "destination_preservation":  "repository-relative output path remains visible as inline code"
+                      },
+    "segments":  [
+                     {
+                         "segment_id":  "v4_70_v4_71",
+                         "source_path":  "README.md",
+                         "source_start_line":  1,
+                         "source_end_line":  85,
+                         "source_line_count":  85,
+                         "target_path":  "docs/research_history/v4_70_v4_71_research_and_live_audit.md",
+                         "original_text_sha256":  "1c3bc3b0eca31dfde3272401534bb2f59ef91c139fe7703700273b3a02237bba",
+                         "archived_body_sha256":  "5934e8de21997f1beb369dc29b7f2ea42b9f53238971c665e907c1ec44f45c85",
+                         "target_file_sha256":  "506aaf93925721ecb98b9898ca758bceb6099d0c80f6c633ec2f9fd3a05947b1",
+                         "ignored_output_link_normalization_count":  2,
+                         "normalization_type":  "ignored_output_markdown_link_to_inline_code",
+                         "coverage_status":  "complete",
+                         "normalizations":  [
+                                                {
+                                                    "source_line":  47,
+                                                    "original_markdown":  "[outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  71,
+                                                    "original_markdown":  "[outputs/industry_rebound_window_v4_71_robustness_live_audit/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_window_v4_71_robustness_live_audit/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_window_v4_71_robustness_live_audit/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                }
+                                            ]
+                     },
+                     {
+                         "segment_id":  "v4_72_v5_20",
+                         "source_path":  "README.md",
+                         "source_start_line":  86,
+                         "source_end_line":  188,
+                         "source_line_count":  103,
+                         "target_path":  "docs/research_history/v4_72_v5_20_strong_industry_research.md",
+                         "original_text_sha256":  "1cb429e528fbe46fbc444f9c519e034783c186d2a794152b553413078fd6ca79",
+                         "archived_body_sha256":  "a56dadde7350ab648674853b1ef04cab391c4374221015ceab5e7bdc776f46f9",
+                         "target_file_sha256":  "3d3172d572987cb9e6f2922433a2e2c37db56820dc2f08f6b715351c724665cc",
+                         "ignored_output_link_normalization_count":  49,
+                         "normalization_type":  "ignored_output_markdown_link_to_inline_code",
+                         "coverage_status":  "complete",
+                         "normalizations":  [
+                                                {
+                                                    "source_line":  87,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_selection_v4_72/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_selection_v4_72/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_selection_v4_72/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  89,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_state_gated_v4_73/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_state_gated_v4_73/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_state_gated_v4_73/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  91,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_oos_factor_v4_74/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_oos_factor_v4_74/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_oos_factor_v4_74/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  93,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_walk_forward_v4_75/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_walk_forward_v4_75/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_walk_forward_v4_75/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  95,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_fund_flow_readiness_v4_76/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_fund_flow_readiness_v4_76/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_fund_flow_readiness_v4_76/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  97,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_feature_separability_v4_77/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_feature_separability_v4_77/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_feature_separability_v4_77/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  99,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_separable_portfolio_v4_78/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_separable_portfolio_v4_78/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_separable_portfolio_v4_78/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  101,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_pressure_state_v4_79/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_pressure_state_v4_79/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_pressure_state_v4_79/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  103,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_robust_grid_v4_80/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_robust_grid_v4_80/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_robust_grid_v4_80/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  105,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_market_state_v4_81/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_market_state_v4_81/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_market_state_v4_81/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  107,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_new_pit_source_v4_82/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_new_pit_source_v4_82/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_new_pit_source_v4_82/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  109,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_trap_guardrail_v4_83/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_trap_guardrail_v4_83/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_trap_guardrail_v4_83/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  111,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_structure_features_v4_84/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_structure_features_v4_84/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_structure_features_v4_84/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  113,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_parent_neutral_v4_85/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_parent_neutral_v4_85/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_parent_neutral_v4_85/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  115,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_parent_neutral_forward_v4_86/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_parent_neutral_forward_v4_86/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_parent_neutral_forward_v4_86/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  117,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_evidence_scorecard_v4_87/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_evidence_scorecard_v4_87/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_evidence_scorecard_v4_87/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  119,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_pre_entry_audit_v4_88/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_pre_entry_audit_v4_88/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_pre_entry_audit_v4_88/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  121,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_goal_readiness_v4_89/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_goal_readiness_v4_89/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_goal_readiness_v4_89/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  123,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_entry_batch_gate_v4_90/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_entry_batch_gate_v4_90/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_entry_batch_gate_v4_90/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  125,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_promotion_math_v4_91/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_promotion_math_v4_91/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_promotion_math_v4_91/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  127,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_metric_grain_v4_92/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_metric_grain_v4_92/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_metric_grain_v4_92/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  129,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_historical_backtest_verdict_v4_93/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_historical_backtest_verdict_v4_93/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_historical_backtest_verdict_v4_93/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  131,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_independent_event_audit_v4_94/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_independent_event_audit_v4_94/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_independent_event_audit_v4_94/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  133,
+                                                    "original_markdown":  "[outputs/audit/rebound_window_sample_capacity_audit_v4_95/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_window_sample_capacity_audit_v4_95/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_window_sample_capacity_audit_v4_95/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  135,
+                                                    "original_markdown":  "[outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_window_expansion_capacity_audit_v4_96/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  137,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_expanded_window_v4_97/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_expanded_window_v4_97/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_expanded_window_v4_97/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  139,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  141,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_market_sensitivity_v4_99/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_market_sensitivity_v4_99/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_market_sensitivity_v4_99/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  143,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_beta_composite_v5_00/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_beta_composite_v5_00/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_beta_composite_v5_00/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  145,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_beta_failure_stratification_v5_01/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_beta_failure_stratification_v5_01/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_beta_failure_stratification_v5_01/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  147,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  149,
+                                                    "original_markdown":  "[outputs/industry_rebound_leader_window_quality_v5_03/report.md](E:/投资/A股投资框架/低估资产发现/outputs/industry_rebound_leader_window_quality_v5_03/report.md)",
+                                                    "archived_inline_code":  "`outputs/industry_rebound_leader_window_quality_v5_03/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  151,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_evidence_freeze_v5_04/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  153,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_forward_tracker_v5_05/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_forward_tracker_v5_05/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_forward_tracker_v5_05/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  155,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_forward_settlement_v5_06/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_forward_settlement_v5_06/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_forward_settlement_v5_06/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  157,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_promotion_evaluator_v5_07/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_promotion_evaluator_v5_07/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_promotion_evaluator_v5_07/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  159,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_forward_signal_detector_v5_08/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_forward_signal_detector_v5_08/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_forward_signal_detector_v5_08/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  161,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  163,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_goal_completion_audit_v5_10/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_goal_completion_audit_v5_10/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_goal_completion_audit_v5_10/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  165,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_pit_valuation_audit_v5_11/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_pit_valuation_audit_v5_11/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_pit_valuation_audit_v5_11/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  167,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_pit_valuation_percentile_audit_v5_12/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_pit_valuation_percentile_audit_v5_12/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_pit_valuation_percentile_audit_v5_12/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  169,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_early_confirmation_audit_v5_13/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_early_confirmation_audit_v5_13/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_early_confirmation_audit_v5_13/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  171,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_confirmation_filter_audit_v5_14/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_confirmation_filter_audit_v5_14/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_confirmation_filter_audit_v5_14/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  173,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_failure_diagnosis_v5_15/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_failure_diagnosis_v5_15/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_failure_diagnosis_v5_15/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  175,
+                                                    "original_markdown":  "[outputs/audit/rebound_window_quality_proxy_audit_v5_16/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_window_quality_proxy_audit_v5_16/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_window_quality_proxy_audit_v5_16/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  177,
+                                                    "original_markdown":  "[outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_phase_sample_expansion_audit_v5_17/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  179,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_rolling_quarantine_audit_v5_18/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_rolling_quarantine_audit_v5_18/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_rolling_quarantine_audit_v5_18/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  181,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_volume_confirmation_audit_v5_19/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_volume_confirmation_audit_v5_19/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_volume_confirmation_audit_v5_19/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  183,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_evidence_boundary_audit_v5_20/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_evidence_boundary_audit_v5_20/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_evidence_boundary_audit_v5_20/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                }
+                                            ]
+                     },
+                     {
+                         "segment_id":  "legacy_forward_runbook",
+                         "source_path":  "README.md",
+                         "source_start_line":  189,
+                         "source_end_line":  239,
+                         "source_line_count":  51,
+                         "target_path":  "docs/research_history/legacy_v4_71_forward_runbook.md",
+                         "original_text_sha256":  "88f6a01e833e840919d4a5f0ab64f4a2945c35d67fdf47a2c1650697cd6df0f3",
+                         "archived_body_sha256":  "88f6a01e833e840919d4a5f0ab64f4a2945c35d67fdf47a2c1650697cd6df0f3",
+                         "target_file_sha256":  "125d9f800c55dec94205106748b923cba59effbb633c07da6fa5875b6fbad6c1",
+                         "ignored_output_link_normalization_count":  0,
+                         "normalization_type":  "none",
+                         "coverage_status":  "complete",
+                         "normalizations":  [
+
+                                            ]
+                     },
+                     {
+                         "segment_id":  "legacy_command_matrix",
+                         "source_path":  "README.md",
+                         "source_start_line":  240,
+                         "source_end_line":  288,
+                         "source_line_count":  49,
+                         "target_path":  "docs/research_history/legacy_v4_70_v4_88_command_matrix.md",
+                         "original_text_sha256":  "3b211da3c12371fec3f057105ff34aa66c663eb315727f767550b037e1f286b0",
+                         "archived_body_sha256":  "3b211da3c12371fec3f057105ff34aa66c663eb315727f767550b037e1f286b0",
+                         "target_file_sha256":  "9d21ed1fa439412dcce859137629c75610025c6f9f6d81b0077bdac289c475e8",
+                         "ignored_output_link_normalization_count":  0,
+                         "normalization_type":  "none",
+                         "coverage_status":  "complete",
+                         "normalizations":  [
+
+                                            ]
+                     },
+                     {
+                         "segment_id":  "repository_layout",
+                         "source_path":  "README.md",
+                         "source_start_line":  289,
+                         "source_end_line":  323,
+                         "source_line_count":  35,
+                         "target_path":  "docs/repository_layout.md",
+                         "original_text_sha256":  "f5881603e2da4497eb10f80483699fcf06ec83fc01519841b8dcf39875a51cc0",
+                         "archived_body_sha256":  "f5881603e2da4497eb10f80483699fcf06ec83fc01519841b8dcf39875a51cc0",
+                         "target_file_sha256":  "f22ac06f5a15fcfdbde841053f0a51c7cd2bd65af3a815bc99f7a9c69013f459",
+                         "ignored_output_link_normalization_count":  0,
+                         "normalization_type":  "none",
+                         "coverage_status":  "complete",
+                         "normalizations":  [
+
+                                            ]
+                     },
+                     {
+                         "segment_id":  "v5_21_v5_31",
+                         "source_path":  "README.md",
+                         "source_start_line":  324,
+                         "source_end_line":  366,
+                         "source_line_count":  43,
+                         "target_path":  "docs/research_history/v5_21_v5_31_fund_flow_evidence_chain.md",
+                         "original_text_sha256":  "a1ac7ca9e62dbb6a8ce528ce870ad27653cf0741cbaa007512f41d4fde7e7b1b",
+                         "archived_body_sha256":  "757c63ffb1f95c1f4a474024ad792498d273ecccdcd4e26a7bcf8b0924e6b4df",
+                         "target_file_sha256":  "beef8e7ba12ed9a7b3ec83152f67081217c74783cdca1262d936d658047d86d1",
+                         "ignored_output_link_normalization_count":  11,
+                         "normalization_type":  "ignored_output_markdown_link_to_inline_code",
+                         "coverage_status":  "complete",
+                         "normalizations":  [
+                                                {
+                                                    "source_line":  326,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_new_pit_source_discovery_v5_21/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_new_pit_source_discovery_v5_21/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_new_pit_source_discovery_v5_21/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  330,
+                                                    "original_markdown":  "[outputs/audit/rebound_leader_eastmoney_fund_flow_probe_v5_22/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/rebound_leader_eastmoney_fund_flow_probe_v5_22/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/rebound_leader_eastmoney_fund_flow_probe_v5_22/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  334,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_pit_panel_v5_23/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_pit_panel_v5_23/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_pit_panel_v5_23/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  338,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_mapping_remediation_v5_24/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_mapping_remediation_v5_24/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_mapping_remediation_v5_24/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  342,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_forward_observer_v5_25/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_forward_observer_v5_25/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_forward_observer_v5_25/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  346,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_forward_entry_gate_v5_26/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_forward_entry_gate_v5_26/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_forward_entry_gate_v5_26/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  350,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_forward_settlement_v5_27/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_forward_settlement_v5_27/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_forward_settlement_v5_27/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  354,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_promotion_evaluator_v5_28/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_promotion_evaluator_v5_28/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_promotion_evaluator_v5_28/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  358,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_evidence_calendar_v5_29/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_evidence_calendar_v5_29/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_evidence_calendar_v5_29/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  362,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_forward_ledger_integrity_v5_30/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_forward_ledger_integrity_v5_30/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_forward_ledger_integrity_v5_30/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                },
+                                                {
+                                                    "source_line":  366,
+                                                    "original_markdown":  "[outputs/audit/fund_flow_evidence_freeze_manifest_v5_31/report.md](E:/投资/A股投资框架/低估资产发现/outputs/audit/fund_flow_evidence_freeze_manifest_v5_31/report.md)",
+                                                    "archived_inline_code":  "`outputs/audit/fund_flow_evidence_freeze_manifest_v5_31/report.md`",
+                                                    "ignored_by":  ".gitignore:2:outputs/",
+                                                    "normalization_type":  "ignored_output_markdown_link_to_inline_code"
+                                                }
+                                            ]
+                     }
+                 ],
+    "supplemental_inventory":  {
+                                   "path":  "docs/research_history/v5_32_v5_35_retrospective_inventory.md",
+                                   "record_type":  "retrospective_inventory",
+                                   "migrated_from_readme":  false,
+                                   "historical_timestamp_claimed":  false
+                               }
+}

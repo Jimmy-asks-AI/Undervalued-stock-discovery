@@ -1,0 +1,44 @@
+{
+  "task_id": "v0_6_relative_cheapness_confirmation",
+  "version": "0.6.0",
+  "objective": "Penalize industry-relative cheapness when it is not confirmed by profitability, growth, cash-flow safety, shareholder-return support, or adequate peer count.",
+  "owner_agent": "value_trap_risk_agent",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "strategy_lab/fundamental_value_os/agents.py",
+    "scripts/run_current_a_share_value_snapshot.py",
+    "outputs/current_a_share_value_snapshot/current_value_candidates_enriched.csv",
+    "outputs/current_a_share_value_snapshot/top_obvious_value_candidates.csv"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "forward_return_60d",
+    "forward_return_120d",
+    "forward_return_252d"
+  ],
+  "required_output_paths": [
+    "outputs/current_a_share_value_snapshot/current_value_candidates_enriched.csv",
+    "outputs/current_a_share_value_snapshot/top_obvious_value_candidates.csv",
+    "outputs/current_a_share_value_snapshot/snapshot_profile.json",
+    "outputs/current_a_share_value_snapshot/current_snapshot_report.md"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_current_snapshot_with_relative_trap_guard",
+      "description": "Run current snapshot with relative cheapness confirmation guardrail.",
+      "command": "python .\\scripts\\run_current_a_share_value_snapshot.py --report-date 20260331 --trade-date 2026-06-12 --top 30",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "validate_current_panel_schema",
+      "description": "Validate the current snapshot asset panel in latest mode.",
+      "command": "python .\\scripts\\validate_asset_panel_schema.py --input .\\outputs\\current_a_share_value_snapshot\\asset_panel_current_research_only.csv --mode latest --output .\\outputs\\current_a_share_value_snapshot\\schema_validation",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "A relative-value-trap flag blocks obvious-value status in the current snapshot, but it does not prove the remaining candidates are investable.",
+  "research_boundary": "The guardrail is based on current snapshot and proxy fields until PIT accounting-quality data is connected."
+}

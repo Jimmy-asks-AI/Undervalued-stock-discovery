@@ -1,0 +1,30 @@
+{
+  "version": "4.45.0",
+  "policy_id": "rebound_window_v4_45_independence_frontier",
+  "policy_name_zh": "V4.45 独立行情簇冷却边界审计",
+  "source_panel": "outputs/industry_rebound_window_v4_44_horizon_feature_upper_bound/debug/horizon_feature_source_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_45_independence_frontier",
+  "holding_days": 5,
+  "cooldown_days_grid": [0, 5, 10, 15, 20, 30, 45, 60, 90],
+  "cluster_gap_calendar_days": 30,
+  "round_trip_cost_bps": 10,
+  "feature_filters": [
+    {"filter_id": "none", "name_zh": "不过滤", "column": "", "operator": "", "quantile": null},
+    {"filter_id": "model_probability_ge_q30", "name_zh": "模型概率前70%", "column": "model_probability", "operator": ">=", "quantile": 0.30},
+    {"filter_id": "model_probability_ge_q40", "name_zh": "模型概率前60%", "column": "model_probability", "operator": ">=", "quantile": 0.40},
+    {"filter_id": "probability_margin_ge_q30", "name_zh": "概率边际前70%", "column": "probability_margin", "operator": ">=", "quantile": 0.30},
+    {"filter_id": "failure_flag_count_le_q50", "name_zh": "失败旗标低于中位", "column": "failure_flag_count", "operator": "<=", "quantile": 0.50},
+    {"filter_id": "market_stress_score_le_q70", "name_zh": "市场压力不过高", "column": "market_stress_score", "operator": "<=", "quantile": 0.70},
+    {"filter_id": "industry_above_ma20_ratio_ge_q30", "name_zh": "20日均线广度修复", "column": "industry_above_ma20_ratio", "operator": ">=", "quantile": 0.30}
+  ],
+  "hard_gates": {
+    "min_events": 30,
+    "min_independent_clusters": 20,
+    "min_net_mean_return": 0.02,
+    "min_relative_mean_return": 0.01,
+    "min_win_rate": 0.60,
+    "max_bad_window_rate": 0.20,
+    "min_worst_return": -0.06
+  },
+  "research_boundary": "本版只做全样本冷却/独立行情簇边界审计，属于理论上限观察；不生成交易指令。"
+}

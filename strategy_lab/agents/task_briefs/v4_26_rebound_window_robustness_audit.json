@@ -1,0 +1,70 @@
+{
+  "task_id": "v4_26_rebound_window_robustness_audit",
+  "version": "4.26.0",
+  "objective": "固定V4.25最高分规则，审计其收益和坏窗口是否被少数年份抬高或拖累。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_26_robustness_audit_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_25_bad_window_risk_condition/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_25_bad_window_risk_condition/debug/realtime_simulation_summary.csv",
+    "scripts/run_industry_rebound_window_v4_26_robustness_audit.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_26_robustness_audit/report.md",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/run_summary.json",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/robustness_source_trades.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/leave_one_year_audit.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/split_stability_audit.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/robustness_summary.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_26_robustness_audit/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_26_robustness_audit",
+      "description": "运行 V4.26 固定规则稳健性审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_26_robustness_audit.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.26 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_26_robustness_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.26 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_26_robustness_audit --required-debug-files robustness_source_trades.csv leave_one_year_audit.csv split_stability_audit.csv robustness_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.26 只审计V4.25固定规则稳健性，不新增过滤条件，不把小样本点估计升级为有效窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

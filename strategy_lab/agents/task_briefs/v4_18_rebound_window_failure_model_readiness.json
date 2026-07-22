@@ -1,0 +1,69 @@
+{
+  "task_id": "v4_18_rebound_window_failure_model_readiness",
+  "version": "4.18.0",
+  "objective": "固定V4.17失败样本特征面板，审计坏窗口样本量和跨年分布是否足以支撑多特征失败过滤模型。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_18_failure_model_readiness_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_17_failure_separability/debug/failure_feature_panel.csv",
+    "scripts/run_industry_rebound_window_v4_18_failure_model_readiness.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/report.md",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/run_summary.json",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/failure_model_panel.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/model_readiness_audit.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/failure_year_distribution.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/leave_one_year_model_readiness.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_18_failure_model_readiness/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_18_failure_model_readiness",
+      "description": "运行 V4.18 多特征失败模型可验证性审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_18_failure_model_readiness.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.18 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_18_failure_model_readiness",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.18 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_18_failure_model_readiness --required-debug-files failure_model_panel.csv model_readiness_audit.csv failure_year_distribution.csv leave_one_year_model_readiness.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.18 只审计多特征失败过滤模型是否具备可验证样本条件，不训练模型，不新增过滤规则。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

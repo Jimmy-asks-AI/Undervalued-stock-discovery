@@ -1,0 +1,9 @@
+{
+  "bundle_version": "fund_flow_observation_source_bundle_v1",
+  "candidate_artifact": "logs/v5_25_fund_flow_forward_sources/candidates/a8fb346857a6672d6d6241f02a38d657690b06c41757dbdc0de1974df4493f10.csv",
+  "candidate_fingerprint": "a8fb346857a6672d6d6241f02a38d657690b06c41757dbdc0de1974df4493f10",
+  "candidate_row_count": 0,
+  "signal_date": "2026-06-26",
+  "summary_artifact": "logs/v5_25_fund_flow_forward_sources/summaries/9cc7ae31a6b7b8f0f76981544337b6198f84dc35471777ce5cdebbc92ae760aa.json",
+  "summary_fingerprint": "9cc7ae31a6b7b8f0f76981544337b6198f84dc35471777ce5cdebbc92ae760aa"
+}

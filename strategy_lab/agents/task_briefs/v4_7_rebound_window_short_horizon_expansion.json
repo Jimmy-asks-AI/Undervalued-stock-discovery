@@ -1,0 +1,99 @@
+{
+  "task_id": "v4_7_rebound_window_short_horizon_expansion",
+  "version": "4.7.0",
+  "objective": "在V4.6样本数不足的基础上，检验短持有期是否能自然提高非重叠事件数，并保持正收益、胜率和坏窗口控制。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_7_short_horizon_expansion_policy.json",
+    "configs/rebound_window_v4_6_horizon_stability_policy.json",
+    "configs/rebound_window_v4_3_failure_state_policy.json",
+    "configs/rebound_window_online_state_machine_policy_v2_20.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "data_catalog/cache/industry_index/history/second",
+    "scripts/run_industry_rebound_window_v4_7_short_horizon_expansion.py",
+    "scripts/run_industry_rebound_window_v4_6_horizon_stability.py",
+    "scripts/run_industry_rebound_window_v4_3_failure_state.py",
+    "scripts/run_industry_rebound_window_v3_7_industry_breadth.py",
+    "scripts/run_industry_rebound_window_v3_4_realtime_model.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "test_future_return_used_for_signal",
+    "future_breadth_used_as_feature",
+    "future_amount_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_best_horizon",
+    "post_hoc_best_short_exit",
+    "result_driven_threshold_expansion"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/report.md",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/run_summary.json",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/v47_short_horizon_feature_panel.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/target_label_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/breadth_feature_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/walk_forward_predictions.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/walk_forward_model_summary.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/failure_state_threshold_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/raw_model_realtime_trades.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/raw_model_realtime_summary.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/failure_state_realtime_trades.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/failure_state_realtime_summary.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/horizon_grid_realtime_trades.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/short_horizon_sensitivity.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/leave_one_year_out_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/short_horizon_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/annual_signal_distribution.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_7_short_horizon_expansion",
+      "description": "运行 V4.7 短持有期扩样研究。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_7_short_horizon_expansion.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.7 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_7_short_horizon_expansion",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.7 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_7_short_horizon_expansion --required-debug-files v47_short_horizon_feature_panel.csv data_availability_audit.csv target_label_audit.csv breadth_feature_audit.csv walk_forward_predictions.csv walk_forward_year_summary.csv walk_forward_model_summary.csv failure_state_threshold_audit.csv raw_model_realtime_trades.csv raw_model_realtime_summary.csv failure_state_realtime_trades.csv failure_state_realtime_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv horizon_grid_realtime_trades.csv short_horizon_sensitivity.csv leave_one_year_out_audit.csv short_horizon_audit.csv annual_signal_distribution.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.7 只能评估短持有期是否自然增加非重叠事件并保持风险可控；不能用测试期未来收益重新训练模型或选择信号日。",
+  "research_boundary": "只研究申万行业、行业指数、行业广度、失败状态过滤和短持有期扩样；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把测试期未来收益或同日收盘执行作为特征。"
+}

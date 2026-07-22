@@ -1,0 +1,1 @@
+"""Industry index research agents."""

@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "pit_universe_methodology_remediation",
+  "policy_status": "research_only",
+  "purpose": "Audit historical valuation availability and SW second-level industry-universe comparability without creating new strategy rules.",
+  "valuation_history_path": "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+  "industry_history_dir": "data_catalog/cache/industry_index/history/second",
+  "industry_snapshot_dir": "data_catalog/cache/industry_index/valuation_snapshots/second",
+  "classification_history_path": "data_catalog/cache/industry_index/classification_history/second.csv",
+  "opportunity_set_path": "outputs/industry_rebound_leader_market_sensitivity_v4_99/debug/market_sensitivity_opportunity_set.csv",
+  "frozen_trading_calendar_path": "data_catalog/cache/trading_calendar/a_share_trade_calendar.csv",
+  "frozen_trading_calendar_sha256": "f348dd4c8863a5f2a5ff543a427c36198dbe3ca00f01a268f736490b2989d975",
+  "audit_as_of_date": "2026-07-18",
+  "required_industry_file_count": 131,
+  "minimum_fresh_industry_file_count": 120,
+  "max_history_stale_calendar_days": 4,
+  "long_gap_calendar_days": 365,
+  "minimum_long_gap_file_count": 7,
+  "recovered_source_ids": [
+    "recovered_from_v2_5_quality_components"
+  ],
+  "allowed_revision_statuses": [
+    "original",
+    "restated",
+    "superseded"
+  ],
+  "required_valuation_fields": [
+    "trade_date",
+    "published_at",
+    "available_date",
+    "fetched_at",
+    "source_version",
+    "revision_status"
+  ],
+  "required_governance_fields": [
+    "industry_code",
+    "source",
+    "source_hash",
+    "source_hash_basis",
+    "source_artifact_path",
+    "availability_basis",
+    "data_status"
+  ],
+  "historical_review_set": {
+    "start_date": "2022-01-01",
+    "label": "historical_review_used_in_iteration",
+    "promotion_eligible": false
+  },
+  "true_forward_boundary": {
+    "earliest_evidence_date": "2026-07-12",
+    "required_registration_status": "preregistered_forward_only",
+    "label": "true_forward_preregistered",
+    "historical_backfill_allowed": false
+  },
+  "universe_modes": [
+    "common_survivor_observed_codes",
+    "then_observed_active_codes",
+    "classification_break_segments"
+  ],
+  "classification_break_segments": [
+    {
+      "segment_id": "legacy_observed_universe",
+      "start_date": "2015-01-05",
+      "end_date": "2021-12-10",
+      "boundary_basis": "observed source rows before the 2021-12-13 cross-sectional expansion"
+    },
+    {
+      "segment_id": "expansion_transition",
+      "start_date": "2021-12-13",
+      "end_date": "2023-10-08",
+      "boundary_basis": "observed 66-to-124 expansion and temporary 123-to-131 changes"
+    },
+    {
+      "segment_id": "expanded_observed_universe",
+      "start_date": "2023-10-09",
+      "end_date": null,
+      "boundary_basis": "first persistent 131-code observation in the local source"
+    }
+  ],
+  "classification_history_status": "unavailable",
+  "classification_boundary_claim": "observed_code_universe_break_not_verified_membership_history",
+  "top_group_definition": "event_cross_section_top_20_percent",
+  "transaction_cost_rate": 0.001,
+  "output_dir": "outputs/audit/pit_universe_methodology_remediation",
+  "auto_execution_allowed": false,
+  "strategy_parameters_changed": false
+}

@@ -1,0 +1,24 @@
+{
+  "version": "4.67.0",
+  "policy_id": "rebound_window_v4_67_moderate_breadth_liquidity",
+  "policy_name_zh": "V4.67 温和负广度扩展成交修复事件",
+  "signal_type": "moderate_breadth_liquidity",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_67_moderate_breadth_liquidity",
+  "debug_source_panel_file": "moderate_breadth_liquidity_source_panel.csv",
+  "holding_days": 20,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.43},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20},
+    {"field": "liquidity_repair_5d", "op": ">=", "value": 0.05}
+  ],
+  "final_verdict": "research_only；温和扩展负广度门槛用于检验独立簇缺口，但必须通过 V3.4 统一评价后才可升级。",
+  "main_diagnosis": "V4.67 将 V4.64 的负广度门槛从 0.45 温和放宽到 0.43，检验能否补齐独立行情簇同时保留强成交修复的收益厚度。",
+  "leakage_evidence": "固定使用负广度压力、5 日上涨扩散转正和 5 日成交修复三个事前字段；不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 只复核一个温和扩展阈值，不做网格扫描；目标是测试 V4.64 的独立簇缺口能否被小幅放宽补齐。",
+  "report_interpretation": "本版本把负广度压力门槛从 V4.64 的 0.45 小幅放宽到 0.43，同时继续要求 5 日上涨扩散转正和 5 日成交修复至少 5%。这是对 V4.64 独立簇不足的最小扩展测试，不是重新寻找最优参数。",
+  "research_boundary": "本版本只研究申万行业和行业指数的市场反弹窗口；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

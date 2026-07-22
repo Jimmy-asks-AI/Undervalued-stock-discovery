@@ -1,0 +1,124 @@
+{
+  "schema_version": "dashboard-data-v2",
+  "generated_at": "2026-07-18T21:00:00+08:00",
+  "decision_as_of_date": "2026-07-18",
+  "trust_summary": {
+    "research_state": "research_only / NO_ACTION",
+    "policy_status": "research_only",
+    "current_action": "NO_ACTION",
+    "status_valid": true,
+    "state_consistent": true,
+    "manual_support_ready": false,
+    "production_ready": false,
+    "auto_execution_allowed": false,
+    "decision_as_of_date": "2026-07-18",
+    "current_status_generated_at": "2026-07-18T20:46:48+08:00",
+    "current_state_generated_at": "2026-07-18T20:46:48+08:00",
+    "runner_generated_at": "2026-07-18T20:44:09+08:00",
+    "active_cohort_id": "ff_integrity_v7_20260718",
+    "active_cohort_manifest_hash": "966e40a07d2248d8447692e85faf3d28d4ffaee51b2db8b0a787a861db0bf7e2",
+    "current_status_cohort_id": "ff_integrity_v7_20260718",
+    "current_status_manifest_hash": "966e40a07d2248d8447692e85faf3d28d4ffaee51b2db8b0a787a861db0bf7e2",
+    "cohort_consistent": true
+  },
+  "source_freshness": [
+    {
+      "source": "市场指数",
+      "source_id": "market_index",
+      "cutoff_date": "2026-07-16",
+      "lag_days": 2,
+      "required": true,
+      "status": "fresh",
+      "detail": "固定离线测试数据",
+      "evidence_id": "source_manifest"
+    }
+  ],
+  "data_quality_warnings": [],
+  "current_recommendation": {
+    "recommendation_id": "fixture-no-action",
+    "as_of_datetime": "2026-07-18T20:44:09+08:00",
+    "action": "NO_ACTION",
+    "risk_vetoes": ["timing_robustness"],
+    "candidates": [],
+    "human_confirmation_required": true,
+    "auto_execution_allowed": false
+  },
+  "gate_results": [
+    {
+      "gate_id": "timing_robustness",
+      "label": "择时稳健性",
+      "passed": false,
+      "status": "blocked",
+      "veto": true,
+      "reason": "固定离线反例门禁",
+      "evidence_id": "gate_results"
+    }
+  ],
+  "valuation_snapshot": {
+    "version": "v2_4",
+    "generated_at": "2026-07-18T19:00:00+08:00",
+    "snapshot_date": "2026-07-16",
+    "status": "watch_only",
+    "available_count": 1,
+    "candidate_count": 1,
+    "candidates": [
+      {
+        "rank": 1,
+        "industry_code": "801010",
+        "industry_name": "农林牧渔",
+        "parent_industry": "消费",
+        "status": "观察",
+        "score": 0.5,
+        "valuation_score": 0.4,
+        "oversold_score": 0.2,
+        "pe_ttm": 18.2,
+        "pb": 1.8,
+        "dividend_yield": 0.025,
+        "pit_status": "current_snapshot_only",
+        "note": "只用于合同测试"
+      }
+    ]
+  },
+  "market_index_states": [],
+  "detail_manifest": {
+    "url": "data/dashboard_details.json",
+    "schema_version": "dashboard-details-v1",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "bytes": 128,
+    "counts": {
+      "historical_etf_opportunities": 0,
+      "shanghai_index_candles": 0,
+      "shanghai_index_trade_markers": 0
+    }
+  },
+  "refresh_semantics": {
+    "local_reload_label": "重新读取本地结果",
+    "local_reload_note": "只重新读取本地 JSON，不访问外部数据源。",
+    "rebuild_command": "python .\\scripts\\build_dashboard_dataset.py",
+    "online_refresh_command": "python .\\scripts\\run_etf_assisted_trading_current.py --as-of-date 2026-07-18 --refresh-inputs",
+    "network_refresh_note": "联网刷新会访问上游数据源，完成后仍需重建仪表盘数据。",
+    "dev_port": 5173,
+    "preview_port": 4175
+  },
+  "fixed_notices": [
+    {"code": "not_investment_advice", "text": "本页面不构成投资建议。"},
+    {"code": "history_not_future", "text": "历史表现不代表未来结果。"},
+    {"code": "data_may_lag", "text": "数据可能存在延迟。"},
+    {"code": "manual_support_not_ready", "text": "人工决策支持当前未就绪。"},
+    {"code": "auto_execution_disabled", "text": "自动执行永久关闭，当前不会自动下单。"}
+  ],
+  "evidence_catalog": [
+    {
+      "evidence_id": "source_manifest",
+      "path": "outputs/etf_assisted_trading_current/debug/source_manifest.csv",
+      "local_generated": true,
+      "linkable": false
+    },
+    {
+      "evidence_id": "gate_results",
+      "path": "outputs/etf_assisted_trading_current/debug/gate_results.csv",
+      "local_generated": true,
+      "linkable": false
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "v0_9_industry_etf_value_os",
+  "version": "0.9.0",
+  "objective": "Switch the research target from individual stocks to undervalued and oversold industries implemented through listed ETFs.",
+  "owner_agent": "industry_etf_orchestrator",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/industry_etf_value_agents.json",
+    "configs/industry_etf_mapping_keywords.json",
+    "configs/output_layout_policy.json",
+    "data_catalog/industry_etf_panel_schema.csv",
+    "factor_library/industry_etf_factor_registry.csv",
+    "strategy_lab/industry_etf_value_os/agents.py",
+    "scripts/run_current_industry_etf_value_snapshot.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "forward_return_20d",
+    "forward_return_60d",
+    "forward_return_120d",
+    "stock_pick",
+    "individual_stock"
+  ],
+  "required_output_paths": [
+    "outputs/current_industry_etf_value_snapshot/report.md",
+    "outputs/current_industry_etf_value_snapshot/top_candidates.csv",
+    "outputs/current_industry_etf_value_snapshot/run_summary.json",
+    "outputs/current_industry_etf_value_snapshot/debug/all_ranked_industries.csv",
+    "outputs/current_industry_etf_value_snapshot/debug/raw_industry_panel.csv",
+    "outputs/current_industry_etf_value_snapshot/debug/agent_results.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_current_industry_etf_value_snapshot",
+      "description": "Run the current industry ETF value and oversold scan.",
+      "command": "python .\\scripts\\run_current_industry_etf_value_snapshot.py --trade-date 2026-06-12 --top 20",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_industry_etf_factor_registry",
+      "description": "Audit the industry ETF factor registry against the industry ETF panel schema.",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_etf_factor_registry.csv --schema .\\data_catalog\\industry_etf_panel_schema.csv --output .\\outputs\\audit\\industry_etf_factor_registry_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "Audit that the industry ETF snapshot uses the compact output layout.",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\current_industry_etf_value_snapshot --required-debug-files all_ranked_industries.csv raw_industry_panel.csv agent_results.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "Audit task brief governance after adding the industry ETF task.",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "The output ranks industries and representative ETFs, not individual stocks, and remains research_only.",
+  "research_boundary": "Current snapshot only; keyword ETF mapping and no PIT validation or historical forward-return labels."
+}

@@ -1,0 +1,23 @@
+{
+  "version": "4.11.0",
+  "policy_id": "rebound_window_v4_11_northbound_frontier",
+  "policy_name_zh": "V4.11 北向覆盖层样本前沿审计",
+  "status": "research_only",
+  "objective": "检验把北向资金覆盖层从V4.8严格事件池放宽到V4.7短持有事件池后，是否能同时满足样本数和收益厚度门槛。",
+  "output_dir": "outputs/industry_rebound_window_v4_11_northbound_frontier",
+  "source_runs": [
+    {
+      "source_id": "v4_7_short_horizon",
+      "source_name_zh": "V4.7短持有扩样事件池",
+      "trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv"
+    },
+    {
+      "source_id": "v4_8_risk_quality",
+      "source_name_zh": "V4.8风险质量过滤事件池",
+      "trades_path": "outputs/industry_rebound_window_v4_8_risk_quality_filter/debug/realtime_simulation_trades.csv"
+    }
+  ],
+  "primary_signal_id": "v4_11_v4_7_short_horizon_northbound_20d_positive",
+  "northbound_cache_dir": "data_catalog/cache/external_risk/v4_10",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；北向资金只作为外部风险偏好观察层，不做个股筛选，不加入ETF，不生成交易指令。"
+}

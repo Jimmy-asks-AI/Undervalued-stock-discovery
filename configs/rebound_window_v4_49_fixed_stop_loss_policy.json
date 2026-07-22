@@ -1,0 +1,12 @@
+{
+  "version": "4.49.0",
+  "policy_id": "rebound_window_v4_49_fixed_stop_loss_replay",
+  "policy_name_zh": "V4.49 固定2%机械止损复核",
+  "source_trades": "outputs/industry_rebound_window_v4_46_walk_forward_independence/debug/realtime_simulation_trades.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_49_fixed_stop_loss",
+  "round_trip_cost_bps": 10,
+  "stop_loss": 0.02,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "research_boundary": "本版固定 2% 机械止损复核 V4.48 的退出层发现；不扫描参数，不生成交易指令。"
+}

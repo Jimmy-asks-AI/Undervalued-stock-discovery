@@ -1,0 +1,56 @@
+{
+  "version": "2.22.0",
+  "policy_id": "rebound_window_post_confirmation_cancel_v2_22",
+  "policy_name_zh": "V2.22确认后撤销机制审计",
+  "status": "research_only",
+  "objective": "冻结V2.20逐日在线状态机，增加确认后守门期，审计若确认后出现急跌、压力再升或下跌广度扩大，取消入场是否能减少坏窗口。",
+  "output_dir": "outputs/industry_rebound_window_post_confirmation_cancel_v2_22",
+  "source_policy_path": "configs/rebound_window_online_state_machine_policy_v2_20.json",
+  "history_dir": "data_catalog/cache/industry_index/history/second",
+  "guard_scenarios": [
+    {
+      "guard_id": "guard3_pressure_breadth",
+      "guard_name_zh": "确认后3日压力广度守门",
+      "guard_days": 3,
+      "cancel_guard_return_lte": -0.03,
+      "cancel_stress_increase_gte": 0.05,
+      "cancel_breadth_increase_gte": 0.03,
+      "cancel_max_stress_gte": null,
+      "cancel_max_breadth_gte": null
+    },
+    {
+      "guard_id": "guard5_no_worsen",
+      "guard_name_zh": "确认后5日不恶化守门",
+      "guard_days": 5,
+      "cancel_guard_return_lte": -0.03,
+      "cancel_stress_increase_gte": 0.03,
+      "cancel_breadth_increase_gte": 0.03,
+      "cancel_max_stress_gte": null,
+      "cancel_max_breadth_gte": null
+    },
+    {
+      "guard_id": "guard5_hard_pressure",
+      "guard_name_zh": "确认后5日硬压力守门",
+      "guard_days": 5,
+      "cancel_guard_return_lte": -0.05,
+      "cancel_stress_increase_gte": null,
+      "cancel_breadth_increase_gte": null,
+      "cancel_max_stress_gte": 0.65,
+      "cancel_max_breadth_gte": 0.90
+    }
+  ],
+  "promotion_thresholds": {
+    "min_entered_trades": 5,
+    "max_cancel_rate": 0.6,
+    "min_mean_trade_return": 0.0,
+    "min_win_rate": 0.6,
+    "max_bad_window_rate": 0.2,
+    "max_severe_path_rate": 0.2,
+    "max_worst_trade_return": -0.12,
+    "max_worst_min_nav_loss": -0.12,
+    "min_delta_bad_window_rate_vs_v20": 0.1,
+    "min_delta_worst_min_nav_loss_vs_v20": 0.02
+  },
+  "promotion_rule": "V2.22若通过，也只能说明确认后撤销机制在历史样本中改善了坏窗口；仍需未来新增样本和walk-forward验证，不能生成交易指令。",
+  "research_boundary": "只研究申万行业和行业指数的确认后撤销机制；不做个股筛选，不加入ETF，不生成买卖指令，不使用未来收益作为触发特征，不根据结果动态扩展规则。"
+}

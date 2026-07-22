@@ -1,0 +1,14 @@
+{
+  "cohort_id": "ff_integrity_v8_20260721",
+  "created_at_utc": "2026-07-21T09:12:43Z",
+  "freeze_passed": true,
+  "history_record_hash": "b024611cf5d38eefba0b7b4ae380405c91a86c7073204159ca8985456ac2a727",
+  "manifest_hash": "facaa1a541c8160ca1039bc0649eb658ad4de48ee4f85b4de9a8dbb1aa68d360",
+  "manifest_path": "logs/v5_31_fund_flow_evidence_freeze/ff_integrity_v8_20260721/manifest.csv",
+  "operator": "codex",
+  "previous_cohort_id": "ff_integrity_v7_20260718",
+  "previous_manifest_hash": "966e40a07d2248d8447692e85faf3d28d4ffaee51b2db8b0a787a861db0bf7e2",
+  "reason": "Bind read-only settlement and fail-closed orchestration controls",
+  "verification_required": false,
+  "verified_at_utc": "2026-07-21T15:43:28Z"
+}

@@ -1,0 +1,24 @@
+{
+  "version": "4.63.0",
+  "policy_id": "rebound_window_v4_63_liquidity_repair_gate",
+  "policy_name_zh": "V4.63 成交修复守门事件",
+  "signal_type": "liquidity_repair_gate",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_63_liquidity_repair_gate",
+  "debug_source_panel_file": "liquidity_repair_gate_source_panel.csv",
+  "holding_days": 20,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.45},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20},
+    {"field": "liquidity_repair_5d", "op": ">=", "value": 0.00}
+  ],
+  "final_verdict": "research_only；成交修复守门把收益厚度拉回门槛附近，但独立簇和尾部亏损仍未达标。",
+  "main_diagnosis": "V4.63 在 V4.62 宽广度转正事件上加入 5 日成交修复不恶化条件，检验反弹初期量能确认能否压低坏窗口。",
+  "leakage_evidence": "固定使用负广度压力、5 日上涨扩散转正和 5 日成交修复三个事前字段；不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 只加一个成交修复守门，不做多条件网格扫描；目标是验证坏窗口诊断里最朴素的量能修复假设。",
+  "report_interpretation": "本版本要求市场在较高负广度压力后出现上涨扩散，并且 5 日成交修复不为负，用来排除反弹初期缩量恶化的窗口。",
+  "research_boundary": "本版本只做成交修复守门事件研究；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

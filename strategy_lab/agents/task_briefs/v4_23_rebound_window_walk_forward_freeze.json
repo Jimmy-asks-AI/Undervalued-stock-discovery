@@ -1,0 +1,70 @@
+{
+  "task_id": "v4_23_rebound_window_walk_forward_freeze",
+  "version": "4.23.0",
+  "objective": "只用过去年份的规则表现选择退出规则，再测试未来年份，审计V4.20/V4.21边界是否来自事后挑选。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_23_walk_forward_freeze_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+    "scripts/run_industry_rebound_window_v4_23_walk_forward_freeze.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/report.md",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/run_summary.json",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/rule_pool_source_trades.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/cluster_level_rule_trades.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/walk_forward_selection_log.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/walk_forward_oos_trades.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/walk_forward_rule_summary.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_23_walk_forward_freeze/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_23_walk_forward_freeze",
+      "description": "运行 V4.23 年份前滚冻结规则审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_23_walk_forward_freeze.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.23 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_23_walk_forward_freeze",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.23 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_23_walk_forward_freeze --required-debug-files rule_pool_source_trades.csv cluster_level_rule_trades.csv walk_forward_selection_log.csv walk_forward_oos_trades.csv walk_forward_rule_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.23 只允许使用测试年份之前的数据选择规则，不新增参数，不使用全样本最优作为未来可知规则。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

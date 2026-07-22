@@ -1,0 +1,229 @@
+field,category,type,required_for_latest,required_for_pit_backtest,unit,timestamp_rule,validation_rule,downstream_use
+industry_code,identity,string,yes,yes,index_code,stable industry index code at trade_date,non_empty,all agents
+industry_name,identity,string,yes,yes,industry_name,industry name as of trade_date,non_empty,all agents
+industry_level,identity,enum,yes,yes,level,SW industry level at trade_date,allowed:first|second,all agents
+parent_industry,classification,string,no,yes,industry_name,parent SW industry observable at trade_date,non_empty_if_second_level,industry_data_steward
+trade_date,timestamp,date,yes,yes,YYYY-MM-DD,decision or rebalance date,valid_date,all agents
+published_at,timestamp,datetime,no,yes,ISO-8601 with timezone,source-backed publication timestamp; never inferred from trade_date,valid_timezone_aware_datetime,industry_data_steward
+available_date,timestamp,date,no,yes,YYYY-MM-DD,first frozen A-share trading date on which published data can be used,available_date_gte_trade_date;asof_join_available_date_lte_feature_trade_date,industry_data_steward
+fetched_at,timestamp,datetime,no,yes,ISO-8601 with timezone,immutable source-observation timestamp,fetched_at_gte_published_at,industry_data_steward
+source_version,provenance,string,no,yes,sha256:hex,version identifier bound to exact source hash,matches_source_hash,industry_data_steward
+revision_status,provenance,enum,no,yes,status,source revision state,allowed:original|restated|superseded,industry_data_steward
+source_hash,provenance,string,no,yes,sha256_hex,hash of exact source payload,valid_sha256,industry_data_steward
+source,provenance,string,yes,yes,vendor_or_file,source for every row,non_empty,industry_data_steward
+data_status,provenance,enum,yes,yes,status,row usability class,allowed:pit_verified|research_only|prototype|not_pit|non_pit_publication_time_missing|unavailable_for_promotion|rejected,all agents
+constituent_count,coverage,int,yes,yes,count,index constituent count as of trade_date,non_negative,industry_data_steward
+pe_ttm,valuation,float,yes,yes,multiple,industry valuation observation date,positive_or_blank_for_rank,industry_fundamental_value_agent
+pb,valuation,float,yes,yes,multiple,industry valuation observation date,positive_or_blank_for_rank,industry_fundamental_value_agent
+dividend_yield,valuation,float,yes,yes,decimal,industry valuation observation date,non_negative,industry_fundamental_value_agent
+industry_close,price,float,yes,yes,index_points,market close date,positive,industry_oversold_reversion_agent
+return_20d,momentum,float,yes,yes,decimal,computed from PIT industry closes,numeric,industry_oversold_reversion_agent
+return_60d,momentum,float,yes,yes,decimal,computed from PIT industry closes,numeric,industry_oversold_reversion_agent
+return_120d,momentum,float,yes,yes,decimal,computed from PIT industry closes,numeric,industry_oversold_reversion_agent
+return_252d,momentum,float,yes,yes,decimal,computed from PIT industry closes,numeric,industry_oversold_reversion_agent
+drawdown_252d,drawdown,float,yes,yes,decimal,computed from PIT industry closes,zero_or_negative,industry_oversold_reversion_agent
+volatility_60d,risk,float,no,yes,decimal,computed from PIT industry closes,non_negative,industry_factor_validation_auditor
+avg_amount_60d,liquidity,float,no,yes,CNY,computed from PIT industry index turnover amount,non_negative,industry_factor_validation_auditor
+history_days,coverage,int,yes,yes,count,available price rows through trade_date,non_negative,industry_data_steward
+history_fetch_status,coverage,string,no,no,status,computed during run,allowed:ok|empty,industry_data_steward
+industry_valuation_score,score,float,no,no,score_0_to_1,computed at trade_date,zero_to_one_if_present,industry_report_synthesizer
+industry_oversold_score,score,float,no,no,score_0_to_1,computed at trade_date,zero_to_one_if_present,industry_report_synthesizer
+cycle_quality_score,score,float,no,no,score_0_to_1,computed at trade_date,zero_to_one_if_present,industry_report_synthesizer
+data_quality_score,score,float,no,no,score_0_to_1,computed at trade_date,zero_to_one_if_present,industry_report_synthesizer
+industry_value_score,score,float,no,no,score_0_to_1,computed at trade_date,zero_to_one_if_present,industry_report_synthesizer
+price_only_oversold_signal,score,float,no,no,score_0_to_1,computed from PIT price features,zero_to_one_if_present,industry_factor_validation_auditor
+stabilized_oversold_signal,score,float,no,no,score_0_to_1,computed from PIT price features,zero_to_one_if_present,industry_factor_validation_auditor
+market_return_120d,market_context,float,no,yes,decimal,cross-sectional mean return computed from PIT industry closes,numeric,industry_factor_validation_auditor
+market_volatility_60d,market_context,float,no,yes,decimal,cross-sectional median volatility computed from PIT industry closes,non_negative,industry_factor_validation_auditor
+market_regime,market_context,string,no,yes,state,computed from market_return_120d,allowed:上行|下行|震荡|未知,industry_factor_validation_auditor
+volatility_regime,market_context,string,no,yes,state,computed from market_volatility_60d,allowed:高波动|常态波动|未知,industry_factor_validation_auditor
+candidate_status,decision,string,no,no,status,computed at trade_date,allowed_status,industry_report_synthesizer
+validation_decision,validation,string,no,no,status,computed from RankIC group returns and Top N validation,allowed:pass|weak|fail,industry_factor_validation_auditor
+research_weight,research_basket,float,no,no,decimal,current research basket weight,zero_to_one_if_present,industry_report_synthesizer
+forward_return_60d,label,float,no,no,decimal,future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+forward_return_120d,label,float,no,no,decimal,future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+forward_return_252d,label,float,no,no,decimal,future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+benchmark_forward_return_60d,label,float,no,no,decimal,cross-sectional benchmark future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+benchmark_forward_return_120d,label,float,no,no,decimal,cross-sectional benchmark future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+benchmark_forward_return_252d,label,float,no,no,decimal,cross-sectional benchmark future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+benchmark_relative_return_60d,label,float,no,no,decimal,future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+benchmark_relative_return_120d,label,float,no,no,decimal,future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+benchmark_relative_return_252d,label,float,no,no,decimal,future label after trade_date,forbidden_as_feature,industry_factor_validation_auditor
+market_drawdown_252d,market_context,float,no,yes,decimal,cross-sectional market drawdown computed from PIT industry closes,zero_or_negative,industry_factor_validation_auditor
+negative_breadth_60d,market_context,float,no,yes,decimal,share of industries with negative 60d return at trade_date,zero_to_one_if_present,industry_factor_validation_auditor
+relative_return_20d,momentum,float,no,yes,decimal,industry 20d return minus cross-sectional benchmark return,numeric,industry_factor_validation_auditor
+relative_return_60d,momentum,float,no,yes,decimal,industry 60d return minus cross-sectional benchmark return,numeric,industry_factor_validation_auditor
+relative_return_120d,momentum,float,no,yes,decimal,industry 120d return minus cross-sectional benchmark return,numeric,industry_factor_validation_auditor
+relative_return_252d,momentum,float,no,yes,decimal,industry 252d return minus cross-sectional benchmark return,numeric,industry_factor_validation_auditor
+return_pressure,market_context,float,no,yes,score_0_to_1,computed from PIT market return percentile,zero_to_one_if_present,industry_factor_validation_auditor
+drawdown_pressure,market_context,float,no,yes,score_0_to_1,computed from PIT market drawdown percentile,zero_to_one_if_present,industry_factor_validation_auditor
+volatility_pressure,market_context,float,no,yes,score_0_to_1,computed from PIT market volatility percentile,zero_to_one_if_present,industry_factor_validation_auditor
+breadth_pressure,market_context,float,no,yes,score_0_to_1,computed from PIT negative breadth percentile,zero_to_one_if_present,industry_factor_validation_auditor
+market_stress_score,market_context,float,no,yes,score_0_to_1,weighted pressure score from PIT market return drawdown volatility and breadth,zero_to_one_if_present,industry_factor_validation_auditor
+pressure_tier,market_context,string,no,yes,state,computed from market_stress_score,allowed:普通状态|压力区|极端压力,industry_factor_validation_auditor
+pressure_episode_id,market_context,string,no,yes,id,contiguous pressure episode identifier,blank_or_non_empty,industry_factor_validation_auditor
+momentum_trap_score,risk,int,no,yes,count,count of persistent weakness and extreme tail trap flags,non_negative,industry_factor_validation_auditor
+pressure_reversal_score,score,float,no,yes,score_0_to_1,price oversold score gated by market pressure,zero_to_one_if_present,industry_factor_validation_auditor
+stabilization_score,score,float,no,yes,score_0_to_1,short-term stabilization score after industry selloff,zero_to_one_if_present,industry_factor_validation_auditor
+relative_recovery_rank,score,float,no,yes,score_0_to_1,cross-sectional rank of relative 20d recovery,zero_to_one_if_present,industry_factor_validation_auditor
+recovery_quality_score,score,float,no,yes,score_0_to_1,short-term recovery quality proxy from stabilization and relative recovery,zero_to_one_if_present,industry_factor_validation_auditor
+liquidity_quality_score,score,float,no,yes,score_0_to_1,cross-sectional rank of industry index turnover amount,zero_to_one_if_present,industry_factor_validation_auditor
+low_volatility_quality_score,score,float,no,yes,score_0_to_1,inverse rank of 60d volatility,zero_to_one_if_present,industry_factor_validation_auditor
+drawdown_quality_score,score,float,no,yes,score_0_to_1,cross-sectional rank of less severe 252d drawdown,zero_to_one_if_present,industry_factor_validation_auditor
+relative_trend_quality_score,score,float,no,yes,score_0_to_1,rank of medium-term relative trend resilience,zero_to_one_if_present,industry_factor_validation_auditor
+price_quality_composite,score,float,no,yes,score_0_to_1,price-based quality proxy from recovery liquidity low volatility trend and drawdown,zero_to_one_if_present,industry_factor_validation_auditor
+pressure_quality_score,score,float,no,yes,score_0_to_1,pressure reversal score adjusted by price quality proxy,zero_to_one_if_present,industry_factor_validation_auditor
+quality_gate,decision,bool,no,yes,flag,price quality composite gate,boolean_or_blank,industry_factor_validation_auditor
+quality_middle_tail_gate,decision,bool,no,yes,flag,oversold middle-tail gate for quality reversal,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_not_trap,decision,bool,no,yes,flag,pressure reversal gate excluding momentum traps,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_stabilized,decision,bool,no,yes,flag,pressure reversal gate requiring stabilization,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_middle_tail,decision,bool,no,yes,flag,pressure reversal gate excluding extreme tail industries,boolean_or_blank,industry_factor_validation_auditor
+eligible_extreme_pressure_not_trap,decision,bool,no,yes,flag,extreme pressure gate excluding momentum traps,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_quality,decision,bool,no,yes,flag,pressure reversal gate requiring price quality proxy,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_quality_stabilized,decision,bool,no,yes,flag,pressure quality gate requiring short-term recovery,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_quality_liquid,decision,bool,no,yes,flag,pressure quality gate emphasizing liquidity,boolean_or_blank,industry_factor_validation_auditor
+eligible_pressure_quality_defensive,decision,bool,no,yes,flag,pressure quality gate emphasizing low volatility and drawdown control,boolean_or_blank,industry_factor_validation_auditor
+snapshot_industry_name,valuation_snapshot,string,no,no,industry_name,current valuation snapshot industry name,blank_or_non_empty,industry_fundamental_value_agent
+snapshot_parent_industry,valuation_snapshot,string,no,no,industry_name,current valuation snapshot parent industry,blank_or_non_empty,industry_fundamental_value_agent
+constituent_count_snapshot,valuation_snapshot,int,no,no,count,current valuation snapshot constituent count,non_negative,industry_fundamental_value_agent
+pe_static_snapshot,valuation_snapshot,float,no,no,multiple,current valuation snapshot static PE,positive_or_blank_for_rank,industry_fundamental_value_agent
+pe_ttm_snapshot,valuation_snapshot,float,no,no,multiple,current valuation snapshot TTM PE,positive_or_blank_for_rank,industry_fundamental_value_agent
+pb_snapshot,valuation_snapshot,float,no,no,multiple,current valuation snapshot PB,positive_or_blank_for_rank,industry_fundamental_value_agent
+dividend_yield_snapshot,valuation_snapshot,float,no,no,decimal,current valuation snapshot dividend yield,non_negative,industry_fundamental_value_agent
+has_current_valuation,valuation_snapshot,bool,no,no,flag,current valuation snapshot coverage flag,boolean_or_blank,industry_fundamental_value_agent
+valuation_snapshot_date,valuation_snapshot,date,no,no,YYYY-MM-DD,current valuation snapshot date,valid_date_if_present,industry_fundamental_value_agent
+valuation_snapshot_count,valuation_snapshot,int,no,no,count,count of archived valuation snapshots,non_negative,industry_factor_validation_auditor
+current_valuation_pit_status,validation,string,no,no,status,PIT readiness state for current valuation snapshots,allowed:pit_ready|current_snapshot_only_not_pit,industry_factor_validation_auditor
+pe_ttm_current,valuation_current,float,no,no,multiple,current snapshot only; forbidden for historical backfill,positive_or_blank_for_rank,industry_fundamental_value_agent
+pb_current,valuation_current,float,no,no,multiple,current snapshot only; forbidden for historical backfill,positive_or_blank_for_rank,industry_fundamental_value_agent
+dividend_yield_current,valuation_current,float,no,no,decimal,current snapshot only; forbidden for historical backfill,non_negative,industry_fundamental_value_agent
+pe_cheapness_score,score,float,no,no,score_0_to_1,current cross-sectional inverse PE rank,zero_to_one_if_present,industry_fundamental_value_agent
+pb_cheapness_score,score,float,no,no,score_0_to_1,current cross-sectional inverse PB rank,zero_to_one_if_present,industry_fundamental_value_agent
+dividend_support_score,score,float,no,no,score_0_to_1,current cross-sectional dividend yield rank,zero_to_one_if_present,industry_fundamental_value_agent
+valuation_snapshot_score,score,float,no,no,score_0_to_1,current valuation snapshot composite score,zero_to_one_if_present,industry_fundamental_value_agent
+valuation_score_blended,score,float,no,no,score_0_to_1,current snapshot valuation score blended with prior current valuation score,zero_to_one_if_present,industry_fundamental_value_agent
+relative_return_20d_current,momentum,float,no,no,decimal,current industry 20d return minus current cross-sectional benchmark,numeric,industry_factor_validation_auditor
+relative_return_60d_current,momentum,float,no,no,decimal,current industry 60d return minus current cross-sectional benchmark,numeric,industry_factor_validation_auditor
+relative_return_120d_current,momentum,float,no,no,decimal,current industry 120d return minus current cross-sectional benchmark,numeric,industry_factor_validation_auditor
+relative_return_252d_current,momentum,float,no,no,decimal,current industry 252d return minus current cross-sectional benchmark,numeric,industry_factor_validation_auditor
+recovery_quality_score_current,score,float,no,no,score_0_to_1,current short-term recovery quality proxy,zero_to_one_if_present,industry_factor_validation_auditor
+liquidity_quality_score_current,score,float,no,no,score_0_to_1,current industry turnover quality proxy,zero_to_one_if_present,industry_factor_validation_auditor
+low_volatility_quality_score_current,score,float,no,no,score_0_to_1,current inverse 60d volatility quality proxy,zero_to_one_if_present,industry_factor_validation_auditor
+drawdown_quality_score_current,score,float,no,no,score_0_to_1,current less-severe drawdown quality proxy,zero_to_one_if_present,industry_factor_validation_auditor
+relative_trend_quality_score_current,score,float,no,no,score_0_to_1,current relative trend resilience proxy,zero_to_one_if_present,industry_factor_validation_auditor
+price_quality_composite_current,score,float,no,no,score_0_to_1,current price-quality composite proxy,zero_to_one_if_present,industry_factor_validation_auditor
+oversold_score_current,score,float,no,no,score_0_to_1,current price oversold score,zero_to_one_if_present,industry_oversold_reversion_agent
+value_trap_proxy_score,risk,float,no,no,score_0_to_1,current cheap-oversold deterioration proxy,zero_to_one_if_present,industry_value_trap_agent
+current_market_stress_score,market_context,float,no,no,score_0_to_1,current market pressure score from latest industry cross-section,zero_to_one_if_present,industry_factor_validation_auditor
+current_pressure_tier,market_context,string,no,no,state,current market pressure tier,allowed:普通状态|压力区|极端压力,industry_factor_validation_auditor
+fundamental_pressure_score_raw,score,float,no,no,score_0_to_1,current valuation pressure score before hard valuation coverage gate,zero_to_one_if_present,industry_cycle_quality_agent
+current_fundamental_pressure_score,score,float,no,no,score_0_to_1,current valuation pressure score after current valuation coverage gate,zero_to_one_if_present,industry_cycle_quality_agent
+current_fundamental_pressure_rank,score,int,no,no,rank,current valuation pressure rank,positive_int_if_present,industry_report_synthesizer
+decision_reason,decision,string,no,no,text,current candidate status explanation,blank_or_non_empty,industry_report_synthesizer
+iteration,validation,int,no,no,count,standard iteration number in iterative validation workflow,positive_int_if_present,industry_factor_validation_auditor
+iteration_zh,validation,string,no,no,text,Chinese iteration name,blank_or_non_empty,industry_factor_validation_auditor
+iteration_strategy_id,validation,string,no,no,id,iteration strategy identifier,blank_or_non_empty,industry_factor_validation_auditor
+iteration_score_variant,validation,string,no,no,id,iteration score variant identifier,blank_or_non_empty,industry_factor_validation_auditor
+iteration_gate_col,validation,string,no,no,field_name,iteration gate column name,blank_or_non_empty,industry_factor_validation_auditor
+iteration_score_col,validation,string,no,no,field_name,iteration score column name,blank_or_non_empty,industry_factor_validation_auditor
+v24_iter1_score,score,float,no,yes,score_0_to_1,V2.4 iteration 1 PIT price-pressure-quality proxy score,zero_to_one_if_present,industry_factor_validation_auditor
+v24_iter1_gate,decision,bool,no,yes,flag,V2.4 iteration 1 eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+v24_iter2_score,score,float,no,yes,score_0_to_1,V2.4 iteration 2 expanded pressure liquidity proxy score,zero_to_one_if_present,industry_factor_validation_auditor
+v24_iter2_gate,decision,bool,no,yes,flag,V2.4 iteration 2 eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+v24_iter3_score,score,float,no,yes,score_0_to_1,V2.4 iteration 3 defensive quality proxy score,zero_to_one_if_present,industry_factor_validation_auditor
+v24_iter3_gate,decision,bool,no,yes,flag,V2.4 iteration 3 eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+review_status,validation,string,no,no,status,iteration review conclusion,allowed:候选待人工复核|条件观察，禁止升级|拒绝升级|无有效样本,industry_factor_validation_auditor
+best_sample_strength,validation,float,no,no,score_0_to_1,best parameter sample-strength score in iteration review,zero_to_one_if_present,industry_factor_validation_auditor
+best_relative_final_nav,validation,float,no,no,nav_ratio,best parameter relative final NAV in iteration review,positive_or_blank_for_rank,industry_factor_validation_auditor
+best_bootstrap_ci_5,validation,float,no,no,decimal,best parameter bootstrap 5 percent lower bound,numeric,industry_factor_validation_auditor
+main_issues,validation,string,no,no,text,iteration review blocking issues,blank_or_non_empty,industry_factor_validation_auditor
+next_action,validation,string,no,no,text,next iteration action from report review,blank_or_non_empty,industry_factor_validation_auditor
+valuation_history_start,valuation,date,no,yes,YYYY-MM-DD,first available SWS daily valuation date for this industry,valid_date_or_blank,industry_factor_validation_auditor
+valuation_history_end,valuation,date,no,yes,YYYY-MM-DD,last available SWS daily valuation date for this industry,valid_date_or_blank,industry_factor_validation_auditor
+valuation_history_rows,coverage,int,no,yes,count,count of SWS daily valuation rows through current run,non_negative,industry_data_steward
+trailing_valuation_rows,coverage,int,no,yes,count,count of latest trailing valuation observations used by V2.5,non_negative,industry_data_steward
+current_sws_industry_name,valuation,string,no,no,industry_name,latest SWS valuation industry name,blank_or_non_empty,industry_data_steward
+current_sws_pe,valuation,float,no,no,multiple,latest SWS PE from historical valuation panel,positive_or_blank_for_rank,industry_fundamental_value_agent
+current_sws_pb,valuation,float,no,no,multiple,latest SWS PB from historical valuation panel,positive_or_blank_for_rank,industry_fundamental_value_agent
+current_sws_dividend_yield,valuation,float,no,no,decimal,latest SWS dividend yield from historical valuation panel,non_negative,industry_fundamental_value_agent
+current_float_market_cap,valuation,float,no,no,CNY,latest SWS float market cap proxy,non_negative,industry_data_steward
+current_avg_float_market_cap,valuation,float,no,no,CNY,latest SWS average float market cap proxy,non_negative,industry_data_steward
+current_turnover_rate,liquidity,float,no,no,decimal,latest SWS turnover rate,non_negative,industry_factor_validation_auditor
+pe_positive_valid_ratio,quality,float,no,yes,ratio,trailing ratio of positive bounded PE observations,zero_to_one_if_present,industry_factor_validation_auditor
+pb_valid_ratio,quality,float,no,yes,ratio,trailing ratio of positive bounded PB observations,zero_to_one_if_present,industry_factor_validation_auditor
+dividend_positive_ratio,quality,float,no,yes,ratio,trailing ratio of positive dividend yield observations,zero_to_one_if_present,industry_factor_validation_auditor
+pe_log_std_252d,quality,float,no,yes,log_std,trailing 252 observation log PE volatility,non_negative,industry_factor_validation_auditor
+pb_log_std_252d,quality,float,no,yes,log_std,trailing 252 observation log PB volatility,non_negative,industry_factor_validation_auditor
+valuation_pit_coverage_score,coverage,float,no,yes,score_0_to_1,SWS valuation history coverage score,zero_to_one_if_present,industry_data_steward
+pe_stability_score,quality,float,no,yes,score_0_to_1,inverse cross-sectional rank of PE volatility,zero_to_one_if_present,industry_factor_validation_auditor
+pb_stability_score,quality,float,no,yes,score_0_to_1,inverse cross-sectional rank of PB volatility,zero_to_one_if_present,industry_factor_validation_auditor
+valuation_stability_score,quality,float,no,yes,score_0_to_1,combined PE and PB valuation stability proxy,zero_to_one_if_present,industry_factor_validation_auditor
+dividend_level_score,quality,float,no,yes,score_0_to_1,cross-sectional rank of latest dividend yield,zero_to_one_if_present,industry_factor_validation_auditor
+dividend_continuity_score,quality,float,no,yes,score_0_to_1,trailing dividend presence and level proxy,zero_to_one_if_present,industry_factor_validation_auditor
+earnings_sanity_score,quality,float,no,yes,score_0_to_1,PE availability and sanity proxy,zero_to_one_if_present,industry_factor_validation_auditor
+book_value_sanity_score,quality,float,no,yes,score_0_to_1,PB availability and sanity proxy,zero_to_one_if_present,industry_factor_validation_auditor
+market_depth_score,liquidity,float,no,no,score_0_to_1,rank of current float market cap depth,zero_to_one_if_present,industry_factor_validation_auditor
+sector_quality_data_required_flag,quality,bool,no,no,flag,marks sectors needing specialized quality data beyond proxy,boolean_or_blank,industry_value_trap_agent
+industry_quality_proxy_score_raw,score,float,no,no,score_0_to_1,V2.5 quality proxy before final clipping,zero_to_one_if_present,industry_cycle_quality_agent
+industry_quality_proxy_score,score,float,no,no,score_0_to_1,V2.5 industry quality proxy score,zero_to_one_if_present,industry_cycle_quality_agent
+v2_5_quality_adjusted_score,score,float,no,no,score_0_to_1,V2.5 current candidate score adjusted by quality proxy,zero_to_one_if_present,industry_cycle_quality_agent
+v2_5_quality_rank,score,int,no,no,rank,V2.5 quality adjusted rank,positive_int_if_present,industry_report_synthesizer
+quality_status,decision,string,no,no,status,V2.5 quality proxy status,allowed:quality_proxy_insufficient_history|proxy_pass_but_sector_data_required|quality_proxy_pass_current|quality_watchlist|quality_proxy_weak,industry_report_synthesizer
+v2_5_status,decision,string,no,no,status,V2.5 current observation status,allowed:v2_5_quality_confirmed_current_observation|v2_5_sector_data_required_observation|v2_5_candidate_quality_not_confirmed|quality_only_watchlist|research_watchlist,industry_report_synthesizer
+quality_review_reason,decision,string,no,no,text,V2.5 quality proxy explanation,blank_or_non_empty,industry_report_synthesizer
+valuation_trade_date,timestamp,date,no,yes,YYYY-MM-DD,SWS valuation observation date,valid_date_or_blank,industry_data_steward
+valuation_available_date,timestamp,date,no,yes,YYYY-MM-DD,source-backed available_date validated by frozen A-share calendar; never trade_date plus lag,available_date_gte_valuation_trade_date;asof_join_only,industry_data_steward
+valuation_age_days,coverage,int,no,yes,count,days between feature trade_date and valuation_available_date,non_negative,industry_data_steward
+valuation_history_count,coverage,int,no,yes,count,cumulative valuation rows available for industry,non_negative,industry_data_steward
+pe_positive_valid_ratio_252,quality,float,no,yes,ratio,trailing 252 valuation rows with positive bounded PE,zero_to_one_if_present,industry_factor_validation_auditor
+pb_valid_ratio_252,quality,float,no,yes,ratio,trailing 252 valuation rows with positive bounded PB,zero_to_one_if_present,industry_factor_validation_auditor
+dividend_positive_ratio_252,quality,float,no,yes,ratio,trailing 252 valuation rows with positive dividend yield,zero_to_one_if_present,industry_factor_validation_auditor
+pe_log_std_252,quality,float,no,yes,log_std,trailing 252 valuation-row log PE volatility,non_negative,industry_factor_validation_auditor
+pb_log_std_252,quality,float,no,yes,log_std,trailing 252 valuation-row log PB volatility,non_negative,industry_factor_validation_auditor
+historical_pe_percentile_756,valuation,float,no,yes,score_0_to_1,trailing own-history PE cheapness percentile,zero_to_one_if_present,industry_fundamental_value_agent
+historical_pb_percentile_756,valuation,float,no,yes,score_0_to_1,trailing own-history PB cheapness percentile,zero_to_one_if_present,industry_fundamental_value_agent
+historical_dividend_percentile_756,valuation,float,no,yes,score_0_to_1,trailing own-history dividend support percentile,zero_to_one_if_present,industry_fundamental_value_agent
+valuation_history_gate,decision,bool,no,yes,flag,minimum valuation history gate for V2.6 validation,boolean_or_blank,industry_data_steward
+cross_pe_cheapness_score,valuation,float,no,yes,score_0_to_1,V2.6 same-date cross-sectional inverse PE score,zero_to_one_if_present,industry_fundamental_value_agent
+cross_pb_cheapness_score,valuation,float,no,yes,score_0_to_1,V2.6 same-date cross-sectional inverse PB score,zero_to_one_if_present,industry_fundamental_value_agent
+cross_dividend_support_score,valuation,float,no,yes,score_0_to_1,V2.6 same-date dividend yield support score,zero_to_one_if_present,industry_fundamental_value_agent
+parent_pe_cheapness_score,valuation,float,no,yes,score_0_to_1,V2.6 parent-industry relative inverse PE score,zero_to_one_if_present,industry_fundamental_value_agent
+parent_pb_cheapness_score,valuation,float,no,yes,score_0_to_1,V2.6 parent-industry relative inverse PB score,zero_to_one_if_present,industry_fundamental_value_agent
+parent_dividend_support_score,valuation,float,no,yes,score_0_to_1,V2.6 parent-industry relative dividend support score,zero_to_one_if_present,industry_fundamental_value_agent
+valuation_cross_section_score,valuation,float,no,yes,score_0_to_1,V2.6 cross-sectional valuation composite,zero_to_one_if_present,industry_fundamental_value_agent
+parent_relative_value_score,valuation,float,no,yes,score_0_to_1,V2.6 parent-relative valuation composite,zero_to_one_if_present,industry_fundamental_value_agent
+historical_valuation_score,valuation,float,no,yes,score_0_to_1,V2.6 own-history valuation composite,zero_to_one_if_present,industry_fundamental_value_agent
+industry_valuation_quality_score,quality,float,no,yes,score_0_to_1,V2.6 valuation quality proxy,zero_to_one_if_present,industry_factor_validation_auditor
+valuation_pit_score,score,float,no,yes,score_0_to_1,V2.6 PIT candidate valuation score,zero_to_one_if_present,industry_cycle_quality_agent
+valuation_pressure_score,score,float,no,yes,score_0_to_1,V2.6 valuation plus pressure score,zero_to_one_if_present,industry_cycle_quality_agent
+valuation_pressure_quality_score,score,float,no,yes,score_0_to_1,V2.6 valuation pressure quality score,zero_to_one_if_present,industry_cycle_quality_agent
+valuation_oversold_quality_score,score,float,no,yes,score_0_to_1,V2.6 valuation oversold quality score,zero_to_one_if_present,industry_cycle_quality_agent
+parent_relative_value_pressure_score,score,float,no,yes,score_0_to_1,V2.6 parent-relative value pressure score,zero_to_one_if_present,industry_cycle_quality_agent
+historical_value_extreme_score,score,float,no,yes,score_0_to_1,V2.6 own-history valuation extreme score,zero_to_one_if_present,industry_cycle_quality_agent
+eligible_valuation_only,decision,bool,no,yes,flag,V2.6 pure valuation eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_valuation_pressure,decision,bool,no,yes,flag,V2.6 valuation pressure eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_valuation_pressure_quality,decision,bool,no,yes,flag,V2.6 valuation pressure quality eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_valuation_oversold_quality,decision,bool,no,yes,flag,V2.6 valuation oversold quality eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_parent_relative_value_pressure,decision,bool,no,yes,flag,V2.6 parent-relative value pressure eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_historical_value_extreme,decision,bool,no,yes,flag,V2.6 historical valuation extreme eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+post_2022_sample_flag,validation,bool,no,yes,flag,V2.7 mark samples after the 2022 SW second-industry universe expansion,boolean_or_blank,industry_factor_validation_auditor
+legacy_universe_sample_flag,validation,bool,no,yes,flag,V2.7 mark 2015-2021 legacy SW second-industry universe samples,boolean_or_blank,industry_factor_validation_auditor
+sector_quality_exclusion_flag,risk,bool,no,yes,flag,V2.7 generic quality exclusion for sectors needing special fundamentals,boolean_or_blank,industry_value_trap_agent
+valuation_quality_core_score,score,float,no,yes,score_0_to_1,V2.7 valuation-quality core score from stability continuity depth and price quality,zero_to_one_if_present,industry_factor_validation_auditor
+valuation_quality_value_score,score,float,no,yes,score_0_to_1,V2.7 valuation quality plus moderate value score,zero_to_one_if_present,industry_cycle_quality_agent
+valuation_quality_defensive_score,score,float,no,yes,score_0_to_1,V2.7 valuation quality plus defensive price-quality score,zero_to_one_if_present,industry_cycle_quality_agent
+post_2022_quality_score,score,float,no,yes,score_0_to_1,V2.7 quality score used only for post-2022 complete-universe validation,zero_to_one_if_present,industry_factor_validation_auditor
+quality_value_no_trap_score,score,float,no,yes,score_0_to_1,V2.7 quality value score with momentum-trap penalty,zero_to_one_if_present,industry_value_trap_agent
+eligible_quality_broad,decision,bool,no,yes,flag,V2.7 broad valuation-quality control gate without sector exclusion,boolean_or_blank,industry_factor_validation_auditor
+eligible_quality_core,decision,bool,no,yes,flag,V2.7 valuation-quality core eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_quality_value,decision,bool,no,yes,flag,V2.7 valuation quality plus moderate value eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_quality_defensive,decision,bool,no,yes,flag,V2.7 defensive quality eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_post_2022_quality,decision,bool,no,yes,flag,V2.7 post-2022 complete-universe quality eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+eligible_quality_value_no_trap,decision,bool,no,yes,flag,V2.7 quality value non-trap eligibility gate,boolean_or_blank,industry_factor_validation_auditor
+rankic_bridge_top_bottom_return,validation,float,no,yes,decimal,V2.8 Top-Bottom bridge return after rebalance costs,numeric_if_present,industry_factor_validation_auditor
+rankic_bridge_oos_top_bottom_return,validation,float,no,yes,decimal,V2.8 out-of-sample Top-Bottom bridge return,numeric_if_present,industry_factor_validation_auditor
+rankic_bridge_long_relative_return,validation,float,no,yes,decimal,V2.8 long-only return relative to eligible industry universe,numeric_if_present,industry_factor_validation_auditor
+rankic_bridge_final_nav,validation,float,no,yes,nav,V2.8 daily Top-Bottom bridge NAV,positive_if_present,industry_factor_validation_auditor
+rankic_bridge_quantile_spread,validation,float,no,yes,decimal,V2.8 quantile top-minus-bottom spread,numeric_if_present,industry_factor_validation_auditor
+same_date_top_bottom_capacity_flag,coverage,bool,no,yes,flag,V2.8 same-date universe has enough industries for Top-Bottom portfolio,boolean_or_blank,industry_data_steward
+v2_8_bridge_status,decision,string,no,yes,status,V2.8 RankIC-to-portfolio bridge verdict,allowed:candidate_requires_source_audit|conditional_observation|rejected_signal,industry_report_synthesizer

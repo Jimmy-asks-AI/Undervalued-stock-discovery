@@ -1,0 +1,69 @@
+{
+  "task_id": "v2_24_rebound_window_liquidity_confirm",
+  "version": "2.24.0",
+  "objective": "在V2.23市场状态标签基础上加入本地可复现的行业成交额流动性代理，审计流动性确认是否能减少坏窗口并提升反弹窗口可泛化性。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_liquidity_confirm_policy_v2_24.json",
+    "configs/rebound_window_online_state_machine_policy_v2_20.json",
+    "data_catalog/cache/industry_index/history/second",
+    "scripts/run_industry_rebound_window_liquidity_confirm_v2_24.py",
+    "scripts/run_industry_rebound_window_online_state_machine_v2_20.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "future_amount_used_as_feature",
+    "benchmark_forward_return_used_as_feature",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/report.md",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/top_candidates.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/run_summary.json",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/liquidity_state_panel.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/liquidity_state_summary.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/nonoverlap_state_events.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/oos_summary.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/rolling_state_stability.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/annual_state_distribution.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_liquidity_confirm_v2_24/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_24_rebound_window_liquidity_confirm",
+      "description": "运行 V2.24 成交额流动性确认反弹窗口审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_liquidity_confirm_v2_24.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.24 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_liquidity_confirm_v2_24 --required-debug-files liquidity_state_panel.csv liquidity_state_summary.csv nonoverlap_state_events.csv oos_summary.csv rolling_state_stability.csv annual_state_distribution.csv leakage_audit.csv optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.24 只审计成交额流动性确认；即使出现观察项，也不能声称已经可靠识别反弹窗口。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益或未来成交额作为触发特征，不根据结果动态扩展规则。"
+}

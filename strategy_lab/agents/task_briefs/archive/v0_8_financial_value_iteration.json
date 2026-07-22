@@ -1,0 +1,44 @@
+{
+  "task_id": "v0_8_financial_value_iteration",
+  "version": "0.8.0",
+  "objective": "Add financial-sector-specific value and risk proxy factors, then re-rank V0.7 financial candidates without promoting any row beyond research_only.",
+  "owner_agent": "financial_sector_value_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "scripts/run_financial_value_iteration.py",
+    "factor_library/financial_sector_value_factor_framework.md",
+    "outputs/current_a_share_quality_value_snapshot/quality_value_financial_proxy_candidates.csv"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "forward_return_60d",
+    "forward_return_120d",
+    "forward_return_252d"
+  ],
+  "required_output_paths": [
+    "outputs/current_a_share_financial_value_iteration/financial_sector_value_candidates.csv",
+    "outputs/current_a_share_financial_value_iteration/financial_sector_value_comparison.csv",
+    "outputs/current_a_share_financial_value_iteration/financial_sector_data_gap_report.csv",
+    "outputs/current_a_share_financial_value_iteration/financial_sector_value_summary.json",
+    "outputs/current_a_share_financial_value_iteration/financial_sector_value_report.md"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_financial_value_iteration",
+      "description": "Run financial-sector-specific proxy scoring and data gap report.",
+      "command": "python .\\scripts\\run_financial_value_iteration.py --trade-date 2026-06-12 --top 20",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "Audit task brief governance after adding the V0.8 task.",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "Financial stocks can be ranked as proxy candidates, but confirmation is blocked until sector-critical regulatory metrics are connected.",
+  "research_boundary": "Current snapshot only; no PIT validation, no historical labels, no investment advice."
+}

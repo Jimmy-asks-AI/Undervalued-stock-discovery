@@ -1,0 +1,13 @@
+{
+  "version": "4.18.0",
+  "policy_id": "rebound_window_v4_18_failure_model_readiness",
+  "policy_name_zh": "V4.18 多特征失败模型可验证性审计",
+  "status": "research_only",
+  "objective": "固定V4.17失败样本特征面板，审计坏窗口样本量和跨年分布是否足以支撑多特征失败过滤模型。",
+  "output_dir": "outputs/industry_rebound_window_v4_18_failure_model_readiness",
+  "source_panel_path": "outputs/industry_rebound_window_v4_17_failure_separability/debug/failure_feature_panel.csv",
+  "min_bad_events_for_model": 12,
+  "min_bad_years_for_model": 4,
+  "min_train_bad_events_leave_one_year": 8,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计多特征失败模型是否具备可验证样本条件，不训练模型，不新增过滤规则，不做个股筛选，不加入ETF，不生成交易指令。"
+}

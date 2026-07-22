@@ -1,0 +1,106 @@
+{
+  "version": "2.24.0",
+  "policy_id": "rebound_window_liquidity_confirm_v2_24",
+  "policy_name_zh": "V2.24 成交额流动性确认反弹窗口审计",
+  "status": "research_only",
+  "objective": "在V2.23市场状态标签基础上，引入本地可复现的行业成交额流动性代理，审计流动性确认是否能降低坏窗口、减少年份集中，并提升反弹窗口可泛化性。",
+  "output_dir": "outputs/industry_rebound_window_liquidity_confirm_v2_24",
+  "source_policy_path": "configs/rebound_window_online_state_machine_policy_v2_20.json",
+  "history_dir": "data_catalog/cache/industry_index/history/second",
+  "horizons": [20, 60, 120],
+  "oos_start": "2021-01-01",
+  "rolling_window_years": 3,
+  "rolling_step_years": 1,
+  "liquidity_proxy": {
+    "source_field": "成交额",
+    "aggregation": "sum_across_industries",
+    "features": [
+      "market_amount_5d_vs_20d",
+      "market_amount_20d_vs_120d",
+      "market_amount_zscore_20d",
+      "liquidity_repair_5d"
+    ],
+    "pit_rule": "只使用触发日及以前的行业成交额，不使用未来成交额或未来收益。"
+  },
+  "state_labels": [
+    {
+      "state_id": "stress_turn_amount_repair",
+      "state_name_zh": "高压力转正且成交额修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": 0.0},
+        {"field": "stress_release_5d", "op": ">=", "value": 0.0},
+        {"field": "market_amount_5d_vs_20d", "op": ">=", "value": 1.05}
+      ]
+    },
+    {
+      "state_id": "stress_turn_after_liquidity_dryup",
+      "state_name_zh": "高压力转正且前期成交收缩",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": 0.0},
+        {"field": "stress_release_5d", "op": ">=", "value": 0.0},
+        {"field": "market_amount_20d_vs_120d", "op": "<=", "value": 0.95}
+      ]
+    },
+    {
+      "state_id": "stress_turn_liquidity_spike",
+      "state_name_zh": "高压力转正且成交额放量",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": 0.0},
+        {"field": "stress_release_5d", "op": ">=", "value": 0.0},
+        {"field": "market_amount_zscore_20d", "op": ">=", "value": 0.50}
+      ]
+    },
+    {
+      "state_id": "deep_pressure_amount_repair",
+      "state_name_zh": "深压力且成交额回补",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.65},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.80},
+        {"field": "market_return_5d", "op": ">", "value": -0.01},
+        {"field": "market_amount_5d_vs_20d", "op": ">=", "value": 1.05},
+        {"field": "liquidity_repair_5d", "op": ">=", "value": 0.02}
+      ]
+    },
+    {
+      "state_id": "v23_best_without_liquidity_control",
+      "state_name_zh": "V2.23最佳状态无流动性控制",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": 0.0},
+        {"field": "stress_release_5d", "op": ">=", "value": 0.0}
+      ]
+    }
+  ],
+  "bottom_baseline_conditions": [
+    {"field": "market_stress_score", "op": ">=", "value": 0.55},
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+    {"field": "market_drawdown_252d", "op": "<=", "value": -0.15}
+  ],
+  "bad_window_thresholds": {
+    "20": -0.03,
+    "60": -0.05,
+    "120": -0.08
+  },
+  "promotion_thresholds": {
+    "min_full_dates": 30,
+    "min_nonoverlap_events": 8,
+    "min_oos_dates": 8,
+    "min_mean_edge_vs_all": 0.01,
+    "min_mean_edge_vs_baseline": 0.01,
+    "min_nonoverlap_mean_return": 0.0,
+    "min_oos_mean_return": 0.0,
+    "min_win_rate": 0.58,
+    "max_bad_window_rate": 0.25,
+    "min_positive_rolling_rate": 0.60,
+    "max_single_year_concentration": 0.45
+  },
+  "promotion_rule": "V2.24若通过，也只能说明成交额流动性代理有助于识别候选反弹环境；仍需未来样本、路径风险和真实执行约束验证，不能生成交易指令。",
+  "research_boundary": "只研究申万行业和行业指数的市场状态与成交额流动性代理；不做个股筛选，不加入ETF，不生成买卖指令，不使用未来收益或未来成交额作为触发特征，不根据结果动态扩展规则。"
+}

@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v4_92_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V4.92",
+  "objective": "V4.92 强反弹行业指标粒度一致性审计",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v4_92_rebound_leader_metric_grain_audit.py",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/run_summary.json",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/rebound_leader_metric_grain_v4_92/report.md",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/run_summary.json",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/top_candidates.csv",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v4_92_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V4.92",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V4.92",
+  "source_paths": [
+    "scripts/build_v4_92_rebound_leader_metric_grain_audit.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v4_92_rebound_leader_metric_grain_audit.py",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/report.md",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/run_summary.json",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/top_candidates.csv",
+    "outputs/audit/rebound_leader_metric_grain_v4_92/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "post_hoc_historical_inventory",
+  "version_class": "research_strategy_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/rebound_leader_metric_grain_v4_92",
+    "run_summary_path": "outputs/audit/rebound_leader_metric_grain_v4_92/run_summary.json",
+    "run_summary_version": "4.92.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/rebound_leader_metric_grain_v4_92/report.md",
+      "outputs/audit/rebound_leader_metric_grain_v4_92/run_summary.json",
+      "outputs/audit/rebound_leader_metric_grain_v4_92/top_candidates.csv",
+      "outputs/audit/rebound_leader_metric_grain_v4_92/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "ef50ec6cd390436a9984cc88ca1e6d76d2f5c78965222b4522ad0a6b0599921c",
+    "run_summary_sha256": "d5321c8d936c0906c38687fd33406b026a64248525cd6e9a0ae3f30c204d52e2"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V4.92 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

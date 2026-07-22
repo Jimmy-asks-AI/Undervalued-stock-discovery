@@ -1,0 +1,28 @@
+{
+  "version": "4.30.0",
+  "policy_id": "rebound_window_v4_30_valuation_regime_boundary",
+  "policy_name_zh": "V4.30 市场估值状态边界上限审计",
+  "status": "research_only",
+  "objective": "使用申万二级行业历史估值构造市场估值状态，审计估值便宜环境是否能提升反弹窗口识别质量。",
+  "output_dir": "outputs/industry_rebound_window_v4_30_valuation_regime_boundary",
+  "source_trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv",
+  "valuation_history_path": "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+  "features": [
+    "median_pe_low_score",
+    "median_pb_low_score",
+    "median_dividend_high_score",
+    "market_valuation_cheap_score",
+    "median_pe",
+    "median_pb",
+    "median_dividend"
+  ],
+  "quantiles": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+  "max_conditions": 2,
+  "min_realtime_events": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "min_active_years": 4,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只用信号日前已可见的申万二级行业估值截面做市场状态上限审计，不训练模型，不做个股筛选，不加入ETF，不生成交易指令。"
+}

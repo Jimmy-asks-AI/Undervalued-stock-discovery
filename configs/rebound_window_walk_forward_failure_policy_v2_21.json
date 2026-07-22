@@ -1,0 +1,32 @@
+{
+  "version": "2.21.0",
+  "policy_id": "rebound_window_walk_forward_failure_v2_21",
+  "policy_name_zh": "V2.21年度Walk-forward与失败归因审计",
+  "status": "research_only",
+  "objective": "冻结V2.20逐日在线状态机，审计其年度稳定性、年份集中风险、坏窗口归因和未来优化方向。",
+  "output_dir": "outputs/industry_rebound_window_walk_forward_failure_v2_21",
+  "source_policy_path": "configs/rebound_window_online_state_machine_policy_v2_20.json",
+  "history_dir": "data_catalog/cache/industry_index/history/second",
+  "walk_forward": {
+    "min_active_years": 4,
+    "min_positive_year_rate": 0.6,
+    "max_bad_year_rate": 0.25,
+    "max_single_year_trade_concentration": 0.5,
+    "min_worst_year_mean_return": -0.05,
+    "max_worst_year_bad_window_rate": 0.5,
+    "min_total_trades": 8
+  },
+  "failure_attribution": {
+    "bad_window_return_thresholds": {
+      "60": -0.05,
+      "120": -0.08
+    },
+    "severe_path_loss_threshold": -0.12,
+    "high_stress_after_entry": 0.65,
+    "high_negative_breadth_after_entry": 0.85,
+    "large_5d_loss_after_entry": -0.05,
+    "weak_repair_threshold": 0.03
+  },
+  "promotion_rule": "V2.21若通过，也只能说明V2.20状态机的年度稳定性和失败归因暂时可接受；仍需未来新增样本验证，不能生成交易指令。",
+  "research_boundary": "只研究申万行业和行业指数的逐日在线状态机稳定性和失败归因；不做个股筛选，不加入ETF，不生成买卖指令，不使用未来收益作为触发特征，不根据结果动态扩展规则。"
+}

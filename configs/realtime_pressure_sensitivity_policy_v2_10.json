@@ -1,0 +1,130 @@
+{
+  "version": "2.10.0",
+  "policy_id": "pressure_gated_realtime_sensitivity_v2_10",
+  "policy_name_zh": "V2.10压力门控实时仿真与参数敏感性",
+  "status": "research_only",
+  "base_policy_path": "configs/realtime_signal_policy_v2_9.json",
+  "objective": "在V2.9冻结实时仿真基础上，检验显式市场压力门槛、动量陷阱阈值和抄底分权重扰动是否能稳定改善低估超跌反弹的相对收益。",
+  "output_dir": "outputs/industry_realtime_pressure_sensitivity_v2_10",
+  "signal_base": "low_value_flag AND oversold_flag",
+  "top_n": 10,
+  "min_triggered_count": 10,
+  "primary_horizon": 60,
+  "pressure_gates": [
+    {
+      "pressure_gate_id": "no_pressure_gate",
+      "pressure_gate_zh": "不加压力门槛",
+      "market_stress_min": null
+    },
+    {
+      "pressure_gate_id": "stress_065",
+      "pressure_gate_zh": "压力分>=0.65",
+      "market_stress_min": 0.65
+    },
+    {
+      "pressure_gate_id": "stress_070",
+      "pressure_gate_zh": "压力分>=0.70",
+      "market_stress_min": 0.7
+    },
+    {
+      "pressure_gate_id": "stress_075",
+      "pressure_gate_zh": "压力分>=0.75",
+      "market_stress_min": 0.75
+    },
+    {
+      "pressure_gate_id": "stress_080",
+      "pressure_gate_zh": "压力分>=0.80",
+      "market_stress_min": 0.8
+    }
+  ],
+  "momentum_trap_max_values": [
+    0,
+    1
+  ],
+  "score_weight_variants": [
+    {
+      "weight_variant": "base",
+      "weight_variant_zh": "基准权重",
+      "weights": {
+        "valuation_pit_score": 0.3,
+        "historical_valuation_score": 0.2,
+        "stabilized_oversold_signal": 0.2,
+        "quality_value_no_trap_score": 0.2,
+        "recovery_quality_score": 0.1,
+        "momentum_trap_penalty": -0.08
+      }
+    },
+    {
+      "weight_variant": "valuation_plus",
+      "weight_variant_zh": "估值权重提高",
+      "weights": {
+        "valuation_pit_score": 0.36,
+        "historical_valuation_score": 0.24,
+        "stabilized_oversold_signal": 0.16,
+        "quality_value_no_trap_score": 0.16,
+        "recovery_quality_score": 0.08,
+        "momentum_trap_penalty": -0.08
+      }
+    },
+    {
+      "weight_variant": "oversold_plus",
+      "weight_variant_zh": "企稳超跌权重提高",
+      "weights": {
+        "valuation_pit_score": 0.24,
+        "historical_valuation_score": 0.16,
+        "stabilized_oversold_signal": 0.28,
+        "quality_value_no_trap_score": 0.2,
+        "recovery_quality_score": 0.12,
+        "momentum_trap_penalty": -0.08
+      }
+    },
+    {
+      "weight_variant": "quality_plus",
+      "weight_variant_zh": "质量非陷阱权重提高",
+      "weights": {
+        "valuation_pit_score": 0.24,
+        "historical_valuation_score": 0.16,
+        "stabilized_oversold_signal": 0.16,
+        "quality_value_no_trap_score": 0.3,
+        "recovery_quality_score": 0.14,
+        "momentum_trap_penalty": -0.08
+      }
+    },
+    {
+      "weight_variant": "trap_penalty_plus",
+      "weight_variant_zh": "陷阱扣分提高",
+      "weights": {
+        "valuation_pit_score": 0.3,
+        "historical_valuation_score": 0.2,
+        "stabilized_oversold_signal": 0.2,
+        "quality_value_no_trap_score": 0.2,
+        "recovery_quality_score": 0.1,
+        "momentum_trap_penalty": -0.14
+      }
+    }
+  ],
+  "cash_return_assumptions": [
+    {
+      "cash_return_id": "cash_0",
+      "cash_return_zh": "现金年化0%",
+      "annual_cash_return": 0.0
+    },
+    {
+      "cash_return_id": "cash_015",
+      "cash_return_zh": "现金年化1.5%",
+      "annual_cash_return": 0.015
+    },
+    {
+      "cash_return_id": "cash_02",
+      "cash_return_zh": "现金年化2.0%",
+      "annual_cash_return": 0.02
+    }
+  ],
+  "forbidden_feature_patterns": [
+    "forward_return",
+    "benchmark_forward_return",
+    "future",
+    "label"
+  ],
+  "promotion_rule": "V2.10是压力门控和参数敏感性验证。只有相对收益、样本外、非重叠、逐日相对净值和参数邻域稳定性同时通过，才允许进入下一阶段；本版本默认保持research_only。"
+}
