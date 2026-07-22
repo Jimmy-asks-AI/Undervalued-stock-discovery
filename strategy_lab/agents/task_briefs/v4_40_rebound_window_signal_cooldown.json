@@ -1,0 +1,65 @@
+{
+  "task_id": "v4_40_rebound_window_signal_cooldown",
+  "version": "4.40.0",
+  "objective": "检验重复或密集信号是否拖低反弹窗口收益厚度，用事前冷却规则保留一段时间内第一个信号。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_40_signal_cooldown_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity/debug/horizon_oracle_source_panel.csv",
+    "scripts/run_industry_rebound_window_v4_40_signal_cooldown.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_sort"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/report.md",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/run_summary.json",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/signal_cooldown_source_panel.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_40_signal_cooldown/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_40_signal_cooldown",
+      "description": "运行 V4.40 信号冷却去密集化审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_40_signal_cooldown.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.40 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_40_signal_cooldown",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.40 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_40_signal_cooldown --required-debug-files signal_cooldown_source_panel.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若样本达标的冷却规则不能提升成本后收益、相对收益和近期稳定性，则不能把信号去密集化作为有效反弹窗口定义。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

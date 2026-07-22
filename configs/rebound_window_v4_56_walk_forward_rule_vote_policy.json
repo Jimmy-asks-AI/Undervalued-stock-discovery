@@ -1,0 +1,32 @@
+{
+  "version": "4.56.0",
+  "policy_id": "rebound_window_v4_56_walk_forward_rule_vote",
+  "policy_name_zh": "V4.56 年前滚单特征规则投票",
+  "source_panel": "outputs/industry_rebound_window_v4_44_horizon_feature_upper_bound/debug/horizon_feature_source_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_56_walk_forward_rule_vote",
+  "holding_days": 5,
+  "round_trip_cost_bps": 10,
+  "stop_loss": 0.02,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "min_train_events": 20,
+  "min_test_year": 2019,
+  "top_rule_count": 5,
+  "min_vote_count": 3,
+  "quantiles": [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+  "feature_columns": [
+    "model_probability",
+    "probability_margin",
+    "failure_flag_count",
+    "market_stress_score",
+    "negative_breadth_60d",
+    "market_return_10d",
+    "market_return_20d",
+    "panic_exhaustion_score",
+    "breadth_recovery_score",
+    "industry_positive_20d_ratio",
+    "industry_above_ma20_ratio",
+    "industry_new_low_60d_relief_5d"
+  ],
+  "research_boundary": "本版本只做年前滚单特征规则投票研究；每个测试年份只使用此前年份选规则，不生成交易指令。"
+}

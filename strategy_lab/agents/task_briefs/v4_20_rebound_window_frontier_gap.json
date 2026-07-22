@@ -1,0 +1,70 @@
+{
+  "task_id": "v4_20_rebound_window_frontier_gap",
+  "version": "4.20.0",
+  "objective": "固定V4.19宽事件池动态退出结果，审计收益厚度和坏窗口控制之间的边界缺口。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_20_frontier_gap_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_19_wide_pool_dynamic_exit/debug/wide_pool_dynamic_exit_summary.csv",
+    "outputs/industry_rebound_window_v4_19_wide_pool_dynamic_exit/debug/wide_pool_dynamic_exit_trades.csv",
+    "scripts/run_industry_rebound_window_v4_20_frontier_gap.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_20_frontier_gap/report.md",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/run_summary.json",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_summary.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_gap_summary.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/independent_metric_check.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_20_frontier_gap",
+      "description": "运行 V4.20 收益-坏窗口边界审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_20_frontier_gap.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.20 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_20_frontier_gap",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.20 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_20_frontier_gap --required-debug-files frontier_source_summary.csv frontier_source_trades.csv frontier_gap_summary.csv independent_metric_check.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.20 只审计V4.19规则表的收益-坏窗口边界，不新增参数，不重新筛选事件，不把风险超标规则升级为有效窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

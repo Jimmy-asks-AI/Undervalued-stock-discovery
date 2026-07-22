@@ -1,0 +1,60 @@
+# Generated research artifacts and local/private inputs.
+outputs/
+data_cache/
+data_raw/
+private/
+credentials/
+secrets/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.bundle
+
+# Data caches are reproducible and too large for ordinary Git.  The frozen
+# A-share calendar is the one exception: the active V5.31 cohort hashes it.
+data_catalog/cache/*
+!data_catalog/cache/trading_calendar/
+data_catalog/cache/trading_calendar/*
+!data_catalog/cache/trading_calendar/a_share_trade_calendar.csv
+
+# Retrospective inventory generated before this Git baseline.  It mixes
+# ignored outputs/caches and a private account-state path, so the Git tree is
+# the canonical content manifest for recovery.
+data_catalog/manifests/research_manifest.csv
+
+# Dashboard dependencies and build products.
+strategy_lab/research_dashboard/node_modules/
+strategy_lab/research_dashboard/dist/
+strategy_lab/research_dashboard/public/data/dashboard_data.json
+strategy_lab/research_dashboard/public/data/dashboard_details.json
+strategy_lab/research_dashboard/*.log
+
+# Python and tool caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+.uv-cache/
+.coverage
+htmlcov/
+*.tsbuildinfo
+
+# Runtime locks and local debug transcripts.  Research ledgers, checkpoints,
+# source snapshots, and Markdown/CSV logs remain versioned.
+logs/*.lock
+logs/**/*.lock
+logs/*debug*.log
+
+# Local account state is deliberately private and must be rebuilt manually.
+portfolio_lab/current_account_state.json
+notes/handoffs/GIT_RECOVERY_BASELINE_*.md
+notes/handoffs/RESEARCH_GOVERNANCE_BASELINE_*.md
+
+# Operating-system noise.
+.DS_Store
+Thumbs.db
+Desktop.ini

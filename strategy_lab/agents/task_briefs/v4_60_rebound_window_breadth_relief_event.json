@@ -1,0 +1,65 @@
+{
+  "task_id": "v4_60_rebound_window_breadth_relief_event",
+  "version": "4.60.0",
+  "objective": "停止沿用旧事件池，直接使用 V3.7 日频行业广度面板定义广度压力缓解事件，检验换事件定义后是否能提高反弹窗口收益厚度。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_60_breadth_relief_event_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+    "scripts/run_industry_rebound_window_v4_60_breadth_relief_event.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/report.md",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/run_summary.json",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/breadth_relief_source_panel.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_60_breadth_relief_event/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_60_breadth_relief_event",
+      "description": "运行 V4.60 广度压力缓解事件。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_60_breadth_relief_event.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用 V3.2 统一评价体系判断 V4.60 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_60_breadth_relief_event",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.60 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_60_breadth_relief_event --required-debug-files breadth_relief_source_panel.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若收益厚度过线但独立行情簇不足，则下一步应围绕扩展同类广度修复事件的独立样本，而不是回到旧事件池过滤。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入 ETF，不生成交易指令。"
+}

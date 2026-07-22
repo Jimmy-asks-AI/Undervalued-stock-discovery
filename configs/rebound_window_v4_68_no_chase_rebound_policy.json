@@ -1,0 +1,25 @@
+{
+  "version": "4.68.0",
+  "policy_id": "rebound_window_v4_68_no_chase_rebound",
+  "policy_name_zh": "V4.68 非追涨成交修复事件",
+  "signal_type": "no_chase_rebound",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_68_no_chase_rebound",
+  "debug_source_panel_file": "no_chase_rebound_source_panel.csv",
+  "holding_days": 20,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.43},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20},
+    {"field": "liquidity_repair_5d", "op": ">=", "value": 0.05},
+    {"field": "market_return_10d", "op": "<=", "value": 0.0}
+  ],
+  "final_verdict": "research_only；非追涨守门用于避免在短期市场已转正后追入反弹窗口，必须通过 V3.4 统一评价后才可升级。",
+  "main_diagnosis": "V4.68 在 V4.67 基础上增加 market_return_10d <= 0，检验非追涨守门能否压低尾部风险并保留独立簇和收益厚度。",
+  "leakage_evidence": "固定使用负广度压力、5 日上涨扩散转正、5 日成交修复和过去 10 日市场收益四个事前字段；不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 只增加一个非追涨守门，不做多阈值扫描；目标是验证 V4.67 尾部样本里的追涨暴露是否可被简单过滤。",
+  "report_interpretation": "本版本在 V4.67 的温和扩簇规则上增加过去 10 日市场收益不为正的限制，避免市场已经明显反弹后再追入。它检验的是反弹窗口识别的入场位置质量，不是行业选择 alpha。",
+  "research_boundary": "本版本只研究申万行业和行业指数的市场反弹窗口；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

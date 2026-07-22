@@ -1,0 +1,18 @@
+{
+  "version": "4.22.0",
+  "policy_id": "rebound_window_v4_22_event_independence",
+  "policy_name_zh": "V4.22 事件独立性与有效样本量审计",
+  "status": "research_only",
+  "objective": "固定V4.20/V4.21边界规则，审计43个事件是否集中在少数行情簇中，并用独立簇口径重新评价反弹窗口有效性。",
+  "output_dir": "outputs/industry_rebound_window_v4_22_event_independence",
+  "source_frontier_path": "outputs/industry_rebound_window_v4_21_frontier_stat_reliability/debug/stat_reliability_summary.csv",
+  "source_trades_path": "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+  "signal_cluster_gap_calendar_days": 60,
+  "overlap_buffer_calendar_days": 0,
+  "min_independent_clusters": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计事件独立性和有效样本量，不新增参数，不重新筛选事件，不做个股筛选，不加入ETF，不生成交易指令。"
+}

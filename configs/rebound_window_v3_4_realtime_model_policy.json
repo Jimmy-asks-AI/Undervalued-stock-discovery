@@ -1,0 +1,125 @@
+{
+  "version": "3.4.0",
+  "policy_id": "rebound_window_v3_4_realtime_model",
+  "policy_name_zh": "V3.4 外生风险代理与实时仿真反弹窗口研究",
+  "status": "research_only",
+  "objective": "从V2.x的价格/成交额阈值调参转向外生宽基风险代理、明确反弹窗口目标、预声明规则审计、轻量walk-forward概率模型和实时仿真。",
+  "output_dir": "outputs/industry_rebound_window_v3_4_realtime_model",
+  "source_policy_path": "configs/rebound_window_online_state_machine_policy_v2_20.json",
+  "industry_history_dir": "data_catalog/cache/industry_index/history/second",
+  "market_index_cache_dir": "data_catalog/cache/market_index/wide",
+  "refresh_market_index": false,
+  "market_indices": [
+    {"symbol": "sh000001", "name_zh": "上证综指"},
+    {"symbol": "sh000300", "name_zh": "沪深300"},
+    {"symbol": "sh000905", "name_zh": "中证500"},
+    {"symbol": "sh000852", "name_zh": "中证1000"},
+    {"symbol": "sz399001", "name_zh": "深证成指"},
+    {"symbol": "sz399006", "name_zh": "创业板指"}
+  ],
+  "feature_start_date": "2015-01-01",
+  "oos_start": "2021-01-01",
+  "target_horizon": 20,
+  "target_return_threshold": 0.03,
+  "target_max_drawdown_floor": -0.04,
+  "bad_window_threshold": -0.03,
+  "baseline_pressure_conditions": [
+    {"field": "market_stress_score", "op": ">=", "value": 0.55},
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.75}
+  ],
+  "rule_candidates": [
+    {
+      "signal_id": "risk_repair_liquidity_confirm",
+      "signal_name_zh": "风险修复且流动性确认",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "stress_release_5d", "op": ">=", "value": 0.00},
+        {"field": "wide_avg_return_5d", "op": ">", "value": 0.00},
+        {"field": "market_amount_5d_vs_20d", "op": ">=", "value": 1.05},
+        {"field": "wide_volume_5d_vs_20d", "op": ">=", "value": 1.00}
+      ]
+    },
+    {
+      "signal_id": "broad_index_positive_turn",
+      "signal_name_zh": "宽基指数同步转正",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": 0.00},
+        {"field": "sh000001_return_5d", "op": ">", "value": 0.00},
+        {"field": "sh000300_return_5d", "op": ">", "value": 0.00},
+        {"field": "wide_positive_5d_ratio", "op": ">=", "value": 0.50}
+      ]
+    },
+    {
+      "signal_id": "smallcap_risk_appetite_repair",
+      "signal_name_zh": "小盘风险偏好修复",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.50},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.70},
+        {"field": "smallcap_vs_large_20d", "op": ">", "value": -0.02},
+        {"field": "sh000852_return_5d", "op": ">", "value": 0.00},
+        {"field": "wide_positive_5d_ratio", "op": ">=", "value": 0.50}
+      ]
+    },
+    {
+      "signal_id": "lowvol_pressure_stabilization",
+      "signal_name_zh": "压力区低波动企稳",
+      "conditions": [
+        {"field": "market_stress_score", "op": ">=", "value": 0.55},
+        {"field": "negative_breadth_60d", "op": ">=", "value": 0.75},
+        {"field": "market_return_5d", "op": ">", "value": -0.01},
+        {"field": "market_volatility_20d_vs_60d", "op": "<=", "value": 0.90},
+        {"field": "wide_avg_return_5d", "op": ">", "value": -0.005}
+      ]
+    }
+  ],
+  "model": {
+    "model_id": "regularized_logistic_scorecard_v3_3",
+    "train_min_rows": 900,
+    "purge_days": 25,
+    "test_start_year": 2021,
+    "test_end_year": 2026,
+    "probability_quantile": 0.85,
+    "minimum_probability_threshold": 0.50,
+    "learning_rate": 0.08,
+    "max_iter": 1200,
+    "l2": 0.30,
+    "positive_weight": 2.0,
+    "features": [
+      "market_stress_score",
+      "negative_breadth_60d",
+      "market_drawdown_252d",
+      "market_return_5d",
+      "market_return_20d",
+      "breadth_repair_5d",
+      "stress_release_5d",
+      "market_volatility_20d_vs_60d",
+      "market_amount_5d_vs_20d",
+      "market_amount_20d_vs_120d",
+      "liquidity_repair_5d",
+      "wide_avg_return_5d",
+      "wide_avg_return_20d",
+      "wide_positive_5d_ratio",
+      "wide_positive_20d_ratio",
+      "wide_avg_drawdown_252d",
+      "wide_volume_5d_vs_20d",
+      "smallcap_vs_large_20d",
+      "sh000300_return_5d",
+      "sh000852_return_5d"
+    ]
+  },
+  "promotion_thresholds": {
+    "min_signal_dates": 30,
+    "min_nonoverlap_events": 8,
+    "min_active_years": 3,
+    "max_single_year_concentration": 0.45,
+    "min_mean_edge_vs_pressure": 0.01,
+    "min_event_mean_return": 0.02,
+    "min_event_win_rate": 0.60,
+    "max_event_bad_window_rate": 0.25,
+    "min_oos_target_capture_rate": 0.10
+  },
+  "research_boundary": "只研究申万行业、行业指数和公开宽基市场代理；不做个股筛选，不加入ETF，不生成买卖指令，不使用未来收益或未来成交额作为触发特征，不根据结果动态扩展规则。"
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0.0",
+  "inventory_as_of": "2026-07-18",
+  "record_type": "retrospective_inventory",
+  "historical_timestamp_claimed": false,
+  "covered_version_range": {
+    "start": "V4.72",
+    "end": "V5.35",
+    "expected_count": 64
+  },
+  "standard_output_artifacts": [
+    "report.md",
+    "run_summary.json",
+    "top_candidates.csv",
+    "debug"
+  ],
+  "registration_rules": [
+    {
+      "start": "V4.72",
+      "end": "V5.03",
+      "registration_kind": "explicit_post_hoc",
+      "post_hoc": true,
+      "registration_paths": []
+    },
+    {
+      "start": "V5.04",
+      "end": "V5.04",
+      "registration_kind": "preregistered_forward_only",
+      "post_hoc": false,
+      "registration_paths": [
+        "logs/research_experiment_ledger.jsonl"
+      ],
+      "experiment_ids": [
+        "v5_04_quality_score_ge2_forward_only_2026-07-12",
+        "v5_04_quality_score_ge3_forward_only_2026-07-12"
+      ],
+      "boundary": "The ledger governs only new forward samples from V5.04 onward; it does not preregister or validate historical findings."
+    },
+    {
+      "start": "V5.05",
+      "end": "V5.10",
+      "registration_kind": "inherits_registered_rule",
+      "post_hoc": false,
+      "registration_paths": [
+        "logs/research_experiment_ledger.jsonl"
+      ],
+      "experiment_ids": [
+        "v5_04_quality_score_ge2_forward_only_2026-07-12",
+        "v5_04_quality_score_ge3_forward_only_2026-07-12"
+      ],
+      "boundary": "These versions track, settle, evaluate, or audit the two V5.04 forward-only rules; inheritance does not preregister any new historical finding."
+    },
+    {
+      "start": "V5.11",
+      "end": "V5.20",
+      "registration_kind": "explicit_post_hoc",
+      "post_hoc": true,
+      "registration_paths": []
+    },
+    {
+      "start": "V5.21",
+      "end": "V5.35",
+      "registration_kind": "explicit_post_hoc",
+      "post_hoc": true,
+      "registration_paths": []
+    }
+  ],
+  "mainline_relations": [
+    {
+      "start": "V4.72",
+      "end": "V5.20",
+      "relation": "historical_strong_industry_research_lineage"
+    },
+    {
+      "start": "V5.21",
+      "end": "V5.24",
+      "relation": "historical_data_source_and_mapping_lineage"
+    },
+    {
+      "start": "V5.25",
+      "end": "V5.35",
+      "relation": "forward_fund_flow_evidence_chain_not_current_operating_mainline"
+    }
+  ],
+  "cohort_scope": {
+    "start": "V5.25",
+    "end": "V5.35",
+    "active_pointer": "logs/v5_31_fund_flow_evidence_freeze_active.json"
+  },
+  "current_mainline": {
+    "version": "CURRENT_MAINLINE",
+    "goal": "单一 ETF 辅助人工决策主线；所有硬门同时通过前保持 NO_ACTION。",
+    "producer_source": "scripts/run_etf_assisted_trading_current.py",
+    "output_dir": "outputs/etf_assisted_trading_current",
+    "config_paths": [
+      "configs/etf_assisted_trading_current_policy.json"
+    ],
+    "registration_kind": "preregistered_forward_only_inherited",
+    "registration_paths": [
+      "logs/research_experiment_ledger.jsonl"
+    ],
+    "experiment_ids": [
+      "v5_04_quality_score_ge2_forward_only_2026-07-12",
+      "v5_04_quality_score_ge3_forward_only_2026-07-12"
+    ],
+    "post_hoc": false,
+    "relation": "current_operating_mainline"
+  },
+  "evidence_boundary": {
+    "policy_status": "research_only",
+    "current_action": "NO_ACTION",
+    "strong_industry_alpha_validated": false,
+    "manual_decision_support_ready": false,
+    "production_ready": false,
+    "auto_execution_allowed": false
+  },
+  "governance_requirements": [
+    "producer_source",
+    "task_brief",
+    "preregistration_or_explicit_post_hoc",
+    "changelog_entry",
+    "standard_output_manifest",
+    "evidence_boundary_consistency"
+  ]
+}

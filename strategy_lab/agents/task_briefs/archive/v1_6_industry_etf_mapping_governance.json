@@ -1,0 +1,84 @@
+{
+  "task_id": "v1_6_industry_etf_mapping_governance",
+  "version": "1.6.0",
+  "objective": "Advance the industry ETF research system to V1.6 by upgrading ETF mapping governance with manual ETF whitelists, blacklists, mapping evidence levels, review-required flags, review queues, compact Chinese outputs, and real-data validation.",
+  "owner_agent": "etf_mapping_liquidity_agent",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/industry_etf_value_agents.json",
+    "configs/industry_etf_mapping_keywords.json",
+    "configs/output_layout_policy.json",
+    "data_catalog/industry_etf_panel_schema.csv",
+    "data_catalog/industry_etf_source_inventory.csv",
+    "factor_library/industry_etf_factor_registry.csv",
+    "strategy_lab/industry_etf_value_os/agents.py",
+    "scripts/run_industry_etf_research_validation.py",
+    "scripts/audit_industry_etf_mapping.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history"
+  ],
+  "required_output_paths": [
+    "outputs/industry_etf_research_validation/report.md",
+    "outputs/industry_etf_research_validation/top_candidates.csv",
+    "outputs/industry_etf_research_validation/run_summary.json",
+    "outputs/industry_etf_research_validation/debug/all_ranked_industries.csv",
+    "outputs/industry_etf_research_validation/debug/raw_industry_panel.csv",
+    "outputs/industry_etf_research_validation/debug/agent_results.json",
+    "outputs/industry_etf_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_etf_research_validation/debug/rankic_report.csv",
+    "outputs/industry_etf_research_validation/debug/group_return_report.csv",
+    "outputs/industry_etf_research_validation/debug/topn_backtest.csv",
+    "outputs/industry_etf_research_validation/debug/etf_mapping_audit.csv",
+    "outputs/industry_etf_research_validation/debug/etf_mapping_review_queue.csv",
+    "outputs/industry_etf_research_validation/debug/etf_mapping_coverage_summary.csv",
+    "outputs/industry_etf_research_validation/debug/validation_decisions.csv",
+    "outputs/industry_etf_research_validation/debug/current_portfolio.csv",
+    "outputs/industry_etf_research_validation/debug/portfolio_summary.csv",
+    "outputs/industry_etf_research_validation/debug/real_data_audit.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v1_6_real_data_validation",
+      "description": "Run V1.6 on real AkShare public data with compact outputs and refreshed history.",
+      "command": "python .\\scripts\\run_industry_etf_research_validation.py --industry-level second --horizons 60,120,252 --trade-date 2026-06-12 --top 30 --portfolio-size 8 --min-etf-turnover 50000000 --refresh-history",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_real_data_mapping",
+      "description": "Audit V1.6 industry-to-ETF mapping quality, evidence levels, review flags, and excluded ETF types.",
+      "command": "python .\\scripts\\audit_industry_etf_mapping.py --input .\\outputs\\industry_etf_research_validation\\debug\\raw_industry_panel.csv --output .\\outputs\\audit\\industry_etf_mapping_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "Audit that V1.6 validation uses the compact output layout.",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_etf_research_validation --required-debug-files all_ranked_industries.csv raw_industry_panel.csv agent_results.json historical_feature_panel.csv rankic_report.csv group_return_report.csv topn_backtest.csv etf_mapping_audit.csv etf_mapping_review_queue.csv etf_mapping_coverage_summary.csv validation_decisions.csv current_portfolio.csv portfolio_summary.csv real_data_audit.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_industry_etf_factor_registry",
+      "description": "Audit the industry ETF factor registry after V1.6 mapping governance additions.",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_etf_factor_registry.csv --schema .\\data_catalog\\industry_etf_panel_schema.csv --output .\\outputs\\audit\\industry_etf_factor_registry_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "Audit task brief governance after V1.6 migration.",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V1.6 remains research-only. ETF mapping governance can improve implementation quality but does not validate alpha. Historical validation still uses PIT price-derived features and forward labels; current valuation is only current-snapshot explanation until enough archived PIT valuation snapshots exist.",
+  "research_boundary": "Research-only validation; no individual stocks, no trading signal, no order generation, no sample data, and no validated alpha promotion."
+}

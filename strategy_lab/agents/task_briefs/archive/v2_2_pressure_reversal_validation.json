@@ -1,0 +1,75 @@
+{
+  "task_id": "v2_2_pressure_reversal_validation",
+  "version": "2.2.0",
+  "objective": "推进纯申万行业指数研究系统到 V2.1/V2.2：用连续市场压力分数扩展条件化反转样本，按压力 episode 做稳定性检查，加入 bootstrap 置信检验、逐日组合净值、基准相对净值、样本强度惩罚和严格候选门槛。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/output_layout_policy.json",
+    "data_catalog/industry_index_panel_schema.csv",
+    "data_catalog/cache/industry_index/history/second",
+    "factor_library/industry_index_factor_registry.csv",
+    "outputs/industry_index_research_validation/debug/historical_feature_panel.csv",
+    "scripts/run_industry_pressure_reversal_v2_2.py",
+    "scripts/audit_factor_registry.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "standalone_oversold_promoted"
+  ],
+  "required_output_paths": [
+    "outputs/industry_pressure_reversal_v2_2/report.md",
+    "outputs/industry_pressure_reversal_v2_2/top_candidates.csv",
+    "outputs/industry_pressure_reversal_v2_2/run_summary.json",
+    "outputs/industry_pressure_reversal_v2_2/debug/pressure_signal_panel.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/event_backtest.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/nonoverlap_backtest.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/walk_forward_oos.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/bootstrap_confidence.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/stress_episode_report.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/pressure_episode_summary.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/daily_portfolio_nav.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/portfolio_nav_metrics.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/parameter_sensitivity.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/momentum_trap_cases.csv",
+    "outputs/industry_pressure_reversal_v2_2/debug/signal_rejection_log.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_2_pressure_reversal",
+      "description": "从 V1.8 历史特征面板运行 V2.1/V2.2 压力反转验证。",
+      "command": "python .\\scripts\\run_industry_pressure_reversal_v2_2.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.2 输出目录仍然只在顶层暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_pressure_reversal_v2_2 --required-debug-files pressure_signal_panel.csv event_backtest.csv nonoverlap_backtest.csv walk_forward_oos.csv bootstrap_confidence.csv stress_episode_report.csv pressure_episode_summary.csv daily_portfolio_nav.csv portfolio_nav_metrics.csv parameter_sensitivity.csv momentum_trap_cases.csv signal_rejection_log.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_factor_registry",
+      "description": "审计 V2.1/V2.2 新增压力类因子是否已登记并和 schema 对齐。",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_index_factor_registry.csv --schema .\\data_catalog\\industry_index_panel_schema.csv --output .\\outputs\\audit\\industry_index_factor_registry_audit",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.2 仍是 research_only。只有同时通过全样本、样本外、非重叠、bootstrap、逐日相对净值和样本规模门槛的信号，才允许进入候选；低样本正收益只能保留为条件观察。",
+  "research_boundary": "只研究申万行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把当前估值回填到历史，不把纯超跌升级为独立 alpha。"
+}

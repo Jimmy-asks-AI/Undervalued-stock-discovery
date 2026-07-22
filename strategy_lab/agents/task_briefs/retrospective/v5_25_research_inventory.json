@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v5_25_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.25",
+  "objective": "V5.25 资金流双正前推观察",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v5_25_fund_flow_forward_observer.py",
+    "outputs/audit/fund_flow_forward_observer_v5_25/run_summary.json",
+    "outputs/audit/fund_flow_forward_observer_v5_25/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/fund_flow_forward_observer_v5_25/report.md",
+    "outputs/audit/fund_flow_forward_observer_v5_25/run_summary.json",
+    "outputs/audit/fund_flow_forward_observer_v5_25/top_candidates.csv",
+    "outputs/audit/fund_flow_forward_observer_v5_25/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_25_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.25",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.25",
+  "source_paths": [
+    "scripts/build_v5_25_fund_flow_forward_observer.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v5_25_fund_flow_forward_observer.py",
+    "outputs/audit/fund_flow_forward_observer_v5_25/report.md",
+    "outputs/audit/fund_flow_forward_observer_v5_25/run_summary.json",
+    "outputs/audit/fund_flow_forward_observer_v5_25/top_candidates.csv",
+    "outputs/audit/fund_flow_forward_observer_v5_25/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "retrospective_governance",
+  "version_class": "data_governance_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/fund_flow_forward_observer_v5_25",
+    "run_summary_path": "outputs/audit/fund_flow_forward_observer_v5_25/run_summary.json",
+    "run_summary_version": "5.25.2",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/fund_flow_forward_observer_v5_25/report.md",
+      "outputs/audit/fund_flow_forward_observer_v5_25/run_summary.json",
+      "outputs/audit/fund_flow_forward_observer_v5_25/top_candidates.csv",
+      "outputs/audit/fund_flow_forward_observer_v5_25/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "eb7d70d8d0a011faf82ee61042594a3dd56812aee2eba973074309a01c77a575",
+    "run_summary_sha256": "444d3df8e53a664ea5702373ebec9f99c84d326be1f243b55d6d83802f0bb873"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "forward_fund_flow_evidence_chain_not_current_operating_mainline",
+  "research_result_status": "research_only_exploratory_observations_only",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.25 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

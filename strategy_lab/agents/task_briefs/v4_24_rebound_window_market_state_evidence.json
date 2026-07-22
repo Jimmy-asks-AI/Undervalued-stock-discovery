@@ -1,0 +1,69 @@
+{
+  "task_id": "v4_24_rebound_window_market_state_evidence",
+  "version": "4.24.0",
+  "objective": "停止退出规则微调，固定V4.20收益最高源信号，审计信号日前可见的市场修复状态能否区分更好的反弹窗口。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_24_market_state_evidence_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+    "scripts/run_industry_rebound_window_v4_24_market_state_evidence.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/report.md",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/run_summary.json",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/market_state_source_trades.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/market_state_cluster_panel.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/market_state_filtered_trades.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/market_state_summary.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_24_market_state_evidence/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_24_market_state_evidence",
+      "description": "运行 V4.24 事前市场状态证据审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_24_market_state_evidence.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.24 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_24_market_state_evidence",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.24 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_24_market_state_evidence --required-debug-files market_state_source_trades.csv market_state_cluster_panel.csv market_state_filtered_trades.csv market_state_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.24 只审计信号日前可见市场状态，不新增退出参数，不重新训练模型，不使用未来收益作为筛选条件。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

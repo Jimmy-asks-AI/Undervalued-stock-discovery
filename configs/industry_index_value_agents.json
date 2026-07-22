@@ -1,0 +1,48 @@
+{
+  "version": "2.8.0",
+  "system_name": "行业指数价值研究系统",
+  "research_target": "申万行业指数",
+  "language": "zh-CN",
+  "agents": [
+    {
+      "agent": "industry_data_steward",
+      "role": "校验申万行业覆盖、历史行情长度、估值缺失和本地缓存状态。"
+    },
+    {
+      "agent": "industry_fundamental_value_agent",
+      "role": "使用当前 PE、PB、股息率和父行业内相对估值做当前横截面解释。"
+    },
+    {
+      "agent": "industry_oversold_reversion_agent",
+      "role": "计算行业指数 20/60/120/252 日收益、252 日回撤、波动率和超跌分。"
+    },
+    {
+      "agent": "industry_cycle_quality_agent",
+      "role": "只把估值便宜且超跌的行业合并为候选，避免纯跌幅筛选。"
+    },
+    {
+      "agent": "industry_value_trap_agent",
+      "role": "处理短历史、估值缺失、超跌无估值确认和异常波动风险。"
+    },
+    {
+      "agent": "industry_quality_proxy_agent",
+      "role": "基于历史估值覆盖、PE/PB 有效性、分红连续性、估值稳定性、市场深度和专项数据缺口标记，生成行业质量代理。"
+    },
+    {
+      "agent": "industry_factor_validation_auditor",
+      "role": "生成 RankIC、分组收益、Top N、换手、成本后、年度、市场状态、滚动稳定性、样本外验证、历史估值数据路线审计、PIT 估值因子验证、估值质量验证和 V2.8 RankIC 到组合收益桥接验证。"
+    },
+    {
+      "agent": "industry_report_synthesizer",
+      "role": "输出行业指数报告、候选表、运行摘要和复现文件。"
+    }
+  ],
+  "boundaries": [
+    "只研究行业和行业指数，不做个股筛选。",
+    "当前估值快照只用于当前横截面解释，不能回填到历史验证。",
+    "公开申万历史估值可以作为 PIT 候选数据源；V2.8 继续使用 trade_date+lag 的保守 available_date 规则做 RankIC 到组合收益桥接验证，但进入正式历史估值因子前仍必须完成口径审计和 release lag 审计。",
+    "历史验证只使用 PIT 可得的行业指数价格、估值、回撤、波动和成交额衍生特征；未来收益标签禁止作为特征。",
+    "V2.8 不新增打分公式，只验证 V2.7 RankIC 信息能否转译为低频 Top-Bottom 组合收益。",
+    "输出为 research_only，不生成买卖信号或订单。"
+  ]
+}

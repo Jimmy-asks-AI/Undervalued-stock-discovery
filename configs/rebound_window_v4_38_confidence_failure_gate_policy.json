@@ -1,0 +1,19 @@
+{
+  "version": "4.38.0",
+  "policy_id": "rebound_window_v4_38_confidence_failure_gate",
+  "policy_name_zh": "V4.38 模型置信度与失败旗标门控",
+  "status": "research_only",
+  "objective": "只用事前可见的模型概率和失败旗标过滤 V4.7 宽事件池，检验合法样本数下能否突破收益厚度。",
+  "output_dir": "outputs/industry_rebound_window_v4_38_confidence_failure_gate",
+  "source_panel_path": "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity/debug/horizon_oracle_source_panel.csv",
+  "holding_days": 5,
+  "min_consecutive_signal_days": 1,
+  "primary_rule_id": "prob60_fail2",
+  "rules": [
+    {"rule_id": "prob60_fail2", "name_zh": "概率不低于0.60且失败旗标不超过2", "min_model_probability": 0.60, "max_failure_flag_count": 2},
+    {"rule_id": "prob62_fail2", "name_zh": "概率不低于0.62且失败旗标不超过2", "min_model_probability": 0.62, "max_failure_flag_count": 2},
+    {"rule_id": "prob64_fail1", "name_zh": "概率不低于0.64且失败旗标不超过1", "min_model_probability": 0.64, "max_failure_flag_count": 1},
+    {"rule_id": "prob70_fail2", "name_zh": "概率不低于0.70且失败旗标不超过2", "min_model_probability": 0.70, "max_failure_flag_count": 2}
+  ],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版不使用未来收益排序，不做个股筛选，不加入ETF，不生成交易指令。"
+}

@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "policy_id": "etf_assisted_trading_current",
+  "policy_status": "research_only",
+  "max_stale_calendar_days": 4,
+  "required_industry_count": 131,
+  "minimum_fresh_industry_count": 120,
+  "minimum_valuation_history_years": 8,
+  "portfolio_limits": {
+    "max_single_etf_weight": 0.08,
+    "max_strategy_weight": 0.20,
+    "minimum_cash_weight": 0.10
+  },
+  "position_rules": {
+    "max_holding_trading_days": 20,
+    "retention_rank_max": 10,
+    "max_spread_bps": 30,
+    "max_abs_iopv_premium": 0.02,
+    "minimum_average_daily_amount_20d": 10000000
+  },
+  "sources": {
+    "industry_history_dir": "data_catalog/cache/industry_index/history/second",
+    "valuation_history": "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+    "valuation_snapshot_dir": "data_catalog/cache/industry_index/valuation_snapshots/second",
+    "market_index_dir": "data_catalog/cache/market_index/wide",
+    "etf_history_dir": "data_catalog/cache/tradable_carrier_etf_history",
+    "fund_flow_dir": "data_catalog/cache/industry_fund_flow/ths",
+    "etf_pit_master": "data_catalog/etf_pit_master.csv",
+    "account_state": "portfolio_lab/current_account_state.json",
+    "timing_summary": "outputs/industry_rebound_window_v4_71_robustness_live_audit/run_summary.json",
+    "industry_selection_summary": "outputs/industry_rebound_leader_parent_neutral_v4_85/run_summary.json",
+    "forward_promotion_summary": "outputs/audit/rebound_leader_promotion_evaluator_v5_07/run_summary.json",
+    "forward_detector_summary": "outputs/audit/rebound_leader_forward_signal_detector_v5_08/run_summary.json",
+    "industry_candidate_file": "outputs/audit/rebound_leader_forward_signal_detector_v5_08/debug/selected_industry_candidates.csv",
+    "goal_summary": "outputs/audit/rebound_leader_goal_completion_audit_v5_10/run_summary.json",
+    "pit_universe_methodology_summary": "outputs/audit/pit_universe_methodology_remediation/run_summary.json",
+    "experiment_ledger_summary": "outputs/audit/research_experiment_ledger/run_summary.json",
+    "etf_lifecycle_summary": "outputs/audit/official_etf_lifecycle_sources/run_summary.json",
+    "etf_sw_industry_mapping": "data_catalog/etf_sw_industry_exposure_mapping.csv"
+  },
+  "output_dir": "outputs/etf_assisted_trading_current",
+  "allowed_actions": [
+    "BLOCKED_DATA",
+    "NO_ACTION",
+    "WATCH",
+    "WATCH_NO_TRADEABLE_ETF",
+    "REVIEW_REQUIRED",
+    "BUY_CANDIDATE",
+    "HOLD",
+    "REDUCE",
+    "EXIT"
+  ],
+  "auto_execution_allowed": false
+}

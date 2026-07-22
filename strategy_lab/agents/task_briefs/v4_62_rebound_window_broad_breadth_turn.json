@@ -1,0 +1,65 @@
+{
+  "task_id": "v4_62_rebound_window_broad_breadth_turn",
+  "version": "4.62.0",
+  "objective": "移除 V4.61 的新低缓解条件，改用负广度压力加 5 日上涨扩散转正，检验扩展年份和独立簇是否会牺牲收益质量。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_62_broad_breadth_turn_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+    "scripts/run_industry_rebound_window_v4_61_relaxed_breadth_relief.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/report.md",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/run_summary.json",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/broad_breadth_turn_source_panel.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_62_broad_breadth_turn/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_62_broad_breadth_turn",
+      "description": "运行 V4.62 宽广度转正扩样事件。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_61_relaxed_breadth_relief.py --config .\\configs\\rebound_window_v4_62_broad_breadth_turn_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用 V3.3 统一评价体系判断 V4.62 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_62_broad_breadth_turn",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.62 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_62_broad_breadth_turn --required-debug-files broad_breadth_turn_source_panel.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若扩样后独立簇改善但收益和坏窗口退化，则说明不能只靠放宽广度事件定义，应转向新信息源或更强的风险状态定义。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入 ETF，不生成交易指令。"
+}

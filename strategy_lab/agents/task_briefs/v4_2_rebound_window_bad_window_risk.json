@@ -1,0 +1,92 @@
+{
+  "task_id": "v4_2_rebound_window_bad_window_risk",
+  "version": "4.2.0",
+  "objective": "在V3.7行业广度概率模型基础上，单独训练坏窗口风险模型，检验能否在入场前过滤未来20日坏窗口，并用统一评价体系判断过滤后信号是否有效。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_2_bad_window_risk_policy.json",
+    "configs/rebound_window_online_state_machine_policy_v2_20.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "data_catalog/cache/industry_index/history/second",
+    "scripts/run_industry_rebound_window_v4_2_bad_window_risk.py",
+    "scripts/run_industry_rebound_window_v3_7_industry_breadth.py",
+    "scripts/run_industry_rebound_window_v3_4_realtime_model.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "test_future_return_used_for_signal",
+    "future_breadth_used_as_feature",
+    "future_amount_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_best_risk_threshold",
+    "result_driven_threshold_expansion"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/report.md",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/run_summary.json",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/v42_bad_window_feature_panel.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/target_label_audit.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/breadth_feature_audit.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/walk_forward_predictions.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/walk_forward_model_summary.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/bad_window_threshold_audit.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/bad_window_risk_bins.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/raw_model_realtime_trades.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/raw_model_realtime_summary.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/bad_window_filter_audit.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/failure_case_profile.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/failure_feature_contrast.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/annual_signal_distribution.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_2_bad_window_risk/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_2_bad_window_risk",
+      "description": "运行 V4.2 坏窗口风险识别研究。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_2_bad_window_risk.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.2 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_2_bad_window_risk",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.2 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_2_bad_window_risk --required-debug-files v42_bad_window_feature_panel.csv data_availability_audit.csv target_label_audit.csv breadth_feature_audit.csv walk_forward_predictions.csv walk_forward_year_summary.csv walk_forward_model_summary.csv bad_window_threshold_audit.csv bad_window_risk_bins.csv raw_model_realtime_trades.csv raw_model_realtime_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv bad_window_filter_audit.csv failure_case_profile.csv failure_feature_contrast.csv annual_signal_distribution.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.2 只能评估训练期坏窗口风险模型是否改善反弹窗口研究证据；不能用测试期未来收益挑选坏风险阈值。",
+  "research_boundary": "只研究申万行业、行业指数、行业广度、反弹概率和坏窗口风险；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把测试期未来收益或同日收盘执行作为特征。"
+}

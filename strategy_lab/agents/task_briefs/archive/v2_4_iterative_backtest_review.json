@@ -1,0 +1,79 @@
+{
+  "task_id": "v2_4_iterative_backtest_review",
+  "version": "2.4.iterative.3",
+  "objective": "把 V2.4 策略迭代标准化为三轮流程：刷新 V2.4 当前快照，使用 PIT 可得的行业指数价格、压力和质量代理运行回测，生成中文报告，审查报告，并根据审查结果推进下一轮，连续完成三次迭代。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "data_catalog/industry_index_panel_schema.csv",
+    "data_catalog/cache/industry_index/history/second",
+    "factor_library/industry_index_factor_registry.csv",
+    "outputs/industry_index_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_index_research_validation/debug/all_ranked_industries.csv",
+    "outputs/industry_fundamental_pressure_v2_4/run_summary.json",
+    "scripts/run_industry_fundamental_pressure_v2_4.py",
+    "scripts/run_industry_fundamental_pressure_iterative_v2_4.py",
+    "scripts/run_industry_pressure_quality_v2_3.py",
+    "scripts/audit_factor_registry.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "current_dividend_backfilled_to_history",
+    "historical_valuation_backfill",
+    "pit_valuation_claim_without_snapshots"
+  ],
+  "required_output_paths": [
+    "outputs/industry_fundamental_pressure_iterative_v2_4/report.md",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/top_candidates.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/run_summary.json",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/iteration_signal_panel.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/event_backtest.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/nonoverlap_backtest.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/walk_forward_oos.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/bootstrap_confidence.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/daily_portfolio_nav.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/portfolio_nav_metrics.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/parameter_sensitivity.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/signal_rejection_log.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/iteration_reviews.csv",
+    "outputs/industry_fundamental_pressure_iterative_v2_4/debug/iteration_configs.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_4_iterative_backtest_review",
+      "description": "刷新 V2.4 当前快照并运行三轮 PIT 代理回测与报告审查。",
+      "command": "python .\\scripts\\run_industry_fundamental_pressure_iterative_v2_4.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.4 三轮迭代输出目录仍然只在顶层暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_fundamental_pressure_iterative_v2_4 --required-debug-files iteration_signal_panel.csv event_backtest.csv nonoverlap_backtest.csv walk_forward_oos.csv bootstrap_confidence.csv daily_portfolio_nav.csv portfolio_nav_metrics.csv parameter_sensitivity.csv signal_rejection_log.csv iteration_reviews.csv iteration_configs.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_factor_registry",
+      "description": "审计 V2.4 迭代验证类因子是否已登记并和 schema 对齐。",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_index_factor_registry.csv --schema .\\data_catalog\\industry_index_panel_schema.csv --output .\\outputs\\audit\\industry_index_factor_registry_audit",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "三轮迭代仍是 research_only。当前 PE、PB、股息率不能进入历史回测；只有同时通过样本量、样本外、非重叠、bootstrap、逐日相对净值和审查门槛的信号，才允许进入候选待复核。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把当前估值回填到历史，不把条件观察误标为可交易信号。"
+}

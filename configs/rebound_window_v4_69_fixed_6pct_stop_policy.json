@@ -1,0 +1,16 @@
+{
+  "version": "4.69.0",
+  "policy_id": "rebound_window_v4_69_fixed_6pct_stop",
+  "policy_name_zh": "V4.69 固定6%止损复核",
+  "source_trades": "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/realtime_simulation_trades.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_69_fixed_6pct_stop",
+  "fixed_stop_loss": 0.06,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "final_verdict": "research_only；固定 6% 止损用于检验 V4.68 的尾部风险是否能被简单退出层修复。",
+  "main_diagnosis": "V4.69 在 V4.68 事件集上叠加固定 6% 止损，直接对应 V3.4 最差单笔不得低于 -6% 的硬门槛。",
+  "leakage_evidence": "固定使用 V4.68 已冻结事件集和一个预先声明的 6% 止损线；不扫描止损参数，不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 只复核一个固定 6% 止损，不做止损网格；目标是验证退出层能否修复 V4.68 的路径和尾部硬伤。",
+  "research_boundary": "本版本只研究申万行业和行业指数的市场反弹窗口退出层；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

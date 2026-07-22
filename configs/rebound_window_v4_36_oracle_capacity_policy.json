@@ -1,0 +1,12 @@
+{
+  "version": "4.36.0",
+  "policy_id": "rebound_window_v4_36_full_sample_oracle_capacity",
+  "policy_name_zh": "V4.36 事件池理论容量审计",
+  "status": "research_only",
+  "objective": "使用未来已知收益做不可交易的理论上限审计，判断当前基础事件池本身是否有足够收益容量支持评价体系门槛。",
+  "output_dir": "outputs/industry_rebound_window_v4_36_oracle_capacity",
+  "source_panel_path": "outputs/industry_rebound_window_v4_34_flow_risk_relative_frontier/debug/flow_risk_enriched_trades.csv",
+  "top_n_grid": [30, 25, 20, 15, 10],
+  "primary_top_n": 30,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版使用未来收益排序做理论容量审计，不是可交易规则，不做个股筛选，不加入ETF，不生成交易指令。"
+}

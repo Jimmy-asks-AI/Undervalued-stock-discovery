@@ -1,0 +1,62 @@
+field,category,type,required_for_latest,required_for_pit_backtest,allowed_values,unit,timestamp_rule,validation_rule,downstream_use
+asset,identity,string,yes,yes,,security_code,stable identifier at trade_date,non_empty_keep_leading_zero,all agents
+name,identity,string,yes,yes,,security_name,name as of trade_date for history,non_empty,fundamental_data_steward
+trade_date,timestamp,date,yes,yes,,YYYY-MM-DD,decision or rebalance date,valid_date,all agents
+available_date,timestamp,date,no,yes,,YYYY-MM-DD,earliest investor observable date,available_date_lte_trade_date,fundamental_data_steward
+report_period,timestamp,date,no,yes,,YYYY-MM-DD,financial statement period,valid_date_if_present,fundamental_data_steward
+source,provenance,string,yes,yes,,vendor_or_file,source for every row,non_empty,fundamental_data_steward
+source_vintage,provenance,string,no,yes,,run_id_or_fetch_time,vendor snapshot or fetch identifier,non_empty_for_pit,fundamental_data_steward
+data_status,provenance,enum,yes,yes,pit_verified|research_only|prototype|not_pit|rejected,status,row usability class,allowed_enum,all agents
+industry,classification,string,yes,yes,,industry_code_or_name,point-in-time industry for history,non_empty,industry_relative_value_agent
+industry_available_date,classification,date,no,yes,,YYYY-MM-DD,industry classification observable date,available_date_lte_trade_date,industry_relative_value_agent
+market_cap,size,float,yes,yes,CNY,CNY,close-date market capitalization,non_negative,valuation_factor_researcher
+avg_amount_20d,liquidity,float,yes,yes,CNY,CNY,20-trading-day average traded amount,non_negative,value_trap_risk_agent
+st_flag,tradability,bool,yes,yes,0|1|true|false,flag,historical exchange status date,allowed_bool,value_trap_risk_agent
+suspend_flag,tradability,bool,yes,yes,0|1|true|false,flag,historical suspension status date,allowed_bool,value_trap_risk_agent
+limit_status,tradability,enum,no,yes,none|up_limit|down_limit|unknown,status,historical limit status date,allowed_enum_if_present,value_trap_risk_agent
+list_date,lifecycle,date,no,yes,,YYYY-MM-DD,listing date,valid_date_if_present,universe_lifecycle_agent
+delist_date,lifecycle,date,no,no,,YYYY-MM-DD,delisting date if any,valid_date_if_present,universe_lifecycle_agent
+pe_ttm,valuation,float,yes,yes,multiple,multiple,financial report announcement date,positive_or_blank_for_rank,valuation_factor_researcher
+pb,valuation,float,yes,yes,multiple,multiple,financial report announcement date,positive_or_blank_for_rank,valuation_factor_researcher
+pcf_ocf_ttm,valuation,float,yes,yes,multiple,multiple,financial report announcement date,positive_or_blank_for_rank,valuation_factor_researcher
+fcf_yield_ttm,valuation,float,yes,yes,ratio,decimal,financial report announcement date,numeric,valuation_factor_researcher
+dividend_yield_ttm,shareholder_return,float,yes,yes,ratio,decimal,ex-dividend and dividend announcement dates,non_negative,shareholder_return_analyst
+ev_ebitda,valuation,float,no,no,multiple,multiple,financial report announcement date,positive_or_blank_for_rank,valuation_factor_researcher
+roe_ttm,profitability,float,yes,yes,ratio,decimal,financial report announcement date,numeric,profitability_growth_analyst
+roic_ttm,profitability,float,yes,yes,ratio,decimal,financial report announcement date,numeric,profitability_growth_analyst
+gross_margin_stability_3y,profitability,float,no,no,score,0_to_1,financial report announcement date,zero_to_one_if_present,profitability_growth_analyst
+ocf_to_net_income,accounting_quality,float,yes,yes,ratio,decimal,financial report announcement date,numeric,accounting_quality_auditor
+accruals_to_assets,accounting_quality,float,no,yes,ratio,decimal,financial report announcement date,numeric,accounting_quality_auditor
+debt_to_assets,balance_sheet,float,yes,yes,ratio,decimal,financial report announcement date,zero_to_one_if_present,value_trap_risk_agent
+interest_coverage,balance_sheet,float,yes,yes,ratio,decimal,financial report announcement date,numeric,value_trap_risk_agent
+equity_to_assets,balance_sheet,float,no,yes,ratio,decimal,financial report announcement date,zero_to_one_if_present,financial_sector_value_auditor
+asset_leverage,balance_sheet,float,no,yes,multiple,multiple,financial report announcement date,positive_or_blank_for_rank,financial_sector_value_auditor
+payout_ratio,shareholder_return,float,yes,yes,ratio,decimal,annual report and dividend plan announcement date,numeric,shareholder_return_analyst
+revenue_cagr_3y,growth,float,yes,yes,ratio,decimal,financial report announcement date,numeric,profitability_growth_analyst
+net_profit_cagr_3y,growth,float,yes,yes,ratio,decimal,financial report announcement date,numeric,profitability_growth_analyst
+eps_growth_stability_5y,growth,float,no,no,score,0_to_1,financial report announcement date,zero_to_one_if_present,profitability_growth_analyst
+loan_to_deposit,bank_risk,float,no,yes,ratio,decimal,financial report announcement date,target_band_if_present,financial_sector_value_auditor
+loan_growth_yoy,bank_growth,float,no,yes,ratio,decimal,financial report announcement date,numeric,financial_sector_value_auditor
+deposit_growth_yoy,bank_growth,float,no,yes,ratio,decimal,financial report announcement date,numeric,financial_sector_value_auditor
+npl_ratio,bank_asset_quality,float,no,yes,ratio,decimal,financial report announcement date,zero_to_one_if_present,financial_sector_value_auditor
+provision_coverage_ratio,bank_asset_quality,float,no,yes,ratio,decimal,financial report announcement date,numeric,financial_sector_value_auditor
+core_tier1_capital_adequacy_ratio,bank_capital,float,no,yes,ratio,decimal,financial report announcement date,zero_to_one_if_present,financial_sector_value_auditor
+capital_adequacy_ratio,bank_capital,float,no,yes,ratio,decimal,financial report announcement date,zero_to_one_if_present,financial_sector_value_auditor
+net_interest_margin,bank_profitability,float,no,yes,ratio,decimal,financial report announcement date,numeric,financial_sector_value_auditor
+risk_coverage_ratio,securities_risk,float,no,yes,ratio,decimal,regulatory report announcement date,numeric,financial_sector_value_auditor
+capital_leverage_ratio,securities_risk,float,no,yes,ratio,decimal,regulatory report announcement date,numeric,financial_sector_value_auditor
+liquidity_coverage_ratio,securities_liquidity,float,no,yes,ratio,decimal,regulatory report announcement date,numeric,financial_sector_value_auditor
+net_stable_funding_ratio,securities_liquidity,float,no,yes,ratio,decimal,regulatory report announcement date,numeric,financial_sector_value_auditor
+net_capital,securities_capital,float,no,yes,CNY,CNY,regulatory report announcement date,non_negative,financial_sector_value_auditor
+financial_market_risk_assets_to_equity,securities_risk,float,no,yes,ratio,decimal,financial report announcement date,numeric,financial_sector_value_auditor
+repo_funding_to_equity,securities_risk,float,no,yes,ratio,decimal,financial report announcement date,numeric,financial_sector_value_auditor
+customer_deposit_to_liabilities,securities_liquidity,float,no,yes,ratio,decimal,financial report announcement date,zero_to_one_if_present,financial_sector_value_auditor
+price_to_embedded_value,insurance_valuation,float,no,yes,multiple,multiple,annual or interim report announcement date,positive_or_blank_for_rank,financial_sector_value_auditor
+embedded_value_growth,insurance_growth,float,no,yes,ratio,decimal,annual or interim report announcement date,numeric,financial_sector_value_auditor
+new_business_value_growth,insurance_growth,float,no,yes,ratio,decimal,annual or interim report announcement date,numeric,financial_sector_value_auditor
+core_solvency_ratio,insurance_capital,float,no,yes,ratio,decimal,solvency report announcement date,numeric,financial_sector_value_auditor
+comprehensive_solvency_ratio,insurance_capital,float,no,yes,ratio,decimal,solvency report announcement date,numeric,financial_sector_value_auditor
+combined_ratio,insurance_underwriting,float,no,yes,ratio,decimal,annual or interim report announcement date,numeric,financial_sector_value_auditor
+forward_return_60d,label,float,no,no,ratio,decimal,future label after trade_date,forbidden_as_feature,factor_validation_auditor
+forward_return_120d,label,float,no,no,ratio,decimal,future label after trade_date,forbidden_as_feature,factor_validation_auditor
+forward_return_252d,label,float,no,no,ratio,decimal,future label after trade_date,forbidden_as_feature,factor_validation_auditor

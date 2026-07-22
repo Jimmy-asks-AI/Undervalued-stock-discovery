@@ -1,0 +1,32 @@
+{
+  "version": "4.70.0",
+  "policy_id": "rebound_window_v4_70_delayed_entry_vol_stop",
+  "policy_name_zh": "V4.70 延迟入场与高波动保护止损",
+  "signal_type": "delayed_entry_volatility_stop",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop",
+  "debug_source_panel_file": "delayed_entry_vol_stop_source_panel.csv",
+  "holding_days": 20,
+  "entry_lag_days": 2,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.43},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20},
+    {"field": "liquidity_repair_5d", "op": ">=", "value": 0.05},
+    {"field": "market_return_10d", "op": "<=", "value": 0.0}
+  ],
+  "conditional_stop_loss": {
+    "level": 0.06,
+    "conditions": [
+      {"field": "market_volatility_20d_vs_60d", "op": ">=", "value": 1.30}
+    ]
+  },
+  "final_verdict": "research_only；V4.70 检验延迟入场与高波动保护止损是否能同时修复 V4.68 的尾部路径和 V4.69 的过度止损问题。",
+  "main_diagnosis": "V4.70 在 V4.68 的非追涨事件定义上固定延迟 2 个交易日入场，并且只在信号日 20/60 日波动比不低于 1.30 时启用 6% 保护止损。该版本检验的是反弹窗口识别的入场节奏和路径风控，不是行业选择 alpha。",
+  "report_interpretation": "延迟 2 个交易日用于避开信号刚出现后的下跌惯性；高波动保护止损只在信号日波动已经显著放大时启用，避免 V4.69 那种对所有事件一刀切止损导致的胜率损伤。",
+  "leakage_evidence": "固定使用信号日已知的负广度、5 日上涨扩散、5 日成交修复、过去 10 日市场收益和 20/60 日波动比；延迟入场为固定 2 个交易日，不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 只增加一个固定延迟和一个信号日高波动保护止损，不做网格搜索；目标是验证 V4.68/V4.69 暴露的两个具体失败点。",
+  "research_boundary": "本版本只研究申万行业和行业指数的市场反弹窗口；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

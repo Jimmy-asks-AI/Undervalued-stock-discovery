@@ -1,0 +1,68 @@
+{
+  "task_id": "v4_28_rebound_window_wide_pool_horizon",
+  "version": "4.28.0",
+  "objective": "固定V4.27广度底线，审计V4.7宽事件池在5/10/15/20日持有期下是否能突破收益厚度。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_28_wide_pool_horizon_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/horizon_grid_realtime_trades.csv",
+    "scripts/run_industry_rebound_window_v4_28_wide_pool_horizon.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_event_filter"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/report.md",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/run_summary.json",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/horizon_source_trades.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/horizon_filtered_trades.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/horizon_rule_summary.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_28_wide_pool_horizon/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_28_wide_pool_horizon",
+      "description": "运行 V4.28 宽池固定广度底线多持有期审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_28_wide_pool_horizon.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.28 主规则是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_28_wide_pool_horizon",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.28 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_28_wide_pool_horizon --required-debug-files horizon_source_trades.csv horizon_filtered_trades.csv horizon_rule_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.28 只做固定广度底线和持有期审计；多持有期结果用于诊断，不允许把全样本最优持有期直接升级为有效窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

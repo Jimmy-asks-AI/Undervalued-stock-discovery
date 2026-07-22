@@ -1,0 +1,34 @@
+{
+  "task_id": "v0_3_factor_registry_audit",
+  "version": "0.3.0",
+  "objective": "Audit the factor registry for metadata completeness and schema-compatible required fields.",
+  "owner_agent": "factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "factor_library/fundamental_value_factor_registry.csv",
+    "data_catalog/input_asset_panel_schema.csv",
+    "scripts/audit_factor_registry.py"
+  ],
+  "forbidden_input_patterns": [
+    "forward_return_60d",
+    "forward_return_120d",
+    "forward_return_252d",
+    "future_label_as_feature",
+    "blank_failure_modes",
+    "validated_alpha"
+  ],
+  "required_output_paths": [
+    "outputs/audit/factor_registry_audit/factor_registry_audit_report.json",
+    "outputs/audit/factor_registry_audit/factor_registry_audit_issues.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "audit_registry",
+      "description": "Audit the current fundamental value factor registry.",
+      "command": "python .\\scripts\\audit_factor_registry.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "Registry audit pass means factor definitions are structurally usable. It does not mean factors are validated.",
+  "research_boundary": "IC, RankIC, grouped returns, neutralization, OOS, turnover, cost, and capacity gates remain future work."
+}

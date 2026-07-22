@@ -1,0 +1,73 @@
+{
+  "task_id": "v2_4_fundamental_pressure_validation",
+  "version": "2.4.0",
+  "objective": "推进纯申万行业指数研究系统到 V2.4：在 V2.3 价格压力和价格质量框架上接入当前 PE、PB、股息率估值快照，形成当前快照候选解释，并输出 PIT 估值快照就绪审计。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/output_layout_policy.json",
+    "data_catalog/industry_index_panel_schema.csv",
+    "data_catalog/cache/industry_index/valuation_snapshots/second",
+    "factor_library/industry_index_factor_registry.csv",
+    "outputs/industry_index_research_validation/debug/all_ranked_industries.csv",
+    "outputs/industry_pressure_quality_v2_3/debug/pressure_quality_signal_panel.csv",
+    "outputs/industry_pressure_quality_v2_3/debug/parameter_sensitivity.csv",
+    "scripts/run_industry_fundamental_pressure_v2_4.py",
+    "scripts/audit_factor_registry.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "current_dividend_backfilled_to_history",
+    "historical_valuation_backfill",
+    "pit_valuation_claim_without_snapshots"
+  ],
+  "required_output_paths": [
+    "outputs/industry_fundamental_pressure_v2_4/report.md",
+    "outputs/industry_fundamental_pressure_v2_4/top_candidates.csv",
+    "outputs/industry_fundamental_pressure_v2_4/run_summary.json",
+    "outputs/industry_fundamental_pressure_v2_4/debug/current_fundamental_pressure_panel.csv",
+    "outputs/industry_fundamental_pressure_v2_4/debug/valuation_snapshot_coverage.csv",
+    "outputs/industry_fundamental_pressure_v2_4/debug/historical_signal_evidence.csv",
+    "outputs/industry_fundamental_pressure_v2_4/debug/pit_readiness_audit.csv",
+    "outputs/industry_fundamental_pressure_v2_4/debug/candidate_decision_log.csv",
+    "outputs/industry_fundamental_pressure_v2_4/debug/current_market_pressure_context.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_4_fundamental_pressure",
+      "description": "运行 V2.4 当前估值压力候选研究。",
+      "command": "python .\\scripts\\run_industry_fundamental_pressure_v2_4.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.4 输出目录仍然只在顶层暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_fundamental_pressure_v2_4 --required-debug-files current_fundamental_pressure_panel.csv valuation_snapshot_coverage.csv historical_signal_evidence.csv pit_readiness_audit.csv candidate_decision_log.csv current_market_pressure_context.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_factor_registry",
+      "description": "审计 V2.4 新增当前估值压力因子是否已登记并和 schema 对齐。",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_index_factor_registry.csv --schema .\\data_catalog\\industry_index_panel_schema.csv --output .\\outputs\\audit\\industry_index_factor_registry_audit",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.4 仍是 research_only。当前 PE、PB、股息率只能用于当前候选解释；在估值快照积累到足够 PIT 样本以前，不允许把估值因子称为历史验证通过的 alpha。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把当前估值回填到历史，不把当前快照候选误标为可交易信号。"
+}

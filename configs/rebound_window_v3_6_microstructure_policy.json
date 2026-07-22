@@ -1,0 +1,16 @@
+{
+  "version": "3.6.0",
+  "policy_id": "rebound_window_v3_6_microstructure",
+  "policy_name_zh": "V3.6 市场微观情绪数据可得性与短样本审计",
+  "status": "research_only",
+  "objective": "检查A股市场微观情绪数据（市场资金流、涨跌停池、市场活跃度等）是否具备足够历史长度与PIT边界，用于后续有效反弹窗口识别。",
+  "output_dir": "outputs/industry_rebound_window_v3_6_microstructure",
+  "source_run_dir": "outputs/industry_rebound_window_v3_5_independent_risk",
+  "microstructure_cache_dir": "data_catalog/cache/microstructure/v3_6",
+  "refresh_microstructure": false,
+  "minimum_history_rows_for_backtest": 1000,
+  "minimum_history_rows_for_observation": 120,
+  "minimum_nonoverlap_events_for_candidate": 30,
+  "test_dates_for_limit_pool": ["2024-01-31", "2026-06-16"],
+  "research_boundary": "V3.6只审计市场微观情绪数据可得性和短样本观察；不做个股筛选，不加入ETF，不生成买卖指令，不把当前或短样本数据伪装成长历史信号。"
+}

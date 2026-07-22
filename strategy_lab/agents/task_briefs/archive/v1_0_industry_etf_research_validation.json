@@ -1,0 +1,76 @@
+{
+  "task_id": "v1_0_industry_etf_research_validation",
+  "version": "1.0.0",
+  "objective": "Upgrade the industry ETF system from current snapshot screening to SW second-industry research validation with local cache, historical labels, ETF mapping audit, and compact outputs.",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/industry_etf_value_agents.json",
+    "configs/industry_etf_mapping_keywords.json",
+    "configs/output_layout_policy.json",
+    "data_catalog/industry_etf_panel_schema.csv",
+    "data_catalog/industry_etf_source_inventory.csv",
+    "factor_library/industry_etf_factor_registry.csv",
+    "strategy_lab/industry_etf_value_os/agents.py",
+    "scripts/run_industry_etf_research_validation.py",
+    "scripts/audit_industry_etf_mapping.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history"
+  ],
+  "required_output_paths": [
+    "outputs/industry_etf_research_validation/report.md",
+    "outputs/industry_etf_research_validation/top_candidates.csv",
+    "outputs/industry_etf_research_validation/run_summary.json",
+    "outputs/industry_etf_research_validation/debug/all_ranked_industries.csv",
+    "outputs/industry_etf_research_validation/debug/raw_industry_panel.csv",
+    "outputs/industry_etf_research_validation/debug/agent_results.json",
+    "outputs/industry_etf_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_etf_research_validation/debug/rankic_report.csv",
+    "outputs/industry_etf_research_validation/debug/group_return_report.csv",
+    "outputs/industry_etf_research_validation/debug/topn_backtest.csv",
+    "outputs/industry_etf_research_validation/debug/etf_mapping_audit.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_industry_etf_research_validation",
+      "description": "Run SW second-industry validation with compact outputs.",
+      "command": "python .\\scripts\\run_industry_etf_research_validation.py --industry-level second --horizons 60,120,252 --trade-date 2026-06-12 --top 30",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_industry_etf_mapping",
+      "description": "Audit industry-to-ETF mapping quality and excluded ETF types.",
+      "command": "python .\\scripts\\audit_industry_etf_mapping.py --input .\\outputs\\industry_etf_research_validation\\debug\\raw_industry_panel.csv --output .\\outputs\\industry_etf_research_validation\\debug\\etf_mapping_audit_check.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "Audit that V1 validation uses the compact output layout.",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_etf_research_validation --required-debug-files all_ranked_industries.csv raw_industry_panel.csv agent_results.json historical_feature_panel.csv rankic_report.csv group_return_report.csv topn_backtest.csv etf_mapping_audit.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_industry_etf_factor_registry",
+      "description": "Audit the industry ETF factor registry after V1 factor additions.",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_etf_factor_registry.csv --schema .\\data_catalog\\industry_etf_panel_schema.csv --output .\\outputs\\audit\\industry_etf_factor_registry_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "Audit task brief governance after adding V1 validation.",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "Historical validation uses only PIT price-derived features and forward labels; current valuation is only current-snapshot explanation.",
+  "research_boundary": "Research-only validation; no individual stocks, no trading signal, no order generation, and no validated alpha promotion."
+}

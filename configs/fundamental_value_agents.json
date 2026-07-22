@@ -1,0 +1,119 @@
+{
+  "system_name": "Fundamental Value Research OS",
+  "version": "0.1.0",
+  "objective": "Find potentially undervalued assets using fundamental factors under strict data, validation, and value-trap controls.",
+  "global_rules": [
+    "Historical research requires point-in-time data and available_date.",
+    "Current snapshots must be tagged research_only unless all PIT fields are verified.",
+    "Raw unadjusted prices cannot be used as long-horizon total-return labels.",
+    "Industry membership, ST status, suspensions, dividends, and financial statements must obey availability dates.",
+    "Hard vetoes are reserved for data invalidity, non-investable status, fraud/ST/delist risk, or extreme value-trap evidence."
+  ],
+  "agents": [
+    {
+      "id": "chief_value_orchestrator",
+      "role": "Own the research run, call agents in order, enforce gates, and produce promotion status.",
+      "inputs": ["run_config", "asset_panel", "factor_registry"],
+      "outputs": ["run_manifest", "agent_results", "candidate_ranking"],
+      "must_check": ["same-universe comparisons", "same-period baselines", "research_only tagging"]
+    },
+    {
+      "id": "fundamental_data_steward",
+      "role": "Validate raw fields, timestamps, coverage, units, duplicates, and lifecycle constraints.",
+      "inputs": ["asset_panel", "data_contract"],
+      "outputs": ["data_quality_report", "coverage_flags"],
+      "must_check": ["available_date", "trade_date", "asset identity", "industry timestamp", "ST/suspension fields"]
+    },
+    {
+      "id": "accounting_quality_auditor",
+      "role": "Detect accounting quality and cash-flow reliability problems.",
+      "inputs": ["financial_statement_fields", "cash_flow_fields", "balance_sheet_fields"],
+      "outputs": ["accounting_quality_score", "accounting_red_flags"],
+      "must_check": ["operating cash flow coverage", "accrual pressure", "debt burden", "payout sustainability"]
+    },
+    {
+      "id": "valuation_factor_researcher",
+      "role": "Compute absolute valuation cheapness and verify valuation factor definitions.",
+      "inputs": ["valuation_fields", "factor_registry"],
+      "outputs": ["valuation_cheapness_score", "valuation_feature_notes"],
+      "must_check": ["PE/PB/PCF signs", "negative denominator handling", "winsorization", "industry comparability"]
+    },
+    {
+      "id": "profitability_growth_analyst",
+      "role": "Score profitability quality, capital efficiency, and growth durability.",
+      "inputs": ["profitability_fields", "growth_fields"],
+      "outputs": ["profitability_quality_score", "growth_stability_score"],
+      "must_check": ["ROE/ROIC stability", "revenue growth", "earnings growth", "margin deterioration"]
+    },
+    {
+      "id": "shareholder_return_analyst",
+      "role": "Score shareholder return and dividend/buyback sustainability.",
+      "inputs": ["dividend_fields", "buyback_fields", "cash_flow_fields"],
+      "outputs": ["shareholder_return_score", "payout_sustainability_flags"],
+      "must_check": ["dividend yield", "payout ratio", "FCF coverage", "one-off dividend risk"]
+    },
+    {
+      "id": "industry_relative_value_agent",
+      "role": "Compare valuation and quality within industry peers without using current industry labels in history.",
+      "inputs": ["asset_panel", "industry_classification"],
+      "outputs": ["industry_relative_value_score", "peer_context"],
+      "must_check": ["industry PIT rule", "peer count", "sector-specific valuation metrics"]
+    },
+    {
+      "id": "financial_sector_value_auditor",
+      "role": "Re-score banks, securities firms, insurers, and diversified financials with sector-specific value, capital, liquidity, and risk absorption factors.",
+      "inputs": ["financial_candidates", "sector_balance_sheet_fields", "regulatory_metric_fields"],
+      "outputs": ["financial_value_score", "financial_proxy_status", "sector_metric_gap_report"],
+      "must_check": ["PB versus ROE", "bank asset quality", "bank capital adequacy", "broker risk control ratios", "insurer embedded value and solvency"]
+    },
+    {
+      "id": "value_trap_risk_agent",
+      "role": "Penalize assets that look cheap because fundamentals or tradability are breaking.",
+      "inputs": ["all_agent_scores", "risk_fields", "tradability_fields"],
+      "outputs": ["value_trap_penalty", "hard_blocks"],
+      "must_check": ["ST/delist risk", "suspension", "cash-flow failure", "excess leverage", "liquidity"]
+    },
+    {
+      "id": "factor_validation_auditor",
+      "role": "Audit factor evidence before any promotion beyond candidate status.",
+      "inputs": ["factor_tests", "backtest_results", "experiment_ledger"],
+      "outputs": ["validation_verdict", "required_retests"],
+      "must_check": ["RankIC", "group monotonicity", "OOS", "costs", "turnover", "capacity", "PBO/DSR proxy"]
+    },
+    {
+      "id": "research_report_synthesizer",
+      "role": "Write candidate reports with evidence, caveats, and next required data or tests.",
+      "inputs": ["candidate_ranking", "agent_results", "validation_verdict"],
+      "outputs": ["candidate_report", "watchlist_export"],
+      "must_check": ["plain-language thesis", "score decomposition", "failure cases", "no-investment-advice wording"]
+    }
+  ],
+  "pipeline": [
+    "chief_value_orchestrator",
+    "fundamental_data_steward",
+    "valuation_factor_researcher",
+    "industry_relative_value_agent",
+    "financial_sector_value_auditor",
+    "profitability_growth_analyst",
+    "shareholder_return_analyst",
+    "accounting_quality_auditor",
+    "value_trap_risk_agent",
+    "factor_validation_auditor",
+    "research_report_synthesizer"
+  ],
+  "score_model_v0": {
+    "valuation_cheapness": 0.35,
+    "industry_relative_undervaluation": 0.20,
+    "profitability_quality": 0.15,
+    "growth_stability": 0.10,
+    "shareholder_return": 0.10,
+    "cash_flow_safety": 0.10,
+    "subtract": ["value_trap_penalty", "data_quality_penalty", "liquidity_penalty", "ST_penalty"]
+  },
+  "candidate_buckets": [
+    "deep_value_candidate",
+    "quality_value_candidate",
+    "cyclical_value_candidate",
+    "value_trap_rejected"
+  ]
+}

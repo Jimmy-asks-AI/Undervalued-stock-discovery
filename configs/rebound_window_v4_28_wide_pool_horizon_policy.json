@@ -1,0 +1,22 @@
+{
+  "version": "4.28.0",
+  "policy_id": "rebound_window_v4_28_wide_pool_horizon",
+  "policy_name_zh": "V4.28 宽池固定广度底线多持有期审计",
+  "status": "research_only",
+  "objective": "固定V4.27的事前广度底线，在V4.7多持有期宽事件网格上审计延长持有期是否能提升收益厚度。",
+  "output_dir": "outputs/industry_rebound_window_v4_28_wide_pool_horizon",
+  "source_trades_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/horizon_grid_realtime_trades.csv",
+  "source_reference_output_dir": "outputs/industry_rebound_window_v4_7_short_horizon_expansion",
+  "primary_min_consecutive_signal_days": 1,
+  "primary_horizon": 5,
+  "horizon_grid": [5, 10, 15, 20],
+  "min_consecutive_signal_days_grid": [1, 2, 3, 4, 5],
+  "breadth_floor": 0.35,
+  "min_realtime_events": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "min_active_years": 6,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版固定V4.27事前广度底线，不训练模型，不新增后验过滤，不做个股筛选，不加入ETF，不生成交易指令。"
+}

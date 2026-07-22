@@ -1,0 +1,94 @@
+{
+  "policy_id": "fund_flow_forward_chain_integrity_v2",
+  "version": "2.2.0",
+  "status": "research_only",
+  "timezone": "Asia/Shanghai",
+  "calendar": {
+    "source": "A-share exchange sessions via cached AkShare trade calendar",
+    "weekday_fallback_allowed": false,
+    "entry_lag_sessions": 1,
+    "holding_sessions": 20
+  },
+  "cutoffs": {
+    "evidence_available_local": "15:00:00",
+    "entry_cutoff_local": "09:30:00",
+    "entry_close_freeze_window_local": [
+      "15:00:00",
+      "16:00:00"
+    ],
+    "exit_settlement_not_before_local": "15:00:00",
+    "pre_window_status": "early_pending",
+    "pre_window_authoritative_event_allowed": false
+  },
+  "integrity": {
+    "authoritative_ledger": "logs/v5_25_fund_flow_forward_ledger.jsonl",
+    "authoritative_candidate_freeze_ledger": "logs/v5_33_fund_flow_entry_price_freeze.jsonl",
+    "authoritative_benchmark_freeze_ledger": "logs/v5_34_fund_flow_benchmark_entry_freeze.jsonl",
+    "materialized_view": "logs/v5_25_fund_flow_forward_ledger.csv",
+    "append_only_hash_chain": true,
+    "independent_head_checkpoint_required": true,
+    "missing_checkpoint_on_nonempty_ledger_fails_closed": true,
+    "checkpoint_bootstrap_requires_explicit_migration": true,
+    "first_freeze_event_is_immutable": true,
+    "settlement_event_per_observation_maximum": 1,
+    "settlement_immutable_field_mutation_allowed": false,
+    "settlement_exact_exit_source_snapshot_required": true,
+    "settlement_metrics_must_be_reproducible": true,
+    "observation_source_bundle_snapshot_required": true,
+    "entry_price_source_snapshot_required": true,
+    "benchmark_price_source_snapshot_required": true,
+    "candidate_benchmark_entry_price_must_match": true,
+    "materialized_csv_must_match_event_ledger": true,
+    "json_schema_validation_required": true,
+    "atomic_replace": true,
+    "process_lock": true,
+    "minimum_benchmark_industries": 100,
+    "exact_entry_and_exit_dates_required": true,
+    "late_backfill_status": "late_backfill_excluded",
+    "late_backfill_permanently_promotion_ineligible": true,
+    "baseline_overwrite_allowed": false,
+    "new_baseline_requires_new_cohort": true,
+    "new_baseline_requires_second_verification": true,
+    "active_cohort_metrics_must_exclude_global_history": true,
+    "cohort_may_not_retroactively_own_pre_creation_signals": true
+  },
+  "promotion_gates": {
+    "settled_batch_count": {
+      "operator": ">=",
+      "value": 30
+    },
+    "settled_industry_count": {
+      "operator": ">=",
+      "value": 30
+    },
+    "mean_relative_return": {
+      "operator": ">",
+      "value": 0.0
+    },
+    "median_relative_return": {
+      "operator": ">",
+      "value": 0.0
+    },
+    "positive_batch_rate": {
+      "operator": ">=",
+      "value": 0.55
+    },
+    "top_quintile_hit_rate": {
+      "operator": ">=",
+      "value": 0.3
+    },
+    "candidate_entry_freeze_rate": {
+      "operator": "==",
+      "value": 1.0
+    },
+    "benchmark_entry_freeze_rate": {
+      "operator": "==",
+      "value": 1.0
+    }
+  },
+  "execution": {
+    "production_ready": false,
+    "auto_execution_allowed": false,
+    "default_action": "NO_ACTION"
+  }
+}

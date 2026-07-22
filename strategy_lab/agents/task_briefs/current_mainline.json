@@ -1,0 +1,102 @@
+{
+  "task_id": "current_mainline_operating_brief",
+  "record_type": "current_operating_brief",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": false,
+  "historical_owner_claimed": false,
+  "task_status": "ready",
+  "task_status_scope": "current_operating_governance",
+  "version": "CURRENT_MAINLINE",
+  "objective": "单一 ETF 辅助人工决策主线；所有硬门同时通过前保持 NO_ACTION。",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/run_etf_assisted_trading_current.py",
+    "configs/etf_assisted_trading_current_policy.json",
+    "logs/research_experiment_ledger.jsonl",
+    "outputs/etf_assisted_trading_current/run_summary.json",
+    "outputs/etf_assisted_trading_current/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/etf_assisted_trading_current/report.md",
+    "outputs/etf_assisted_trading_current/run_summary.json",
+    "outputs/etf_assisted_trading_current/top_candidates.csv",
+    "outputs/etf_assisted_trading_current/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_current_mainline_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version CURRENT_MAINLINE",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#CURRENT_MAINLINE",
+  "source_paths": [
+    "scripts/run_etf_assisted_trading_current.py"
+  ],
+  "config_paths": [
+    "configs/etf_assisted_trading_current_policy.json"
+  ],
+  "config_status": "present",
+  "evidence_paths": [
+    "scripts/run_etf_assisted_trading_current.py",
+    "configs/etf_assisted_trading_current_policy.json",
+    "logs/research_experiment_ledger.jsonl",
+    "outputs/etf_assisted_trading_current/report.md",
+    "outputs/etf_assisted_trading_current/run_summary.json",
+    "outputs/etf_assisted_trading_current/top_candidates.csv",
+    "outputs/etf_assisted_trading_current/debug"
+  ],
+  "registration": {
+    "kind": "preregistered_forward_only_inherited",
+    "status": "valid",
+    "paths": [
+      "logs/research_experiment_ledger.jsonl"
+    ],
+    "experiment_ids": [
+      "v5_04_quality_score_ge2_forward_only_2026-07-12",
+      "v5_04_quality_score_ge3_forward_only_2026-07-12"
+    ],
+    "post_hoc": false,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Inherited registration applies to forward evidence only."
+  },
+  "post_hoc": false,
+  "post_hoc_status": "preregistered_forward_only_inherited",
+  "version_class": "current_operating_mainline",
+  "notes": [
+    "current operating mainline record; not a strategy-version promotion",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/etf_assisted_trading_current",
+    "run_summary_path": "outputs/etf_assisted_trading_current/run_summary.json",
+    "run_summary_version": "1.0.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/etf_assisted_trading_current/report.md",
+      "outputs/etf_assisted_trading_current/run_summary.json",
+      "outputs/etf_assisted_trading_current/top_candidates.csv",
+      "outputs/etf_assisted_trading_current/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "44a352c14a1f05f16bba5250317773ab732514a990b0459749080651cb262683",
+    "run_summary_sha256": "48a4952a3a717416f860dd3345225851593fe1fd1ce8437c35a92548ccf552ff"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "current_operating_mainline",
+  "research_result_status": "research_only",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "当前主线只提供 ETF 辅助人工决策研究；任一硬门未通过即保持 NO_ACTION。不得把历史框架评分、探索样本或单次审计通过解释为交易许可。",
+  "research_boundary": "research_only；current_action=NO_ACTION；强行业 Alpha 尚未验证；manual_decision_support_ready=false；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

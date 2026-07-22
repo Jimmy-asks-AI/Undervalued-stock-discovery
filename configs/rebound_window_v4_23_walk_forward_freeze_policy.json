@@ -1,0 +1,20 @@
+{
+  "version": "4.23.0",
+  "policy_id": "rebound_window_v4_23_walk_forward_freeze",
+  "policy_name_zh": "V4.23 年份前滚冻结规则审计",
+  "status": "research_only",
+  "objective": "只用过去年份的规则表现选择退出规则，再测试未来年份，审计V4.20/V4.21边界是否来自事后挑选。",
+  "output_dir": "outputs/industry_rebound_window_v4_23_walk_forward_freeze",
+  "source_trades_path": "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+  "signal_cluster_gap_calendar_days": 60,
+  "min_train_years": 3,
+  "min_train_clusters_per_rule": 8,
+  "min_train_win_rate": 0.6,
+  "max_train_bad_window_rate": 0.25,
+  "min_realtime_events": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只做年份前滚冻结规则审计，不新增信号，不重新训练模型，不做个股筛选，不加入ETF，不生成交易指令。"
+}

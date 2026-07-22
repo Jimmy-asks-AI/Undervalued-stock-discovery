@@ -1,0 +1,65 @@
+{
+  "task_id": "v4_38_rebound_window_confidence_failure_gate",
+  "version": "4.38.0",
+  "objective": "用事前可见的模型概率和失败旗标过滤 V4.7 宽事件池，检验合法样本数下能否突破收益厚度和相对收益门槛。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_38_confidence_failure_gate_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity/debug/horizon_oracle_source_panel.csv",
+    "scripts/run_industry_rebound_window_v4_38_confidence_failure_gate.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_sort"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/report.md",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/run_summary.json",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/confidence_gate_source_panel.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_38_confidence_failure_gate/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_38_confidence_failure_gate",
+      "description": "运行 V4.38 模型置信度与失败旗标门控。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_38_confidence_failure_gate.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.38 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_38_confidence_failure_gate",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.38 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_38_confidence_failure_gate --required-debug-files confidence_gate_source_panel.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若样本达标的置信度/失败旗标规则仍不能通过收益厚度和相对收益门槛，说明现有模型置信度只能改善风险质量，不能单独定义有效反弹窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

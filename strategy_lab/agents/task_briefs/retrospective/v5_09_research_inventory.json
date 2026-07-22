@@ -1,0 +1,99 @@
+{
+  "task_id": "retrospective_v5_09_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.09",
+  "objective": "V5.09 历史伪前推审计",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v5_09_rebound_leader_pseudo_forward_audit.py",
+    "logs/research_experiment_ledger.jsonl",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/run_summary.json",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/run_summary.json",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/top_candidates.csv",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_09_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.09",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.09",
+  "source_paths": [
+    "scripts/build_v5_09_rebound_leader_pseudo_forward_audit.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v5_09_rebound_leader_pseudo_forward_audit.py",
+    "logs/research_experiment_ledger.jsonl",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/run_summary.json",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/top_candidates.csv",
+    "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/debug"
+  ],
+  "registration": {
+    "kind": "inherits_registered_rule",
+    "status": "valid",
+    "paths": [
+      "logs/research_experiment_ledger.jsonl"
+    ],
+    "experiment_ids": [
+      "v5_04_quality_score_ge2_forward_only_2026-07-12",
+      "v5_04_quality_score_ge3_forward_only_2026-07-12"
+    ],
+    "post_hoc": false,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "These versions track, settle, evaluate, or audit the two V5.04 forward-only rules; inheritance does not preregister any new historical finding."
+  },
+  "post_hoc": false,
+  "post_hoc_status": "inherits_registered_rule",
+  "version_class": "forward_experiment_governance",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09",
+    "run_summary_path": "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/run_summary.json",
+    "run_summary_version": "5.09.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/report.md",
+      "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/run_summary.json",
+      "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/top_candidates.csv",
+      "outputs/audit/rebound_leader_pseudo_forward_audit_v5_09/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "9adc9fadc3b0d0597bedbe013b317ab92465f63a7097c243430224e7d71e8665",
+    "run_summary_sha256": "fe61196505fa4f66260ebd14e0638456695294093cdb973fb41792b12fc66ff8"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only_pseudo_forward_sample_insufficient",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.09 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

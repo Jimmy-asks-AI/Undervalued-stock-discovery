@@ -1,0 +1,102 @@
+{
+  "version": "2.9.0",
+  "policy_id": "frozen_value_oversold_non_trap_top10_v2_9",
+  "policy_name_zh": "V2.9冻结低估超跌非陷阱Top10实时仿真",
+  "status": "research_only",
+  "source_versions": [
+    "V2.6 PIT历史估值候选源",
+    "V2.7 估值质量与非陷阱质量分",
+    "V2.8 RankIC到组合收益桥接结论",
+    "latest_v2_8_bottom_test低估超跌专项回测"
+  ],
+  "objective": "冻结上一轮最接近基准的低估超跌非陷阱Top10规则，按当时可见数据逐期回放，检验真实交易时是否仍有抄底价值。",
+  "output_dir": "outputs/industry_realtime_simulation_v2_9",
+  "signal_state": "state_value_oversold_non_trap",
+  "score_column": "latest_bottom_score",
+  "top_n": 10,
+  "min_triggered_count": 10,
+  "rebalance_feature_step": 1,
+  "execution_rule": "signal_close_then_next_trading_day_close",
+  "horizons": [
+    60,
+    120,
+    252
+  ],
+  "cost_bps": 10.0,
+  "release_lag_days": 1,
+  "min_valuation_days": 252,
+  "min_cross_section_count": 20,
+  "post_2022_start": "2022-01-01",
+  "oos_start": "2022-01-01",
+  "market_pressure": {
+    "min_history_dates": 24,
+    "stress_threshold": 0.65,
+    "extreme_stress_threshold": 0.8,
+    "method": "expanding_percentile_asof",
+    "weights": {
+      "return_pressure": 0.35,
+      "volatility_pressure": 0.25,
+      "drawdown_pressure": 0.25,
+      "breadth_pressure": 0.15
+    }
+  },
+  "thresholds": {
+    "valuation_pit_score": 0.55,
+    "historical_valuation_score": 0.45,
+    "stabilized_oversold_signal": 0.55,
+    "price_only_oversold_signal": 0.65,
+    "drawdown_252d": -0.18,
+    "momentum_trap_score_max": 1,
+    "quality_value_no_trap_score": 0.55,
+    "valuation_quality_core_score": 0.5,
+    "price_quality_composite": 0.4,
+    "deep_valuation_pit_score": 0.65,
+    "deep_historical_valuation_score": 0.55,
+    "deep_stabilized_oversold_signal": 0.65,
+    "deep_price_only_oversold_signal": 0.75,
+    "deep_drawdown_252d": -0.25
+  },
+  "latest_bottom_score_weights": {
+    "valuation_pit_score": 0.3,
+    "historical_valuation_score": 0.2,
+    "stabilized_oversold_signal": 0.2,
+    "quality_value_no_trap_score": 0.2,
+    "recovery_quality_score": 0.1,
+    "momentum_trap_penalty": -0.08
+  },
+  "sector_quality_gap_parents": [
+    "银行",
+    "非银金融",
+    "房地产",
+    "建筑装饰"
+  ],
+  "feature_columns_used": [
+    "return_20d",
+    "return_60d",
+    "return_120d",
+    "return_252d",
+    "drawdown_252d",
+    "volatility_60d",
+    "avg_amount_60d",
+    "pe",
+    "pb",
+    "dividend_yield",
+    "float_market_cap",
+    "historical_pe_percentile_756",
+    "historical_pb_percentile_756",
+    "historical_dividend_percentile_756",
+    "valuation_history_count",
+    "pe_positive_valid_ratio_252",
+    "pb_valid_ratio_252",
+    "dividend_positive_ratio_252",
+    "pe_log_std_252",
+    "pb_log_std_252"
+  ],
+  "forbidden_feature_patterns": [
+    "forward_return",
+    "benchmark_forward_return",
+    "future",
+    "label"
+  ],
+  "promotion_rule": "只有严格实时仿真、样本外、非重叠、逐日相对净值和源审计全部通过，才允许进入下一阶段；本策略默认保持research_only。"
+}

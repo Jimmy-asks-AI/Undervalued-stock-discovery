@@ -1,0 +1,65 @@
+{
+  "task_id": "v2_15_rebound_window_target_calibration",
+  "version": "2.15.0",
+  "objective": "修正V2.11至V2.14的强反弹标签过宽问题，把牛市加速和抄底反弹分开，只评估压力、回撤或普跌之后的反弹窗口捕获能力。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_target_calibration_policy_v2_15.json",
+    "outputs/industry_rebound_window_audit_v2_11/debug/date_level_panel.csv",
+    "scripts/run_industry_rebound_window_target_calibration_v2_15.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "benchmark_forward_return_used_as_feature",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_target_calibration_v2_15/report.md",
+    "outputs/industry_rebound_window_target_calibration_v2_15/top_candidates.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/run_summary.json",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/label_definition_audit.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/target_rule_summary.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/time_split_summary.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/rolling_target_stability.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/false_positive_miss_cases.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_target_calibration_v2_15/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_15_rebound_window_target_calibration",
+      "description": "运行 V2.15 抄底反弹目标标签校准审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_target_calibration_v2_15.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.15 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_target_calibration_v2_15 --required-debug-files label_definition_audit.csv target_rule_summary.csv time_split_summary.csv rolling_target_stability.csv false_positive_miss_cases.csv leakage_audit.csv optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.15 只校准和审计抄底反弹目标标签。即使出现候选，也不能生成交易指令；下一阶段必须做冻结规则实时仿真和未来新增样本验证。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益作为特征，不根据结果动态扩展规则。"
+}

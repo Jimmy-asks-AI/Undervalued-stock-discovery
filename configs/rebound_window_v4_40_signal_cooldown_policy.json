@@ -1,0 +1,20 @@
+{
+  "version": "4.40.0",
+  "policy_id": "rebound_window_v4_40_signal_cooldown",
+  "policy_name_zh": "V4.40 信号冷却去密集化审计",
+  "status": "research_only",
+  "objective": "检验重复或密集信号是否拖低反弹窗口收益厚度，用事前冷却规则保留一段时间内第一个信号。",
+  "output_dir": "outputs/industry_rebound_window_v4_40_signal_cooldown",
+  "source_panel_path": "outputs/industry_rebound_window_v4_37_horizon_oracle_capacity/debug/horizon_oracle_source_panel.csv",
+  "holding_days": 5,
+  "min_consecutive_signal_days": 1,
+  "primary_rule_id": "all43_cooldown15",
+  "rules": [
+    {"rule_id": "all43_no_cooldown", "name_zh": "宽事件池不冷却", "min_model_probability": 0.0, "max_failure_flag_count": 99, "cooldown_days": 0},
+    {"rule_id": "all43_cooldown15", "name_zh": "宽事件池15天冷却", "min_model_probability": 0.0, "max_failure_flag_count": 99, "cooldown_days": 15},
+    {"rule_id": "prob60_fail2_no_cooldown", "name_zh": "V4.38基准不冷却", "min_model_probability": 0.60, "max_failure_flag_count": 2, "cooldown_days": 0},
+    {"rule_id": "prob60_fail2_cooldown30", "name_zh": "V4.38基准30天冷却", "min_model_probability": 0.60, "max_failure_flag_count": 2, "cooldown_days": 30},
+    {"rule_id": "prob60_fail2_cooldown60", "name_zh": "V4.38基准60天冷却", "min_model_probability": 0.60, "max_failure_flag_count": 2, "cooldown_days": 60}
+  ],
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版不使用未来收益排序，不做个股筛选，不加入ETF，不生成交易指令。"
+}

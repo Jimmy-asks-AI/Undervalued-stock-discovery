@@ -1,0 +1,18 @@
+{
+  "version": "4.76.0",
+  "policy_id": "industry_rebound_leader_fund_flow_readiness_v4_76",
+  "policy_status": "research_only",
+  "generated_at": "2026-06-26T18:23:49",
+  "cache_date_count": 5,
+  "latest_cache_date": "2026-06-26",
+  "candidate_count": 0,
+  "current_today_positive_count": 0,
+  "current_dual_positive_count": 0,
+  "failed_metrics": "pit_snapshot_count;pit_alpha_snapshot_count;mapping_exact_coverage;current_dual_positive_flow;price_factor_walk_forward_gate",
+  "fund_flow_research_ready": false,
+  "fund_flow_alpha_ready": false,
+  "best_status": "research_only_not_validated",
+  "production_ready": false,
+  "auto_execution_allowed": false,
+  "final_verdict": "资金流是下一步应前推积累的新信息源，但当前 PIT 历史、映射和双正向确认均不足，不能证明强反弹行业选择能力。"
+}

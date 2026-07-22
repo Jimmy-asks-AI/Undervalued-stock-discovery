@@ -1,0 +1,14 @@
+{
+  "version": "4.20.0",
+  "policy_id": "rebound_window_v4_20_frontier_gap",
+  "policy_name_zh": "V4.20 收益-坏窗口边界审计",
+  "status": "research_only",
+  "objective": "固定V4.19宽事件池动态退出结果，审计收益厚度和坏窗口控制之间的边界缺口。",
+  "output_dir": "outputs/industry_rebound_window_v4_20_frontier_gap",
+  "source_summary_path": "outputs/industry_rebound_window_v4_19_wide_pool_dynamic_exit/debug/wide_pool_dynamic_exit_summary.csv",
+  "source_trades_path": "outputs/industry_rebound_window_v4_19_wide_pool_dynamic_exit/debug/wide_pool_dynamic_exit_trades.csv",
+  "min_realtime_mean_return": 0.02,
+  "max_realtime_bad_window_rate": 0.2,
+  "min_realtime_win_rate": 0.6,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计V4.19结果的收益-坏窗口边界，不新增参数，不重新筛选事件，不做个股筛选，不加入ETF，不生成交易指令。"
+}

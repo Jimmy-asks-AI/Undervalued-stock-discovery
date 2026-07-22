@@ -1,0 +1,12 @@
+{
+  "version": "4.48.0",
+  "policy_id": "rebound_window_v4_48_full_sample_stop_loss_exit",
+  "policy_name_zh": "V4.48 全样本机械止损退出审计",
+  "source_trades": "outputs/industry_rebound_window_v4_46_walk_forward_independence/debug/realtime_simulation_trades.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_48_stop_loss_exit",
+  "round_trip_cost_bps": 10,
+  "stop_loss_grid": [0.02, 0.03, 0.04, 0.05, 0.06],
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "research_boundary": "本版只做全样本机械止损退出上限审计；不生成交易指令。"
+}

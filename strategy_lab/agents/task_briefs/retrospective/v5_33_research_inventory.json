@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v5_33_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.33",
+  "objective": "V5.33 资金流前推入场价格冻结",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v5_33_fund_flow_entry_price_freeze.py",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/run_summary.json",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/report.md",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/run_summary.json",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/top_candidates.csv",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_33_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.33",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.33",
+  "source_paths": [
+    "scripts/build_v5_33_fund_flow_entry_price_freeze.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v5_33_fund_flow_entry_price_freeze.py",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/report.md",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/run_summary.json",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/top_candidates.csv",
+    "outputs/audit/fund_flow_entry_price_freeze_v5_33/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "not_an_experiment",
+  "version_class": "data_governance_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/fund_flow_entry_price_freeze_v5_33",
+    "run_summary_path": "outputs/audit/fund_flow_entry_price_freeze_v5_33/run_summary.json",
+    "run_summary_version": "5.33.3",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/fund_flow_entry_price_freeze_v5_33/report.md",
+      "outputs/audit/fund_flow_entry_price_freeze_v5_33/run_summary.json",
+      "outputs/audit/fund_flow_entry_price_freeze_v5_33/top_candidates.csv",
+      "outputs/audit/fund_flow_entry_price_freeze_v5_33/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "6c03804782a65714705e6629523399e57fb0bbcabfd231858a9f9b3ccee797d9",
+    "run_summary_sha256": "0b5e162e52be573816e1b2c66222d2cff4489e97a5d538169f43b14d88020d9a"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "forward_fund_flow_evidence_chain_not_current_operating_mainline",
+  "research_result_status": "research_only_entry_price_freeze_incomplete",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.33 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

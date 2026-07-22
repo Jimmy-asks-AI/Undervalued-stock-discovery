@@ -1,0 +1,16 @@
+{
+  "version": "4.15.0",
+  "policy_id": "rebound_window_v4_15_dynamic_exit",
+  "policy_name_zh": "V4.15 固定事件动态退出审计",
+  "status": "research_only",
+  "objective": "固定V4.13主规则事件，测试最长30日持有下的简单止盈/止损退出能否同时保留收益厚度并控制坏窗口。",
+  "output_dir": "outputs/industry_rebound_window_v4_15_dynamic_exit",
+  "source_trades_path": "outputs/industry_rebound_window_v4_13_pair_feature_ceiling/debug/realtime_simulation_trades.csv",
+  "market_panel_path": "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/v47_short_horizon_feature_panel.csv",
+  "max_holding_days": 30,
+  "profit_take_grid": [null, 0.02, 0.03, 0.05],
+  "stop_loss_grid": [null, -0.03, -0.05],
+  "execution_lag_days": 1,
+  "bad_window_threshold": -0.03,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计固定事件的动态退出，不重新筛选事件，不做个股筛选，不加入ETF，不生成交易指令。"
+}

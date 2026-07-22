@@ -1,0 +1,87 @@
+{
+  "task_id": "v2_8_rankic_portfolio_bridge",
+  "version": "2.8.0",
+  "objective": "在 V2.7 估值质量因子 252 日 RankIC 较强但组合回测不稳的基础上，验证 RankIC 是否能转译为低频 Top-Bottom、多头相对、宽口径/剔除口径、2022后体系和逐日净值证据；本版本不新增选行业打分公式，只做桥接验证和失败归因。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "data_catalog/industry_index_panel_schema.csv",
+    "data_catalog/industry_index_source_inventory.csv",
+    "data_catalog/cache/industry_index/history/second",
+    "data_catalog/cache/industry_index/valuation_history/second/sws_second_industry_daily_valuation_2015_present.csv",
+    "factor_library/industry_index_factor_registry.csv",
+    "outputs/industry_index_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_index_research_validation/debug/all_ranked_industries.csv",
+    "scripts/run_industry_rankic_portfolio_bridge_v2_8.py",
+    "scripts/run_industry_valuation_quality_v2_7.py",
+    "scripts/run_industry_valuation_pit_validation_v2_6.py",
+    "scripts/run_industry_pressure_quality_v2_3.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_factor_registry.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "current_dividend_backfilled_to_history",
+    "same_day_valuation_without_lag",
+    "pit_valuation_claim_without_source_audit",
+    "future_return_used_as_feature"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rankic_portfolio_bridge_v2_8/report.md",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/top_candidates.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/run_summary.json",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/rankic_bridge_signal_panel.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/rebalance_portfolio_events.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/portfolio_bridge_summary.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/daily_long_short_nav.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/nav_metrics.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/rankic_decay_report.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/quantile_monotonicity_report.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/period_attribution_report.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/sector_policy_attribution.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/same_date_cross_section_coverage.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/factor_correlation_report.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/bootstrap_confidence.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/signal_rejection_log.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/source_audit.csv",
+    "outputs/industry_rankic_portfolio_bridge_v2_8/debug/current_signal_snapshot.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_8_rankic_portfolio_bridge",
+      "description": "运行 V2.8 RankIC 到组合收益桥接验证。",
+      "command": "python .\\scripts\\run_industry_rankic_portfolio_bridge_v2_8.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.8 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rankic_portfolio_bridge_v2_8 --required-debug-files rankic_bridge_signal_panel.csv rebalance_portfolio_events.csv portfolio_bridge_summary.csv daily_long_short_nav.csv nav_metrics.csv rankic_decay_report.csv quantile_monotonicity_report.csv period_attribution_report.csv sector_policy_attribution.csv same_date_cross_section_coverage.csv factor_correlation_report.csv bootstrap_confidence.csv signal_rejection_log.csv source_audit.csv current_signal_snapshot.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_factor_registry",
+      "description": "审计 V2.8 桥接验证因子是否已登记并与 schema 对齐。",
+      "command": "python .\\scripts\\audit_factor_registry.py --registry .\\factor_library\\industry_index_factor_registry.csv --schema .\\data_catalog\\industry_index_panel_schema.csv --output .\\outputs\\audit\\industry_index_factor_registry_audit",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.8 是桥接验证和失败归因，不是新 alpha 挖掘。只有同时通过全样本、样本外、2022后、bootstrap、逐日Top-Bottom净值、同日容量和源审计门槛后，才允许进入候选复核；当前结果不能标记为 validated_alpha。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不生成交易指令，不使用样例数据，不把未来收益作为特征，不把当前估值快照回填历史。公开申万历史估值继续作为 PIT 候选源，源口径和真实发布时间仍需审计。"
+}

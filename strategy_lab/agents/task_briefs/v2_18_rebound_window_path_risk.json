@@ -1,0 +1,64 @@
+{
+  "task_id": "v2_18_rebound_window_path_risk",
+  "version": "2.18.0",
+  "objective": "对V2.17小样本二次确认候选做逐日持有路径审计，验证最终收益背后是否存在不可接受的中途浮亏和路径回撤。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_path_risk_policy_v2_18.json",
+    "outputs/industry_rebound_window_second_confirmation_v2_17/debug/second_confirmation_events.csv",
+    "data_catalog/cache/industry_index/history/second",
+    "scripts/run_industry_rebound_window_path_risk_v2_18.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "benchmark_forward_return_used_as_feature",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_path_risk_v2_18/report.md",
+    "outputs/industry_rebound_window_path_risk_v2_18/top_candidates.csv",
+    "outputs/industry_rebound_window_path_risk_v2_18/run_summary.json",
+    "outputs/industry_rebound_window_path_risk_v2_18/debug/daily_path_summary.csv",
+    "outputs/industry_rebound_window_path_risk_v2_18/debug/event_daily_paths.csv",
+    "outputs/industry_rebound_window_path_risk_v2_18/debug/path_risk_events.csv",
+    "outputs/industry_rebound_window_path_risk_v2_18/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_path_risk_v2_18/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_path_risk_v2_18/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_18_rebound_window_path_risk",
+      "description": "运行 V2.18 逐日路径与最大回撤审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_path_risk_v2_18.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.18 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_path_risk_v2_18 --required-debug-files daily_path_summary.csv event_daily_paths.csv path_risk_events.csv leakage_audit.csv optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.18 只做逐日路径风险审计；不能生成交易指令，也不能声称已经可靠识别反弹窗口。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益作为特征，不根据结果动态扩展规则。"
+}

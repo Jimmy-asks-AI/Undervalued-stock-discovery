@@ -1,0 +1,65 @@
+{
+  "task_id": "v4_68_rebound_window_no_chase_rebound",
+  "version": "4.68.0",
+  "objective": "在 V4.67 基础上增加 market_return_10d <= 0 非追涨守门，检验能否压低尾部风险并保留有效样本、独立簇和收益厚度。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_68_no_chase_rebound_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+    "scripts/run_industry_rebound_window_v4_61_relaxed_breadth_relief.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/report.md",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/run_summary.json",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/no_chase_rebound_source_panel.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_68_no_chase_rebound/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_68_no_chase_rebound",
+      "description": "运行 V4.68 非追涨成交修复事件。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_61_relaxed_breadth_relief.py --config .\\configs\\rebound_window_v4_68_no_chase_rebound_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用 V3.4 统一评价体系判断 V4.68 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_68_no_chase_rebound",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.68 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_68_no_chase_rebound --required-debug-files no_chase_rebound_source_panel.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若非追涨守门后仍不能同时通过路径风险、尾部风险和样本稳定性门槛，则继续保持 research_only，不能认定为有效反弹窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入 ETF，不生成交易指令。"
+}

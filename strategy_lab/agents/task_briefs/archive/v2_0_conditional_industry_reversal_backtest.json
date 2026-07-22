@@ -1,0 +1,65 @@
+{
+  "task_id": "v2_0_conditional_industry_reversal_backtest",
+  "version": "2.0.0",
+  "objective": "Advance the pure SW industry index research system to V2.0 by downgrading standalone oversold bottom-fishing to a rejected baseline and testing conditional industry reversal with market-regime gates, momentum-trap filters, non-overlapping backtests, portfolio NAV, and benchmark-relative validation.",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/output_layout_policy.json",
+    "data_catalog/industry_index_panel_schema.csv",
+    "outputs/industry_index_research_validation/debug/historical_feature_panel.csv",
+    "outputs/industry_index_research_validation/debug/all_ranked_industries.csv",
+    "scripts/run_industry_conditional_reversal_backtest.py",
+    "scripts/audit_compact_output_layout.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "mock_data",
+    "sample_data",
+    "current_pe_backfilled_to_history",
+    "current_pb_backfilled_to_history",
+    "standalone_oversold_promoted"
+  ],
+  "required_output_paths": [
+    "outputs/industry_conditional_reversal_backtest/report.md",
+    "outputs/industry_conditional_reversal_backtest/top_candidates.csv",
+    "outputs/industry_conditional_reversal_backtest/run_summary.json",
+    "outputs/industry_conditional_reversal_backtest/debug/conditional_signal_panel.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/event_backtest.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/nonoverlap_backtest.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/portfolio_nav.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/benchmark_relative_nav.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/regime_breakdown.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/walk_forward_oos.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/parameter_sensitivity.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/momentum_trap_cases.csv",
+    "outputs/industry_conditional_reversal_backtest/debug/signal_rejection_log.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_0_conditional_reversal",
+      "description": "Run the V2.0 conditional industry reversal backtest from the V1.8 historical feature panel.",
+      "command": "python .\\scripts\\run_industry_conditional_reversal_backtest.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "Audit that V2.0 uses the compact output layout.",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_conditional_reversal_backtest --required-debug-files conditional_signal_panel.csv event_backtest.csv nonoverlap_backtest.csv portfolio_nav.csv benchmark_relative_nav.csv regime_breakdown.csv walk_forward_oos.csv parameter_sensitivity.csv momentum_trap_cases.csv signal_rejection_log.csv",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "Audit task brief governance after V2.0 migration.",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.0 remains research-only. Pure oversold and simple stabilized oversold are rejected as standalone industry selection signals unless future evidence passes full-sample, out-of-sample, non-overlapping, benchmark-relative, and sample-size gates.",
+  "research_boundary": "Research-only validation; no individual stocks, no trading signal, no order generation, no sample data, and no validated alpha promotion."
+}

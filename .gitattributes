@@ -1,0 +1,37 @@
+# The research integrity manifests hash exact file bytes.  Force a stable LF
+# checkout for text so Windows core.autocrlf cannot invalidate a restored
+# cohort after cloning the recovery bundle.
+* text=auto eol=lf
+
+# Native Windows launchers, if added later, retain their conventional ending.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Content-addressed evidence must survive checkout byte-for-byte.  The
+# append-only ledgers, checkpoints, source snapshots, and cohort manifests use
+# file SHA256 in addition to logical record hashes.  Suppress text diffs for
+# these byte-frozen files so CRLF bytes are not reported as trailing space.
+logs/**/*.jsonl -text -eol -diff
+logs/**/*.csv -text -eol -diff
+logs/**/*.json -text -eol -diff
+
+# V5.31 hashes these exact method artifacts.  Store them as raw blobs so line
+# ending conversion cannot invalidate the active cohort after restoration.
+configs/fund_flow_forward_chain_policy.json -text -eol -diff
+configs/fund_flow_forward_ledger_schema.json -text -eol -diff
+data_catalog/cache/trading_calendar/a_share_trade_calendar.csv -text -eol -diff
+scripts/research_integrity.py -text -eol -diff
+scripts/fund_flow_forward_evidence.py -text -eol -diff
+scripts/build_v5_10_rebound_leader_goal_completion_audit.py -text -eol -diff
+scripts/build_v5_25_fund_flow_forward_observer.py -text -eol -diff
+scripts/build_v5_26_fund_flow_forward_entry_gate.py -text -eol -diff
+scripts/settle_v5_27_fund_flow_forward_samples.py -text -eol -diff
+scripts/build_v5_28_fund_flow_promotion_evaluator.py -text -eol -diff
+scripts/build_v5_29_fund_flow_evidence_calendar.py -text -eol -diff
+scripts/audit_v5_30_fund_flow_forward_ledger_integrity.py -text -eol -diff
+scripts/build_v5_31_fund_flow_evidence_freeze_manifest.py -text -eol -diff
+scripts/build_v5_32_fund_flow_holding_observation.py -text -eol -diff
+scripts/build_v5_33_fund_flow_entry_price_freeze.py -text -eol -diff
+scripts/build_v5_34_fund_flow_benchmark_entry_freeze.py -text -eol -diff
+scripts/build_v5_35_fund_flow_waiting_room.py -text -eol -diff
+scripts/run_v4_71_live_refresh.py -text -eol -diff

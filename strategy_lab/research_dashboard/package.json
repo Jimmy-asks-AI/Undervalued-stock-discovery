@@ -1,0 +1,38 @@
+{
+  "name": "industry-index-research-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.6.2",
+  "engines": {
+    "node": ">=24.13.0 <25",
+    "npm": ">=11.6.2 <12"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.node.json",
+    "test": "npm run test:data-contract && npm run test:ui-contract",
+    "test:data-contract": "node --test tests/dashboardDataContract.test.mjs",
+    "test:ui-contract": "node --test tests/dashboardUiContract.test.mjs",
+    "validate:data": "node scripts/validateDashboardData.mjs",
+    "build": "npm run typecheck && vite build",
+    "check": "npm run test && npm run build",
+    "preview": "vite preview",
+    "audit:ui": "python ../../scripts/audit_dashboard_trust_ui.py"
+  },
+  "dependencies": {
+    "@carbon/icons-react": "11.83.0",
+    "@carbon/react": "^1.111.1",
+    "@carbon/styles": "^1.110.1",
+    "lightweight-charts": "^5.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.1"
+  }
+}

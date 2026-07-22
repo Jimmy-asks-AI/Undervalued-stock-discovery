@@ -1,0 +1,91 @@
+{
+  "task_id": "v4_0_rebound_window_entry_calibration",
+  "version": "4.0.0",
+  "objective": "在V3.7行业广度概率模型基础上，测试入场信号后的确认等待、概率边际、行业广度修复和下跌延续过滤是否改善A股反弹窗口识别。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_0_entry_calibration_policy.json",
+    "configs/rebound_window_online_state_machine_policy_v2_20.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "data_catalog/cache/industry_index/history/second",
+    "scripts/run_industry_rebound_window_v4_0_entry_calibration.py",
+    "scripts/run_industry_rebound_window_v3_7_industry_breadth.py",
+    "scripts/run_industry_rebound_window_v3_4_realtime_model.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "future_breadth_used_as_feature",
+    "future_amount_used_as_feature",
+    "same_day_close_execution",
+    "post_hoc_best_entry_selection",
+    "result_driven_threshold_expansion"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_0_entry_calibration/report.md",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/run_summary.json",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/v40_entry_feature_panel.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/target_label_audit.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/breadth_feature_audit.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/walk_forward_predictions.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/raw_walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/walk_forward_model_summary.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/fixed_horizon_realtime_trades.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/fixed_horizon_realtime_summary.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/entry_calibration_signal_trades.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/entry_calibration_signal_summary.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/entry_confirmation_watch_log.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/entry_calibration_filter_audit.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/annual_signal_distribution.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_0_entry_calibration/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_0_entry_calibration",
+      "description": "运行 V4.0 入场确认与概率校准研究。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_0_entry_calibration.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.0 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_0_entry_calibration",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.0 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_0_entry_calibration --required-debug-files v40_entry_feature_panel.csv data_availability_audit.csv target_label_audit.csv breadth_feature_audit.csv walk_forward_predictions.csv raw_walk_forward_year_summary.csv walk_forward_year_summary.csv walk_forward_model_summary.csv fixed_horizon_realtime_trades.csv fixed_horizon_realtime_summary.csv entry_calibration_signal_trades.csv entry_calibration_signal_summary.csv entry_confirmation_watch_log.csv entry_calibration_filter_audit.csv realtime_simulation_trades.csv realtime_simulation_summary.csv annual_signal_distribution.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V4.0 只能评估入场确认和概率边际是否改善反弹窗口研究证据；不能把研究观察升级为交易信号。",
+  "research_boundary": "只研究申万行业、行业指数、行业广度和入场确认；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益、未来行业广度或同日收盘执行作为特征。"
+}

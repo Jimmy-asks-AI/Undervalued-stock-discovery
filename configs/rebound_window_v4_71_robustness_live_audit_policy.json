@@ -1,0 +1,78 @@
+{
+  "version": "4.71.0",
+  "policy_id": "rebound_window_v4_71_robustness_live_audit",
+  "policy_name_zh": "V4.71 稳健性与实盘辅助复核",
+  "source_policy": "configs/rebound_window_v4_70_delayed_entry_vol_stop_policy.json",
+  "source_output_dir": "outputs/industry_rebound_window_v4_70_delayed_entry_vol_stop",
+  "evaluation_config": "configs/rebound_window_effectiveness_evaluation.json",
+  "output_dir": "outputs/industry_rebound_window_v4_71_robustness_live_audit",
+  "parameter_perturbations": [
+    {"variant_id": "base_v4_70", "description": "V4.70 冻结规则"},
+    {"variant_id": "entry_lag_1", "description": "延迟入场从 2 日改为 1 日", "entry_lag_days": 1},
+    {"variant_id": "entry_lag_3", "description": "延迟入场从 2 日改为 3 日", "entry_lag_days": 3},
+    {"variant_id": "stop_loss_4_8pct", "description": "保护止损从 6% 改为 4.8%", "stop_loss_level": 0.048},
+    {"variant_id": "stop_loss_7_2pct", "description": "保护止损从 6% 改为 7.2%", "stop_loss_level": 0.072},
+    {"variant_id": "vol_threshold_1_04", "description": "高波动阈值从 1.30 改为 1.04", "vol_threshold": 1.04},
+    {"variant_id": "vol_threshold_1_56", "description": "高波动阈值从 1.30 改为 1.56", "vol_threshold": 1.56},
+    {"variant_id": "all_events_stop", "description": "所有事件都启用 6% 保护止损", "stop_condition_all": true},
+    {"variant_id": "no_stop_overlay", "description": "取消保护止损", "disable_stop": true}
+  ],
+  "cooldown_days": [30, 45, 60, 90],
+  "latest_data_max_stale_calendar_days": 3,
+  "tradable_carrier": {
+    "data_source": "akshare.fund_etf_spot_em",
+    "history_cache_dir": "data_catalog/cache/tradable_carrier_etf_history",
+    "execution_replay_top_n": 5,
+    "min_replay_carriers": 3,
+    "min_replay_events": 30,
+    "round_trip_cost_bps": 10,
+    "include_keywords": ["沪深300", "中证A500", "A500", "中证500", "中证1000", "上证50", "上证180", "创业板50", "创业板", "科创50", "科创创业50", "MSCI中国A50", "A50", "深证100"],
+    "exclude_keywords": ["QDII", "纳指", "标普", "日经", "德国", "法国", "港股", "恒生", "黄金", "豆粕", "原油", "油气", "债", "货币", "REIT", "商品", "人工智能", "机器人", "芯片", "医药", "半导体", "证券", "银行", "酒", "军工", "新能源"],
+    "min_turnover_amount": 20000000,
+    "top_n": 30
+  },
+  "position_sizing": {
+    "reference_account_cny": 100000,
+    "single_carrier_cap_pct": 0.08,
+    "total_strategy_cap_pct": 0.20,
+    "risk_stop_reference_pct": 0.06,
+    "etf_lot_size": 100,
+    "max_order_turnover_bps": 1.0,
+    "max_entry_price_drift_pct": 0.02
+  },
+  "live_parameter_guardrails": {
+    "status": "locked_for_research_only",
+    "forbidden_runtime_overrides": [
+      "entry_lag_days_lt_2",
+      "stop_loss_level_gt_0_06",
+      "disable_conditional_stop_loss",
+      "vol_threshold_gt_1_30_to_chase_return",
+      "all_events_stop_loss_without_condition"
+    ],
+    "allowed_use": "audit_only",
+    "release_condition": "parameter_perturbation_pass_rate_gate_passes_with_forward_samples"
+  },
+  "live_cooldown_guardrails": {
+    "status": "locked_for_research_only",
+    "minimum_independent_cluster_count": 20,
+    "forbidden_runtime_overrides": [
+      "count_same_rebound_cluster_as_multiple_independent_events",
+      "lower_cooldown_gap_to_create_sample_size",
+      "override_cooldown_failure_on_signal_day"
+    ],
+    "allowed_use": "audit_only",
+    "release_condition": "cooldown_60_clusters_gate_passes_with_forward_samples"
+  },
+  "live_year_state_guardrails": {
+    "status": "locked_for_research_only",
+    "minimum_events_per_year_state_cell": 3,
+    "forbidden_runtime_overrides": [
+      "use_sparse_year_state_cell_as_production_evidence",
+      "hide_weak_year_with_full_sample_average",
+      "promote_state_bucket_without_forward_confirmation"
+    ],
+    "allowed_use": "risk_label_only",
+    "release_condition": "year_state_sparse_cells_gate_passes_with_forward_samples"
+  },
+  "research_boundary": "V4.71 只做 V4.70 的稳健性、最新样本和可交易载体复核；不改变 V4.70 信号规则，不生成交易指令，不把载体候选直接视为买卖建议。"
+}

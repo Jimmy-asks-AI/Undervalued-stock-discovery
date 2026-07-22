@@ -1,0 +1,67 @@
+{
+  "task_id": "v2_14_rebound_window_release",
+  "version": "2.14.0",
+  "objective": "在V2.13证伪静态压力规则后，测试压力回落、下跌广度修复和低估超跌触发收缩等动态释放条件是否更能识别反弹窗口。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_release_policy_v2_14.json",
+    "outputs/industry_rebound_window_audit_v2_11/debug/date_level_panel.csv",
+    "scripts/run_industry_rebound_window_release_v2_14.py",
+    "scripts/run_industry_rebound_window_stability_v2_13.py",
+    "scripts/run_industry_rebound_window_audit_v2_11.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "benchmark_forward_return_used_as_feature",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_release_v2_14/report.md",
+    "outputs/industry_rebound_window_release_v2_14/top_candidates.csv",
+    "outputs/industry_rebound_window_release_v2_14/run_summary.json",
+    "outputs/industry_rebound_window_release_v2_14/debug/validation_summary.csv",
+    "outputs/industry_rebound_window_release_v2_14/debug/time_split_summary.csv",
+    "outputs/industry_rebound_window_release_v2_14/debug/rolling_stability.csv",
+    "outputs/industry_rebound_window_release_v2_14/debug/baseline_comparison.csv",
+    "outputs/industry_rebound_window_release_v2_14/debug/false_alarm_miss_cases.csv",
+    "outputs/industry_rebound_window_release_v2_14/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_release_v2_14/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_release_v2_14/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v2_14_rebound_window_release",
+      "description": "运行 V2.14 压力释放与广度修复审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_release_v2_14.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V2.14 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_release_v2_14 --required-debug-files validation_summary.csv time_split_summary.csv rolling_stability.csv baseline_comparison.csv false_alarm_miss_cases.csv leakage_audit.csv optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V2.14 只验证动态压力释放条件是否改善反弹窗口识别。即使出现候选，也不能生成交易指令；结果必须继续保持 research_only。",
+  "research_boundary": "只研究申万行业和行业指数；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益作为特征，不根据结果动态扩展规则。"
+}

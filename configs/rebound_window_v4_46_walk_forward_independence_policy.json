@@ -1,0 +1,22 @@
+{
+  "version": "4.46.0",
+  "policy_id": "rebound_window_v4_46_walk_forward_independence_freeze",
+  "policy_name_zh": "V4.46 年前滚独立边界冻结审计",
+  "source_panel": "outputs/industry_rebound_window_v4_44_horizon_feature_upper_bound/debug/horizon_feature_source_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_46_walk_forward_independence",
+  "holding_days": 5,
+  "start_year": 2019,
+  "cooldown_days_grid": [0, 5, 10, 15, 20, 30, 45, 60, 90],
+  "cluster_gap_calendar_days": 30,
+  "round_trip_cost_bps": 10,
+  "feature_filters": [
+    {"filter_id": "none", "name_zh": "不过滤", "column": "", "operator": "", "quantile": null},
+    {"filter_id": "model_probability_ge_q30", "name_zh": "模型概率前70%", "column": "model_probability", "operator": ">=", "quantile": 0.30},
+    {"filter_id": "model_probability_ge_q40", "name_zh": "模型概率前60%", "column": "model_probability", "operator": ">=", "quantile": 0.40},
+    {"filter_id": "probability_margin_ge_q30", "name_zh": "概率边际前70%", "column": "probability_margin", "operator": ">=", "quantile": 0.30},
+    {"filter_id": "failure_flag_count_le_q50", "name_zh": "失败旗标低于中位", "column": "failure_flag_count", "operator": "<=", "quantile": 0.50},
+    {"filter_id": "market_stress_score_le_q70", "name_zh": "市场压力不过高", "column": "market_stress_score", "operator": "<=", "quantile": 0.70},
+    {"filter_id": "industry_above_ma20_ratio_ge_q30", "name_zh": "20日均线广度修复", "column": "industry_above_ma20_ratio", "operator": ">=", "quantile": 0.30}
+  ],
+  "research_boundary": "本版只用过去年份选择规则并应用到当年；不生成交易指令。"
+}

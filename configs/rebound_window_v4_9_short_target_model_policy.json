@@ -1,0 +1,161 @@
+{
+  "version": "4.9.0",
+  "policy_id": "rebound_window_v4_9_short_target_model",
+  "policy_name_zh": "V4.9 5日目标重训反弹窗口研究",
+  "status": "research_only",
+  "objective": "检验V4.7/V4.8收益厚度不足是否来自训练目标与执行周期错配：把模型目标从20日反弹改为5日反弹，执行仍使用下一交易日收盘入场和5日持有，并沿用预声明失败状态与风险质量过滤。",
+  "output_dir": "outputs/industry_rebound_window_v4_9_short_target_model",
+  "source_policy_path": "configs/rebound_window_online_state_machine_policy_v2_20.json",
+  "industry_history_dir": "data_catalog/cache/industry_index/history/second",
+  "feature_start_date": "2015-01-01",
+  "oos_start": "2018-01-01",
+  "target_horizon": 5,
+  "target_return_threshold": 0.02,
+  "target_max_drawdown_floor": -0.03,
+  "bad_window_threshold": -0.03,
+  "baseline_pressure_conditions": [
+    {"field": "market_stress_score", "op": ">=", "value": 0.55},
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.75}
+  ],
+  "failure_state_filter": {
+    "primary_signal_id": "failure_state_filtered_probability_model",
+    "min_failure_flags_to_reject": 3,
+    "min_train_raw_signals_for_threshold": 30,
+    "rules": [
+      {"flag_id": "negative_breadth_too_high", "field": "negative_breadth_60d", "direction": "high", "train_raw_quantile": 0.65, "description": "中期下跌广度仍高"},
+      {"flag_id": "industry_positive_20d_too_low", "field": "industry_positive_20d_ratio", "direction": "low", "train_raw_quantile": 0.35, "description": "20日上涨行业占比偏低"},
+      {"flag_id": "industry_above_ma20_too_low", "field": "industry_above_ma20_ratio", "direction": "low", "train_raw_quantile": 0.35, "description": "行业均线收复不足"},
+      {"flag_id": "liquidity_repair_too_low", "field": "market_amount_20d_vs_120d", "direction": "low", "train_raw_quantile": 0.35, "description": "20日成交额相对120日未修复"},
+      {"flag_id": "new_low_relief_too_low", "field": "industry_new_low_60d_relief_5d", "direction": "low", "train_raw_quantile": 0.35, "description": "创新低行业缓解不足"},
+      {"flag_id": "model_probability_too_low", "field": "model_probability", "direction": "low", "train_raw_quantile": 0.35, "description": "原始模型概率在训练期高概率信号内偏低"}
+    ],
+    "description": "沿用V4.3/V4.8失败状态过滤逻辑；V4.9只改变目标标签周期，不改变失败状态规则。"
+  },
+  "persistent_cluster": {
+    "primary_signal_id": "v4_9_short_target_realtime",
+    "primary_min_consecutive_signal_days": 1,
+    "min_consecutive_signal_days_grid": [1],
+    "primary_horizon": 5,
+    "horizon_grid": [5],
+    "entry_lag_days": 1,
+    "description": "目标和执行周期统一为5日：单日过滤信号触发、下一交易日收盘入场、持有5日。"
+  },
+  "risk_quality_overlay": {
+    "primary_filter_id": "failure_flag_count_le_1",
+    "filter_candidates": [
+      {
+        "filter_id": "failure_flag_count_le_1",
+        "filter_name_zh": "失败旗标不超过1个",
+        "conditions": [
+          {"field": "failure_flag_count", "op": "<=", "value": 1}
+        ]
+      },
+      {
+        "filter_id": "model_probability_ge_0_60",
+        "filter_name_zh": "模型概率不低于0.60",
+        "conditions": [
+          {"field": "model_probability", "op": ">=", "value": 0.60}
+        ]
+      },
+      {
+        "filter_id": "industry_positive20_ge_0_35",
+        "filter_name_zh": "20日上涨行业占比不低于35%",
+        "conditions": [
+          {"field": "industry_positive_20d_ratio", "op": ">=", "value": 0.35}
+        ]
+      },
+      {
+        "filter_id": "industry_above_ma20_ge_0_35",
+        "filter_name_zh": "MA20上方行业占比不低于35%",
+        "conditions": [
+          {"field": "industry_above_ma20_ratio", "op": ">=", "value": 0.35}
+        ]
+      },
+      {
+        "filter_id": "market_return_5d_le_0_035",
+        "filter_name_zh": "5日市场涨幅不超过3.5%",
+        "conditions": [
+          {"field": "market_return_5d", "op": "<=", "value": 0.035}
+        ]
+      },
+      {
+        "filter_id": "new_low_relief_ge_0",
+        "filter_name_zh": "创新低缓解不为负",
+        "conditions": [
+          {"field": "industry_new_low_60d_relief_5d", "op": ">=", "value": 0.0}
+        ]
+      }
+    ]
+  },
+  "short_target_sensitivity": {
+    "probability_quantiles": [0.8, 0.85, 0.9],
+    "minimum_probability_thresholds": [0.45, 0.5, 0.55],
+    "description": "只用于敏感性审计，主规则不根据敏感性结果重选参数。"
+  },
+  "robustness_thresholds": {
+    "min_primary_events": 30,
+    "min_conditional_events": 8,
+    "min_horizon_events": 8,
+    "min_horizon_mean_return": 0.0,
+    "min_horizon_win_rate": 0.5,
+    "max_horizon_bad_window_rate": 0.25,
+    "min_leave_one_year_mean_return": 0.0,
+    "min_leave_one_year_win_rate": 0.5,
+    "max_leave_one_year_bad_window_rate": 0.25
+  },
+  "model": {
+    "model_id": "industry_breadth_short_target_v4_9",
+    "train_min_rows": 650,
+    "purge_days": 25,
+    "test_start_year": 2018,
+    "test_end_year": 2026,
+    "probability_quantile": 0.85,
+    "minimum_probability_threshold": 0.50,
+    "learning_rate": 0.08,
+    "max_iter": 1200,
+    "l2": 0.35,
+    "positive_weight": 2.0,
+    "features": [
+      "market_stress_score",
+      "negative_breadth_60d",
+      "market_drawdown_252d",
+      "market_return_5d",
+      "market_return_10d",
+      "market_return_20d",
+      "breadth_repair_5d",
+      "stress_release_5d",
+      "market_volatility_20d_vs_60d",
+      "market_amount_5d_vs_20d",
+      "market_amount_20d_vs_120d",
+      "liquidity_repair_5d",
+      "industry_positive_5d_ratio",
+      "industry_positive_10d_ratio",
+      "industry_positive_20d_ratio",
+      "industry_positive_turn_5d",
+      "industry_above_ma20_ratio",
+      "industry_above_ma60_ratio",
+      "industry_reclaim_ma20_5d",
+      "industry_reclaim_ma20_10d",
+      "industry_new_low_60d_ratio",
+      "industry_new_low_120d_ratio",
+      "industry_new_low_60d_relief_5d",
+      "industry_deep_drawdown_252d_ratio",
+      "industry_drawdown_median_252d",
+      "industry_return_20d_dispersion",
+      "panic_exhaustion_score",
+      "breadth_recovery_score"
+    ]
+  },
+  "promotion_thresholds": {
+    "min_signal_dates": 30,
+    "min_nonoverlap_events": 30,
+    "min_active_years": 4,
+    "max_single_year_concentration": 0.35,
+    "min_mean_edge_vs_pressure": 0.01,
+    "min_event_mean_return": 0.02,
+    "min_event_win_rate": 0.60,
+    "max_event_bad_window_rate": 0.20,
+    "min_oos_target_capture_rate": 0.10
+  },
+  "research_boundary": "只研究申万行业和行业指数的市场层广度、5日目标标签、失败状态过滤和风险质量过滤；不做个股筛选，不加入ETF，不生成交易指令，不使用测试期未来收益或同日收盘执行。"
+}

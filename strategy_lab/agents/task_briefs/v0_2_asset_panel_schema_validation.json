@@ -1,0 +1,32 @@
+{
+  "task_id": "v0_2_asset_panel_schema_validation",
+  "version": "0.2.0",
+  "objective": "Validate that an asset panel has the required latest-view fields and does not violate basic timestamp or field rules.",
+  "owner_agent": "fundamental_data_steward",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "data_catalog/input_asset_panel_schema.csv",
+    "data_catalog/input_asset_panel_example.csv",
+    "scripts/validate_asset_panel_schema.py"
+  ],
+  "forbidden_input_patterns": [
+    "current_universe_backfill",
+    "available_date_after_trade_date",
+    "blank_data_status",
+    "validated_alpha"
+  ],
+  "required_output_paths": [
+    "outputs/audit/schema_validation/schema_validation_report.json",
+    "outputs/audit/schema_validation/schema_validation_issues.csv"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "validate_latest_example",
+      "description": "Validate the example panel in latest mode.",
+      "command": "python .\\scripts\\validate_asset_panel_schema.py --input .\\data_catalog\\input_asset_panel_example.csv --mode latest",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "Latest-mode schema pass permits research-only scoring but not historical factor validation.",
+  "research_boundary": "PIT-mode validation still requires pit_verified data_status and available_date discipline."
+}

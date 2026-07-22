@@ -1,0 +1,69 @@
+{
+  "task_id": "v4_33_rebound_window_relative_return_frontier",
+  "version": "4.33.0",
+  "objective": "审计当前事前特征库是否能筛出相对 market_return_5d 仍有收益厚度的反弹窗口。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_33_relative_return_frontier_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_7_short_horizon_expansion/debug/realtime_simulation_trades.csv",
+    "data_catalog/cache/market_index/wide/",
+    "scripts/run_industry_rebound_window_v4_33_relative_return_frontier.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "future_return_used_as_feature",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/report.md",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/run_summary.json",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/relative_source_trades.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/wide_index_daily_state.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/relative_enriched_trades.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/relative_frontier_summary.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_33_relative_return_frontier/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_33_relative_return_frontier",
+      "description": "运行 V4.33 相对市场收益边界上限审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_33_relative_return_frontier.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.33 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_33_relative_return_frontier",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.33 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_33_relative_return_frontier --required-debug-files relative_source_trades.csv wide_index_daily_state.csv relative_enriched_trades.csv relative_frontier_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若相对市场收益上限仍不达标，说明当前特征库主要识别 beta 反弹而不是可评价体系认可的有效窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}

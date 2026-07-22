@@ -1,0 +1,23 @@
+{
+  "version": "4.62.0",
+  "policy_id": "rebound_window_v4_62_broad_breadth_turn",
+  "policy_name_zh": "V4.62 宽广度转正扩样事件",
+  "signal_type": "broad_breadth_turn",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_62_broad_breadth_turn",
+  "debug_source_panel_file": "broad_breadth_turn_source_panel.csv",
+  "holding_days": 20,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.45},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.20}
+  ],
+  "final_verdict": "research_only；宽广度转正事件扩展了年份覆盖，但收益厚度和坏窗口控制退化。",
+  "main_diagnosis": "V4.62 移除新低缓解条件，改为负广度压力叠加 5 日上涨扩散转正，以检验扩独立簇是否会牺牲收益质量。",
+  "leakage_evidence": "固定使用负广度压力和 5 日上涨扩散转正两个事前字段；阈值按触发覆盖设定，不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 不做网格扫描；只验证扩样事件定义是否解决独立簇不足。",
+  "report_interpretation": "本版本不再要求新低缓解，只要求市场处在较高负广度压力后出现 5 日上涨扩散转正，目标是扩大历史年份和独立行情簇覆盖。",
+  "research_boundary": "本版本只做宽广度转正扩样事件研究；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

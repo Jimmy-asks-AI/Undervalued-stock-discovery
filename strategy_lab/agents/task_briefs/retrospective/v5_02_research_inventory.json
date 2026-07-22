@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v5_02_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V5.02",
+  "objective": "V5.02 Beta 守门强行业回测",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/run_industry_rebound_leader_beta_guardrail_v5_02.py",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/run_summary.json",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/run_summary.json",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/top_candidates.csv",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v5_02_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V5.02",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V5.02",
+  "source_paths": [
+    "scripts/run_industry_rebound_leader_beta_guardrail_v5_02.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/run_industry_rebound_leader_beta_guardrail_v5_02.py",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/run_summary.json",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/top_candidates.csv",
+    "outputs/industry_rebound_leader_beta_guardrail_v5_02/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "post_hoc_historical_inventory",
+  "version_class": "research_strategy_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/industry_rebound_leader_beta_guardrail_v5_02",
+    "run_summary_path": "outputs/industry_rebound_leader_beta_guardrail_v5_02/run_summary.json",
+    "run_summary_version": "5.02.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/industry_rebound_leader_beta_guardrail_v5_02/report.md",
+      "outputs/industry_rebound_leader_beta_guardrail_v5_02/run_summary.json",
+      "outputs/industry_rebound_leader_beta_guardrail_v5_02/top_candidates.csv",
+      "outputs/industry_rebound_leader_beta_guardrail_v5_02/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "52395c051b8df513236f5f7989592b926e631966687c4b22790aadff5d0574a1",
+    "run_summary_sha256": "a69c777ccefd407316affaafcfbf2499ca767ced97806756855d65a4874b749c"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only_no_beta_guardrail_alpha",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V5.02 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fund_flow_forward_ledger_schema_v2_1",
+  "title": "Fund-flow forward evidence event",
+  "type": "object",
+  "required": [
+    "record_schema_version",
+    "event_type",
+    "event_id",
+    "observation_id",
+    "event_recorded_at_utc",
+    "detected_at_utc",
+    "evidence_cutoff",
+    "entry_cutoff",
+    "source_artifact",
+    "source_fingerprint",
+    "experiment_id",
+    "cohort_id",
+    "cohort_manifest_hash",
+    "rule_id",
+    "code_version",
+    "late_backfill_excluded",
+    "integrity_eligible",
+    "promotion_eligible",
+    "previous_hash",
+    "record_hash"
+  ],
+  "properties": {
+    "record_schema_version": {
+      "enum": ["2.0", "2.1"]
+    },
+    "event_type": {
+      "enum": [
+        "observation",
+        "settlement"
+      ]
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_recorded_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "detected_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_cutoff": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "entry_cutoff": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_fingerprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cohort_id": {
+      "type": "string"
+    },
+    "cohort_manifest_hash": {
+      "type": "string"
+    },
+    "late_backfill_excluded": {
+      "type": [
+        "boolean",
+        "string"
+      ]
+    },
+    "integrity_eligible": {
+      "type": [
+        "boolean",
+        "string"
+      ]
+    },
+    "promotion_eligible": {
+      "type": [
+        "boolean",
+        "string"
+      ]
+    },
+    "previous_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"record_schema_version": {"const": "2.1"}}
+      },
+      "then": {
+        "properties": {
+          "cohort_id": {"type": "string", "minLength": 1},
+          "cohort_manifest_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "source_fingerprint_status": {"const": "verified_bundle"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"event_type": {"const": "settlement"}}
+      },
+      "then": {
+        "required": [
+          "parent_event_id",
+          "settlement_status",
+          "outcome_status",
+          "actual_entry_date",
+          "actual_exit_date",
+          "realized_return",
+          "benchmark_return",
+          "realized_relative_return",
+          "future_return_rank_pct",
+          "future_top_quintile",
+          "entry_price_freeze_status",
+          "benchmark_entry_freeze_status",
+          "entry_date_exact",
+          "exit_date_exact",
+          "benchmark_universe_count_used",
+          "settlement_source_artifact",
+          "settlement_source_fingerprint",
+          "settlement_source_row_count",
+          "settlement_calculation_version"
+        ],
+        "properties": {
+          "settlement_status": {"const": "settled"},
+          "outcome_status": {"const": "settled_forward_observation"}
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

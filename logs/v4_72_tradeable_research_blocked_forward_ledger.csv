@@ -1,0 +1,4 @@
+﻿industry_code,industry_name,planned_entry_date,planned_exit_date,settlement_status,actual_entry_date,actual_exit_date,realized_return,benchmark_return,realized_relative_return,future_return_rank_pct,future_top_quintile,required_label,required_evidence
+801194,保险Ⅱ,2026-06-23,2026-07-21,pending_until_exit_date,,,,,,,,forward_relative_return_and_top_quintile_rank,到退出日后结算行业forward收益、全行业等权收益、相对收益、是否进入全行业未来收益前20%。
+801764,游戏Ⅱ,2026-06-23,2026-07-21,pending_until_exit_date,,,,,,,,forward_relative_return_and_top_quintile_rank,到退出日后结算行业forward收益、全行业等权收益、相对收益、是否进入全行业未来收益前20%。
+801993,旅游及景区,2026-06-23,2026-07-21,pending_until_exit_date,,,,,,,,forward_relative_return_and_top_quintile_rank,到退出日后结算行业forward收益、全行业等权收益、相对收益、是否进入全行业未来收益前20%。

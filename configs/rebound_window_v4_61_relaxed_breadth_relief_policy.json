@@ -1,0 +1,24 @@
+{
+  "version": "4.61.0",
+  "policy_id": "rebound_window_v4_61_relaxed_breadth_relief",
+  "policy_name_zh": "V4.61 宽松广度压力缓解事件",
+  "signal_type": "relaxed_breadth_relief",
+  "source_panel": "outputs/industry_rebound_window_v3_7_industry_breadth/debug/v37_breadth_feature_target_panel.csv",
+  "output_dir": "outputs/industry_rebound_window_v4_61_relaxed_breadth_relief",
+  "debug_source_panel_file": "relaxed_breadth_relief_source_panel.csv",
+  "holding_days": 20,
+  "round_trip_cost_bps": 10,
+  "bad_window_return_threshold": -0.03,
+  "cluster_gap_calendar_days": 30,
+  "conditions": [
+    {"field": "negative_breadth_60d", "op": ">=", "value": 0.60},
+    {"field": "industry_positive_turn_5d", "op": ">=", "value": 0.15},
+    {"field": "industry_new_low_60d_relief_5d", "op": ">=", "value": 0.03}
+  ],
+  "final_verdict": "research_only；宽松广度缓解事件收益过线但独立簇不足。",
+  "main_diagnosis": "V4.61 放宽 V4.60 的广度压力缓解条件，以扩展同类事件样本。",
+  "leakage_evidence": "固定放宽 V4.60 三个广度条件；不使用未来收益筛选事件。",
+  "optimization_note": "ponytail: 只放宽一档阈值，不做网格扫描；目标是增加独立样本。",
+  "report_interpretation": "本版本把 V4.60 的广度缓解条件放宽一档，目标是扩展独立样本而不回到旧事件池。",
+  "research_boundary": "本版本只做宽松广度压力缓解事件研究；收益口径为市场窗口相对现金收益，不代表行业选择 alpha，不生成交易指令。"
+}

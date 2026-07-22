@@ -1,0 +1,54 @@
+{
+  "version": "4.24.0",
+  "policy_id": "rebound_window_v4_24_market_state_evidence",
+  "policy_name_zh": "V4.24 事前市场状态证据审计",
+  "status": "research_only",
+  "objective": "停止退出规则微调，固定V4.20收益最高源信号，审计信号日前可见的市场修复状态能否区分更好的反弹窗口。",
+  "output_dir": "outputs/industry_rebound_window_v4_24_market_state_evidence",
+  "source_trades_path": "outputs/industry_rebound_window_v4_20_frontier_gap/debug/frontier_source_trades.csv",
+  "source_signal_id": "v4_15_pt_none_sl_none",
+  "signal_cluster_gap_calendar_days": 60,
+  "primary_state_id": "trend_repair",
+  "state_rules": [
+    {
+      "state_id": "trend_repair",
+      "state_name_zh": "短期止跌且趋势修复",
+      "conditions": {
+        "market_return_5d": [">=", 0.0],
+        "industry_above_ma20_ratio": [">=", 0.25]
+      }
+    },
+    {
+      "state_id": "breadth_repair",
+      "state_name_zh": "上涨广度与新低修复",
+      "conditions": {
+        "industry_positive_20d_ratio": [">=", 0.5],
+        "industry_new_low_60d_relief_5d": [">=", 0.0]
+      }
+    },
+    {
+      "state_id": "broad_trend_repair",
+      "state_name_zh": "广度趋势共同修复",
+      "conditions": {
+        "market_return_5d": [">=", 0.0],
+        "industry_positive_20d_ratio": [">=", 0.5],
+        "industry_above_ma20_ratio": [">=", 0.25],
+        "industry_new_low_60d_relief_5d": [">=", 0.0]
+      }
+    },
+    {
+      "state_id": "relief_only",
+      "state_name_zh": "短期止跌且新低缓解",
+      "conditions": {
+        "market_return_5d": [">=", 0.0],
+        "industry_new_low_60d_relief_5d": [">=", 0.0]
+      }
+    }
+  ],
+  "min_realtime_events": 30,
+  "min_realtime_mean_return": 0.02,
+  "min_realtime_win_rate": 0.6,
+  "max_realtime_bad_window_rate": 0.2,
+  "max_single_year_concentration": 0.35,
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；本版只审计信号日前可见市场状态，不新增退出参数，不重新训练模型，不做个股筛选，不加入ETF，不生成交易指令。"
+}

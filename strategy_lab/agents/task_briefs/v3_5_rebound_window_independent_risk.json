@@ -1,0 +1,92 @@
+{
+  "task_id": "v3_5_rebound_window_independent_risk",
+  "version": "3.5.0",
+  "objective": "在V3.4宽基风险代理基础上加入两融、SHIBOR、LPR和国债收益率等独立风险偏好/资金价格代理，检验是否能改善A股反弹窗口识别。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v3_5_independent_risk_policy.json",
+    "configs/rebound_window_v3_4_realtime_model_policy.json",
+    "configs/rebound_window_online_state_machine_policy_v2_20.json",
+    "data_catalog/cache/industry_index/history/second",
+    "data_catalog/cache/market_index/wide",
+    "data_catalog/cache/external_risk/v3_5",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "scripts/run_industry_rebound_window_v3_5_independent_risk.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/run_industry_rebound_window_v3_4_realtime_model.py",
+    "scripts/run_industry_rebound_window_online_state_machine_v2_20.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "sample_data",
+    "future_return_used_as_feature",
+    "future_amount_used_as_feature",
+    "future_margin_used_as_feature",
+    "future_rate_used_as_feature",
+    "benchmark_forward_return_used_as_feature",
+    "adaptive_parameter_search",
+    "result_driven_threshold_expansion",
+    "same_day_close_execution",
+    "unpurged_walk_forward"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v3_5_independent_risk/report.md",
+    "outputs/industry_rebound_window_v3_5_independent_risk/top_candidates.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/run_summary.json",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/v35_feature_target_panel.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/target_label_audit.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/independent_risk_rule_summary.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/independent_risk_rule_events.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/walk_forward_predictions.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/walk_forward_model_summary.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/annual_signal_distribution.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/external_risk_source_audit.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v3_5_independent_risk/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v3_5_independent_risk",
+      "description": "运行 V3.5 独立风险偏好代理、walk-forward 模型和实时仿真。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v3_5_independent_risk.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V3.5 是否有效找到反弹窗口。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v3_5_independent_risk",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V3.5 输出目录顶层只暴露 report.md、top_candidates.csv、run_summary.json 和 debug。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v3_5_independent_risk --required-debug-files v35_feature_target_panel.csv data_availability_audit.csv target_label_audit.csv independent_risk_rule_summary.csv independent_risk_rule_events.csv walk_forward_predictions.csv walk_forward_year_summary.csv walk_forward_model_summary.csv realtime_simulation_trades.csv realtime_simulation_summary.csv annual_signal_distribution.csv external_risk_source_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_task_briefs",
+      "description": "审计当前任务 brief 治理状态。",
+      "command": "python .\\scripts\\audit_task_briefs.py",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "V3.5 只能评估独立风险偏好代理是否改善反弹窗口研究候选；不能生成交易指令，也不能声称已可靠识别反弹窗口。",
+  "research_boundary": "只研究申万行业、行业指数、宽基指数和公开资金/利率风险偏好代理；不做个股筛选，不加入ETF，不生成交易指令，不使用样例数据，不把未来收益、未来成交额、未来两融或未来利率作为触发特征。"
+}

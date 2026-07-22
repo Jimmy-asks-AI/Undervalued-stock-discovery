@@ -1,0 +1,62 @@
+{
+  "version": "2.11.0",
+  "policy_id": "rebound_window_identification_audit_v2_11",
+  "policy_name_zh": "V2.11反弹窗口识别审计",
+  "status": "research_only",
+  "objective": "把低估超跌系统的行业选择表现与反弹窗口识别能力拆开，独立审计触发日期是否比普通日期、压力日期和随机同样本日期更能预测未来全行业基准反弹。",
+  "output_dir": "outputs/industry_rebound_window_audit_v2_11",
+  "input_versions": [
+    "V2.10压力门控实时仿真与参数敏感性"
+  ],
+  "horizons": [
+    60,
+    120,
+    252
+  ],
+  "min_triggered_count": 10,
+  "pressure_baseline_min": 0.65,
+  "random_seed": 2110,
+  "top_candidate_rows": 30,
+  "primary_strong_rebound_thresholds": {
+    "60": 0.05,
+    "120": 0.08,
+    "252": 0.12
+  },
+  "strong_rebound_thresholds": {
+    "60": [
+      0.0,
+      0.03,
+      0.05,
+      0.08
+    ],
+    "120": [
+      0.0,
+      0.05,
+      0.08,
+      0.12
+    ],
+    "252": [
+      0.0,
+      0.08,
+      0.12,
+      0.18
+    ]
+  },
+  "bad_window_thresholds": {
+    "60": -0.05,
+    "120": -0.08,
+    "252": -0.12
+  },
+  "promotion_thresholds": {
+    "min_samples": 30,
+    "min_nonoverlap_samples": 12,
+    "min_uplift_vs_all_dates": 0.015,
+    "min_uplift_vs_pressure_dates": 0.005,
+    "min_win_rate": 0.55,
+    "min_strong_rebound_recall": 0.25,
+    "max_bad_window_rate": 0.25,
+    "max_random_pvalue": 0.1
+  },
+  "promotion_rule": "只有触发日相对全日期、普通压力日期、随机同样本日期均有可验证提升，并且样本、非重叠、上涨比例、强反弹召回和坏窗口比例同时达标，才允许进入下一阶段；本版本默认保持research_only。",
+  "research_boundary": "只审计反弹窗口识别能力；不做个股筛选，不加入ETF，不生成买卖指令，不把未来收益作为特征，不根据审计结果动态扩展参数。"
+}

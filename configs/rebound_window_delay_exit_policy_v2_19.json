@@ -1,0 +1,92 @@
+{
+  "version": "2.19.0",
+  "policy_id": "rebound_window_delay_exit_v2_19",
+  "policy_name_zh": "V2.19延迟入场与撤退阈值审计",
+  "status": "research_only",
+  "objective": "在V2.18逐日路径风险暴露后，检验延迟入场确认和撤退阈值是否能降低反弹窗口候选的深浮亏。",
+  "output_dir": "outputs/industry_rebound_window_delay_exit_v2_19",
+  "event_daily_path_source": "outputs/industry_rebound_window_path_risk_v2_18/debug/event_daily_paths.csv",
+  "primary_rule_id": "stress55_breadth75_ret_le75",
+  "rules": [
+    {"rule_id": "stress55_breadth75_ret_le75", "horizon": 60},
+    {"rule_id": "stress55_breadth75_ret_le80", "horizon": 60},
+    {"rule_id": "capitulation_lowvol_nontrap_ge5", "horizon": 120}
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "immediate_hold",
+      "scenario_name_zh": "立即入场持有",
+      "delay_days": 0,
+      "require_positive_observation": false,
+      "max_observation_loss": null,
+      "stop_loss": null
+    },
+    {
+      "scenario_id": "delay5_positive",
+      "scenario_name_zh": "延迟5日且观察期收益为正",
+      "delay_days": 5,
+      "require_positive_observation": true,
+      "max_observation_loss": null,
+      "stop_loss": null
+    },
+    {
+      "scenario_id": "delay10_positive",
+      "scenario_name_zh": "延迟10日且观察期收益为正",
+      "delay_days": 10,
+      "require_positive_observation": true,
+      "max_observation_loss": null,
+      "stop_loss": null
+    },
+    {
+      "scenario_id": "delay5_drawdown_guard5",
+      "scenario_name_zh": "延迟5日且观察期浮亏不超过5%",
+      "delay_days": 5,
+      "require_positive_observation": false,
+      "max_observation_loss": -0.05,
+      "stop_loss": null
+    },
+    {
+      "scenario_id": "delay10_drawdown_guard8",
+      "scenario_name_zh": "延迟10日且观察期浮亏不超过8%",
+      "delay_days": 10,
+      "require_positive_observation": false,
+      "max_observation_loss": -0.08,
+      "stop_loss": null
+    },
+    {
+      "scenario_id": "stop8",
+      "scenario_name_zh": "立即入场且8%撤退",
+      "delay_days": 0,
+      "require_positive_observation": false,
+      "max_observation_loss": null,
+      "stop_loss": -0.08
+    },
+    {
+      "scenario_id": "delay5_positive_stop8",
+      "scenario_name_zh": "延迟5日正收益确认且8%撤退",
+      "delay_days": 5,
+      "require_positive_observation": true,
+      "max_observation_loss": null,
+      "stop_loss": -0.08
+    },
+    {
+      "scenario_id": "delay10_positive_stop8",
+      "scenario_name_zh": "延迟10日正收益确认且8%撤退",
+      "delay_days": 10,
+      "require_positive_observation": true,
+      "max_observation_loss": null,
+      "stop_loss": -0.08
+    }
+  ],
+  "path_control_thresholds": {
+    "min_entered_events": 5,
+    "min_trade_win_rate": 0.6,
+    "min_mean_trade_return": 0.0,
+    "max_severe_path_rate": 0.2,
+    "max_allowed_min_nav_drawdown": -0.1,
+    "max_allowed_peak_drawdown": -0.12,
+    "max_skip_rate": 0.5
+  },
+  "promotion_rule": "V2.19若出现通过项，也只能标记为小样本路径控制候选；必须等待新增实时样本验证，不能升级为交易信号。",
+  "research_boundary": "只研究申万行业和行业指数的反弹窗口路径控制；不做个股筛选，不加入ETF，不生成买卖指令，不使用未来收益作为触发特征，不根据结果动态扩展规则。"
+}

@@ -1,0 +1,92 @@
+{
+  "task_id": "retrospective_v4_98_research_inventory",
+  "record_type": "retrospective_inventory",
+  "recorded_at": "2026-07-18",
+  "inventory_recorded_retrospectively": true,
+  "historical_owner_claimed": false,
+  "task_status": "passed",
+  "task_status_scope": "retrospective_inventory_record_only",
+  "version": "V4.98",
+  "objective": "V4.98 扩展窗口特征分离度审计",
+  "owner_agent": "reproducibility_engineer",
+  "allowed_input_paths": [
+    "scripts/build_v4_98_expanded_window_feature_separability.py",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/run_summary.json",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md",
+    "logs/research_version_inventory.json"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "production_ready=true",
+    "auto_execution_allowed=true",
+    "buy_signal",
+    "sell_signal",
+    "order"
+  ],
+  "required_output_paths": [
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/run_summary.json",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/top_candidates.csv",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/debug"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "check_v4_98_governance_brief",
+      "description": "核对该治理 brief 与研究版本库存逐字一致。",
+      "command": "python scripts/build_retrospective_task_briefs.py --check --version V4.98",
+      "expected_status": "exit_0"
+    }
+  ],
+  "objective_source": "logs/research_version_inventory.json#V4.98",
+  "source_paths": [
+    "scripts/build_v4_98_expanded_window_feature_separability.py"
+  ],
+  "config_paths": [],
+  "config_status": "not_declared",
+  "evidence_paths": [
+    "scripts/build_v4_98_expanded_window_feature_separability.py",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/run_summary.json",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/top_candidates.csv",
+    "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/debug"
+  ],
+  "registration": {
+    "kind": "explicit_post_hoc",
+    "status": "explicit_post_hoc",
+    "paths": [],
+    "experiment_ids": [],
+    "post_hoc": true,
+    "declaration_source": "configs/research_governance_scope.json",
+    "boundary": "Retrospective inventory only; no preregistration is claimed."
+  },
+  "post_hoc": true,
+  "post_hoc_status": "post_hoc_historical_inventory",
+  "version_class": "research_strategy_version",
+  "notes": [
+    "retrospective inventory recorded on 2026-07-18; no contemporaneous task brief is claimed",
+    "no standalone configuration file was found; configuration is embedded or inherited",
+    "local output exists but artifact_git_state=ignored; Git recovery is not claimed"
+  ],
+  "output_manifest": {
+    "directory": "outputs/audit/rebound_leader_expanded_feature_separability_v4_98",
+    "run_summary_path": "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/run_summary.json",
+    "run_summary_version": "4.98.0",
+    "standard_output_status": "complete",
+    "required_paths": [
+      "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/report.md",
+      "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/run_summary.json",
+      "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/top_candidates.csv",
+      "outputs/audit/rebound_leader_expanded_feature_separability_v4_98/debug"
+    ],
+    "missing_paths": [],
+    "structure_manifest_sha256": "bacc93d5433cd6d454541f92b87124b4c75d9cae688207401f6c9abb54e01c87",
+    "run_summary_sha256": "6725c0ae6dfc239d09676cf6b741d95a4d8240abe7bfe1ab459803ce2aad4e4a"
+  },
+  "inventory_source": "logs/research_version_inventory.json",
+  "mainline_relation": "historical_strong_industry_research_lineage",
+  "research_result_status": "research_only_no_expanded_feature_separability",
+  "evidence_boundary_status": "consistent",
+  "historical_timestamp_claimed": false,
+  "decision_boundary": "该文件是 2026-07-18 补建的 V4.98 retrospective inventory；不是该版本执行当时的任务书或预注册记录，不得据此改写、抬升或追认原研究结论。",
+  "research_boundary": "research_only；强行业 Alpha 尚未验证；人工辅助交易尚未就绪；production_ready=false；auto_execution_allowed=false；禁止自动交易。"
+}

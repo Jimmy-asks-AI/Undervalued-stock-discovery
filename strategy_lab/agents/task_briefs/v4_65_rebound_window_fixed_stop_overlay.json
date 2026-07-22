@@ -1,0 +1,66 @@
+{
+  "task_id": "v4_65_rebound_window_fixed_stop_overlay",
+  "version": "4.65.0",
+  "objective": "在 V4.64 强成交修复事件上叠加固定 2% 止损，检验退出层能否修复尾部亏损而不牺牲收益厚度。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_65_fixed_stop_overlay_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_64_strong_liquidity_repair/debug/realtime_simulation_trades.csv",
+    "scripts/run_industry_rebound_window_v4_65_fixed_stop_overlay.py",
+    "scripts/run_industry_rebound_window_v4_48_stop_loss_exit.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution",
+    "future_return_selection"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/report.md",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/run_summary.json",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/fixed_stop_source_trades.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_65_fixed_stop_overlay/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_65_fixed_stop_overlay",
+      "description": "运行 V4.65 固定 2% 止损覆盖层复核。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_65_fixed_stop_overlay.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用 V3.3 统一评价体系判断 V4.65 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_65_fixed_stop_overlay",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.65 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_65_fixed_stop_overlay --required-debug-files fixed_stop_source_trades.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若固定止损压住尾部但收益厚度不足，则退出层不能单独把 V4.64 升级为有效反弹窗口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入 ETF，不生成交易指令。"
+}

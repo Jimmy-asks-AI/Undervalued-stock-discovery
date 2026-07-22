@@ -1,0 +1,91 @@
+﻿ths_industry_name,mapped_sw2_code,mapped_sw2_name,mapping_method,mapping_confidence,review_status,production_allowed,notes
+IT服务,801103,IT服务Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+专用设备,801074,专用设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+中药,801155,中药,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+互联网电商,801206,互联网电商,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+保险,801194,保险,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+元件,801083,元件,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+光伏设备,801735,光伏设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+光学光电子,801084,光学光电子,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+公路铁路运输,801179,铁路公路,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+其他电子,801082,其他电子,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+其他电源设备,801733,其他电源设备Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+其他社会服务,801223,通信服务,difflib_suggestion,0.4,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+养殖业,801017,养殖业,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+军工电子,801745,军工电子Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+军工装备,801742,航空装备,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+农产品加工,801012,农产品加工,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+农化制品,801038,农化制品,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+包装印刷,801141,包装印刷,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+化学制品,801034,化学制品,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+化学制药,801151,化学制药,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+化学原料,801033,化学原料,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+化学纤维,801032,化学纤维,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+医疗器械,801153,医疗器械,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+医疗服务,801156,医疗服务,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+医药商业,801154,医药商业,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+半导体,801081,半导体,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+厨卫电器,801114,厨卫电器,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+塑料制品,801036,塑料,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+多元金融,801191,多元金融,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+家居用品,801142,家居用品,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+小家电,801113,小家电,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+小金属,801054,小金属,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+工业金属,801055,工业金属,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+工程机械,801077,工程机械,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+建筑材料,801713,装修建材,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+建筑装饰,801722,装修装饰,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+影视院线,801766,影视院线,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+房地产,801183,房地产服务,difflib_suggestion,0.75,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+教育,801994,教育,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+文化传媒,801952,Imp_传媒,difflib_suggestion,0.4,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+旅游及酒店,801993,旅游及景区,manual_current_overlay,0.65,manual_current_observation,否,人工复核用于当前观察；THS含酒店口径。 不接入因子回测。
+服装家纺,801132,服装家纺,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+机场航运,801992,航运港口,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+橡胶制品,801037,橡胶,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+汽车整车,801095,乘用车,manual_current_overlay,0.75,manual_current_observation,否,人工复核用于当前观察；THS汽车整车近似申万乘用车，商用车混入时需复核。 不接入因子回测。
+汽车服务及其他,801092,汽车服务,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+汽车零部件,801093,汽车零部件,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+油气开采及服务,801961,油气开采Ⅱ,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+消费电子,801085,消费电子,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+港口航运,801992,航运港口,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+游戏,801764,游戏Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+煤炭开采加工,801951,煤炭开采,manual_semantic_equivalent,0.95,manual_semantic_reviewed,否,V5.24保守修复：词序或后缀差异；仍不允许自动交易，只用于PIT面板覆盖。
+燃气,801163,燃气,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+物流,801178,物流,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+环保设备,801972,环保设备Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+环境治理,801971,环境治理,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+生物制品,801152,生物制品,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+电力,801161,电力,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+电子化学品,801086,电子化学品Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+电机,801731,电机,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+电池,801737,电池,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+电网设备,801738,电网设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+白色家电,801111,白色家电,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+白酒,801125,白酒Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+石油加工贸易,801202,贸易,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+种植业与林业,801016,种植业,difflib_suggestion,0.6667,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+纺织制造,801131,纺织制造,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+综合,801231,综合,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+美容护理,801983,医疗美容,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+能源金属,801056,能源金属,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+自动化设备,801078,自动化设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+计算机设备,801101,计算机设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+证券,801193,证券,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+贵金属,801053,贵金属,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+贸易,801202,贸易,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+轨交设备,801076,轨交设备Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+软件开发,801104,软件开发,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+通信服务,801223,通信服务,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+通信设备,801102,通信设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+通用设备,801072,通用设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+造纸,801143,造纸,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+金属新材料,801051,金属新材料,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+钢铁,801044,普钢,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+银行,801783,股份制银行Ⅱ,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+零售,801203,一般零售,manual_current_overlay,0.7,manual_current_observation,否,人工复核用于当前观察；THS零售近似申万一般零售。 不接入因子回测。
+非金属材料,801039,非金属材料Ⅱ,normalized_exact,0.95,auto_normalized_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+风电设备,801736,风电设备,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+食品加工制造,801124,食品加工制造,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+饮料制造,801127,饮料乳品,difflib_suggestion,0.5,manual_review_required,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。
+黑色家电,801112,黑色家电,exact,1.0,auto_exact_match,否,精确匹配也需复核行业口径；manual_review_required 不得接入因子回测。

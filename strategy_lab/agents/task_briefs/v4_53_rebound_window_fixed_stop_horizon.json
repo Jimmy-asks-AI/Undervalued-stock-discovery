@@ -1,0 +1,65 @@
+{
+  "task_id": "v4_53_rebound_window_fixed_stop_horizon",
+  "version": "4.53.0",
+  "objective": "在宽事件池和固定 2% 止损基础上，审计 5/10/15/20 日持有期是否能突破收益厚度和相对收益门槛。",
+  "owner_agent": "industry_factor_validation_auditor",
+  "task_status": "passed",
+  "allowed_input_paths": [
+    "configs/rebound_window_v4_53_fixed_stop_horizon_policy.json",
+    "configs/rebound_window_effectiveness_evaluation.json",
+    "outputs/industry_rebound_window_v4_44_horizon_feature_upper_bound/debug/horizon_feature_source_panel.csv",
+    "scripts/run_industry_rebound_window_v4_53_fixed_stop_horizon.py",
+    "scripts/evaluate_rebound_window_effectiveness.py",
+    "scripts/audit_compact_output_layout.py",
+    "scripts/audit_task_briefs.py"
+  ],
+  "forbidden_input_patterns": [
+    "validated_alpha",
+    "buy_signal",
+    "sell_signal",
+    "order",
+    "stock_pick",
+    "individual_stock",
+    "ETF",
+    "mock_data",
+    "same_day_close_execution"
+  ],
+  "required_output_paths": [
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/report.md",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/top_candidates.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/run_summary.json",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/fixed_stop_horizon_source_panel.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/fixed_stop_horizon_grid.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/realtime_simulation_trades.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/realtime_simulation_summary.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/walk_forward_year_summary.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/data_availability_audit.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/leakage_audit.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/evaluation_scorecard.csv",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/evaluation_summary.json",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/optimization_notes.json",
+    "outputs/industry_rebound_window_v4_53_fixed_stop_horizon/debug/frozen_policy.json"
+  ],
+  "acceptance_checks": [
+    {
+      "id": "run_v4_53_fixed_stop_horizon",
+      "description": "运行 V4.53 固定止损多持有期审计。",
+      "command": "python .\\scripts\\run_industry_rebound_window_v4_53_fixed_stop_horizon.py",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "evaluate_rebound_window_effectiveness",
+      "description": "使用统一评价体系判断 V4.53 是否满足有效窗口门槛。",
+      "command": "python .\\scripts\\evaluate_rebound_window_effectiveness.py --output-dir .\\outputs\\industry_rebound_window_v4_53_fixed_stop_horizon",
+      "expected_status": "exit_0"
+    },
+    {
+      "id": "audit_compact_output_layout",
+      "description": "确认 V4.53 输出目录保持精简结构。",
+      "command": "python .\\scripts\\audit_compact_output_layout.py --output-dir .\\outputs\\industry_rebound_window_v4_53_fixed_stop_horizon --required-debug-files fixed_stop_horizon_source_panel.csv fixed_stop_horizon_grid.csv realtime_simulation_trades.csv realtime_simulation_summary.csv walk_forward_year_summary.csv data_availability_audit.csv leakage_audit.csv evaluation_scorecard.csv evaluation_summary.json optimization_notes.json frozen_policy.json",
+      "expected_status": "exit_0"
+    }
+  ],
+  "decision_boundary": "若延长持有期后收益、相对收益、胜率或样本数仍不能同时达标，则持有期不是当前事件池的有效突破口。",
+  "research_boundary": "只研究申万行业和行业指数反弹窗口；不做个股筛选，不加入ETF，不生成交易指令。"
+}
